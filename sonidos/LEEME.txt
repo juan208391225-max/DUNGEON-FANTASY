@@ -1,0 +1,7 @@
+Los archivos originales se conservan sin modificar. El juego usa copias WAV recortadas para quitar los silencios largos al inicio y al final. Consulta AUDIO_ACCIONES.md para ver que archivo corresponde a cada accion.
+
+pasos_caminar.wav se genera desde el clip nuevo caminar.mpeg, y pasos_correr.wav conserva el clip original de correr. Los clips originales ataque_embestida.mp3.mpeg y ataque_enemigo_cuerpo.mp3.mpeg son identicos; sus copias WAV se mantienen separadas para las dos acciones.
+
+golpe_PERSONAJE- copia.wav esta asignado al dano recibido por el jugador. Su contenido es identico a golpe_enemigo.wav.
+
+Los clips nuevos ataque distancia.mpeg, recoger pocion.mpeg, saltar.mpeg y ataque jefes.mpeg se convirtieron a WAV y se asignaron a sus acciones.

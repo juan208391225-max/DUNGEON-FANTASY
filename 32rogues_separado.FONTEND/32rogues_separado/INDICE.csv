@@ -1,0 +1,850 @@
+﻿carpeta,archivo,nombre_original_ingles,hoja_origen,fila,columna
+personajes,enano.png,dwarf,rogues.png,1,1
+personajes,elfo.png,elf,rogues.png,1,2
+personajes,guardabosques.png,ranger,rogues.png,1,3
+personajes,picaro.png,rogue,rogues.png,1,4
+personajes,bandido.png,bandit,rogues.png,1,5
+personajes,caballero.png,knight,rogues.png,2,1
+personajes,guerrero.png,male fighter,rogues.png,2,2
+personajes,caballera.png,female knight,rogues.png,2,3
+personajes,caballera_sin_casco.png,female knight (helmetless),rogues.png,2,4
+personajes,caballero_con_escudo.png,shield knight,rogues.png,2,5
+personajes,monje.png,monk,rogues.png,3,1
+personajes,sacerdote.png,priest,rogues.png,3,2
+personajes,clerigo_guerrera.png,female war cleric,rogues.png,3,3
+personajes,clerigo_guerrero.png,male war cleric,rogues.png,3,4
+personajes,templario.png,templar,rogues.png,3,5
+personajes,monje_esquema.png,schema monk,rogues.png,3,6
+personajes,monje_esquema_anciano.png,elder schema monk,rogues.png,3,7
+personajes,barbaro.png,male barbarian,rogues.png,4,1
+personajes,barbaro_de_invierno.png,male winter barbarian,rogues.png,4,2
+personajes,barbara_de_invierno.png,female winter barbarian,rogues.png,4,3
+personajes,espadachin.png,swordsman,rogues.png,4,4
+personajes,esgrimista.png,fencer,rogues.png,4,5
+personajes,barbara.png,female barbarian,rogues.png,4,6
+personajes,maga.png,female wizard,rogues.png,5,1
+personajes,mago.png,male wizard,rogues.png,5,2
+personajes,druida.png,druid,rogues.png,5,3
+personajes,sabio_del_desierto.png,desert sage,rogues.png,5,4
+personajes,enano_mago.png,dwarf mage,rogues.png,5,5
+personajes,brujo.png,warlock,rogues.png,5,6
+personajes,granjero_trillador.png,farmer (wheat thresher),rogues.png,6,1
+personajes,granjero_guadana.png,farmer (scythe),rogues.png,6,2
+personajes,granjero_horca.png,farmer (pitchfork),rogues.png,6,3
+personajes,panadero.png,baker,rogues.png,6,4
+personajes,herrero.png,blacksmith,rogues.png,6,5
+personajes,erudito.png,scholar,rogues.png,6,6
+personajes,campesino_carbonero.png,peasant / coalburner,rogues.png,7,1
+personajes,campesino.png,peasant,rogues.png,7,2
+personajes,tendero.png,shopkeep,rogues.png,7,3
+personajes,anciana.png,elderly woman,rogues.png,7,4
+personajes,anciano.png,elderly man,rogues.png,7,5
+monstruos,orco.png,orc,monsters.png,1,1
+monstruos,orco_mago.png,orc wizard,monsters.png,1,2
+monstruos,goblin.png,goblin,monsters.png,1,3
+monstruos,orco_maestro_de_espada.png,orc blademaster,monsters.png,1,4
+monstruos,orco_jefe_de_guerra.png,orc warchief,monsters.png,1,5
+monstruos,goblin_arquero.png,goblin archer,monsters.png,1,6
+monstruos,goblin_mago.png,goblin mage,monsters.png,1,7
+monstruos,goblin_bruto.png,goblin brute,monsters.png,1,8
+monstruos,ettin.png,ettin,monsters.png,2,1
+monstruos,ettin_dos_cabezas.png,two headed ettin,monsters.png,2,2
+monstruos,trol.png,troll,monsters.png,2,3
+monstruos,slime_pequeno.png,small slime,monsters.png,3,1
+monstruos,slime_grande.png,big slime,monsters.png,3,2
+monstruos,cuerpo_de_slime.png,slimebody,monsters.png,3,3
+monstruos,cuerpos_de_slime_fusionados.png,merged slimebodies,monsters.png,3,4
+monstruos,monje_sin_rostro.png,faceless monk,monsters.png,4,1
+monstruos,cardenal_impio.png,unholy cardinal,monsters.png,4,2
+monstruos,esqueleto.png,skeleton,monsters.png,5,1
+monstruos,esqueleto_arquero.png,skeleton archer,monsters.png,5,2
+monstruos,lich.png,lich,monsters.png,5,3
+monstruos,caballero_de_la_muerte.png,death knight,monsters.png,5,4
+monstruos,zombi.png,zombie,monsters.png,5,5
+monstruos,necrofago.png,ghoul,monsters.png,5,6
+monstruos,banshee.png,banshee,monsters.png,6,1
+monstruos,segador.png,reaper,monsters.png,6,2
+monstruos,espectro.png,wraith,monsters.png,6,3
+monstruos,cultista.png,cultist,monsters.png,6,4
+monstruos,bruja.png,hag/witch,monsters.png,6,5
+monstruos,ciempies_gigante.png,giant centipede,monsters.png,7,1
+monstruos,lampreamandra.png,lampreymander,monsters.png,7,2
+monstruos,lombriz_gigante.png,giant earthworm,monsters.png,7,3
+monstruos,manticora.png,manticore,monsters.png,7,4
+monstruos,hormiga_gigante.png,giant ant,monsters.png,7,5
+monstruos,licantropo.png,lycanthrope,monsters.png,7,6
+monstruos,murcielago_gigante.png,giant bata,monsters.png,7,7
+monstruos,hormiga_gigante_menor.png,lesser giant ant,monsters.png,7,8
+monstruos,arana_gigante.png,giant spider,monsters.png,7,9
+monstruos,arana_gigante_menor.png,lesser giant spider,monsters.png,7,10
+monstruos,huargo.png,warg/dire wolf,monsters.png,7,11
+monstruos,rata_gigante.png,giant rat,monsters.png,7,12
+monstruos,driada.png,dryad,monsters.png,8,1
+monstruos,wendigo.png,wendigo,monsters.png,8,2
+monstruos,golem_de_roca.png,rock golem,monsters.png,8,3
+monstruos,centauro.png,centaur,monsters.png,8,4
+monstruos,naga.png,naga,monsters.png,8,5
+monstruos,espiritu_del_bosque.png,forest spirit,monsters.png,8,6
+monstruos,satiro.png,satyr,monsters.png,8,7
+monstruos,minotauro.png,minotaur,monsters.png,8,8
+monstruos,arpia.png,harpy,monsters.png,8,9
+monstruos,medusa.png,gorgon/medusa,monsters.png,8,10
+monstruos,hombre_lagarto.png,lizardfolk / kobold (reptile),monsters.png,9,1
+monstruos,draco.png,drake / lesser dragon,monsters.png,9,2
+monstruos,dragon.png,dragon,monsters.png,9,3
+monstruos,cocatriz.png,cockatrice,monsters.png,9,4
+monstruos,basilisco.png,basilisk,monsters.png,9,5
+monstruos,kobold_pequeno.png,small kobold (canine),monsters.png,10,1
+monstruos,kobold.png,kobold (canine),monsters.png,10,2
+monstruos,miconido_pequeno.png,small myconid,monsters.png,11,1
+monstruos,miconido_grande.png,large myconid,monsters.png,11,2
+monstruos,angel.png,angel / archangel,monsters.png,12,1
+monstruos,diablillo.png,imp / devil,monsters.png,12,2
+monstruos,masa_retorcida_pequena.png,small writhing mass,monsters.png,13,1
+monstruos,masa_retorcida_grande.png,large writhing mass,monsters.png,13,2
+monstruos,humanoide_retorcido.png,writhing humanoid,monsters.png,13,3
+animales,oso_pardo.png,grizzly bear,animals.png,1,1
+animales,oso_negro.png,black bear,animals.png,1,2
+animales,oso_polar.png,polar bear,animals.png,1,3
+animales,panda.png,panda,animals.png,1,4
+animales,chimpance.png,chimpanzee,animals.png,2,1
+animales,gorila.png,gorilla,animals.png,2,2
+animales,orangutan.png,orangutan,animals.png,2,3
+animales,aye_aye.png,aye aye,animals.png,3,1
+animales,gibon.png,gibbon,animals.png,3,2
+animales,mandril.png,mandrill,animals.png,3,3
+animales,capuchino.png,capuchin,animals.png,3,4
+animales,langur.png,langur,animals.png,3,5
+animales,gato.png,cat,animals.png,4,1
+animales,lince_rojo.png,bobcat,animals.png,4,2
+animales,puma.png,cougar,animals.png,4,3
+animales,guepardo.png,cheetah,animals.png,4,4
+animales,lince.png,lynx,animals.png,4,5
+animales,ocelote.png,ocelot,animals.png,4,6
+animales,leon.png,male lion,animals.png,4,7
+animales,leona.png,female lion,animals.png,4,8
+animales,perro.png,dog,animals.png,5,1
+animales,cachorro.png,puppy,animals.png,5,2
+animales,hiena.png,hyena,animals.png,5,3
+animales,zorro.png,fox,animals.png,5,4
+animales,chacal.png,jackal,animals.png,5,5
+animales,coyote.png,coyote,animals.png,5,6
+animales,lobo.png,wolf,animals.png,5,7
+animales,capibara.png,capybara,animals.png,6,1
+animales,castor.png,beaver,animals.png,6,2
+animales,vison.png,mink,animals.png,6,3
+animales,mangosta.png,mongoose,animals.png,6,4
+animales,marmota.png,marmot,animals.png,6,5
+animales,marmota_americana.png,groundhog,animals.png,6,6
+animales,chinchilla.png,chinchilla,animals.png,6,7
+animales,equidna.png,echidna,animals.png,6,8
+animales,cerdo_hormiguero.png,aardvark,animals.png,7,1
+animales,armadillo.png,armadillo,animals.png,7,2
+animales,tejon.png,badger,animals.png,7,3
+animales,tejon_melero.png,honeybadger,animals.png,7,4
+animales,coati.png,coati,animals.png,7,5
+animales,zarigueya.png,opossum,animals.png,7,6
+animales,conejo.png,rabbit,animals.png,7,7
+animales,liebre.png,hare,animals.png,7,8
+animales,rata.png,rat,animals.png,7,9
+animales,serpiente.png,snake,animals.png,8,1
+animales,cobra.png,cobra,animals.png,8,2
+animales,serpiente_real.png,kingsnake,animals.png,8,3
+animales,mamba_negra.png,black mamba,animals.png,8,4
+animales,caiman.png,alligator,animals.png,9,1
+animales,varano.png,monitor lizard,animals.png,9,2
+animales,iguana.png,iguana,animals.png,9,3
+animales,tortuga_terrestre.png,tortoise,animals.png,9,4
+animales,tortuga_mordedora.png,snapping turtle,animals.png,9,5
+animales,tortuga_caiman.png,alligator snapping turtle,animals.png,9,6
+animales,vaca.png,cow,animals.png,10,1
+animales,caballo.png,horse,animals.png,10,2
+animales,burro.png,donkey,animals.png,10,3
+animales,mula.png,mule,animals.png,10,4
+animales,alpaca.png,alpaca,animals.png,10,5
+animales,llama.png,llama,animals.png,10,6
+animales,cerdo.png,pig,animals.png,10,7
+animales,jabali.png,boar,animals.png,10,8
+animales,camello.png,camel,animals.png,11,1
+animales,ciervo_reno_caribu.png,reindeer/caribou,animals.png,11,2
+animales,bufalo_de_agua.png,water buffalo,animals.png,11,3
+animales,yak.png,yak,animals.png,11,4
+animales,gaviota.png,seagull,animals.png,12,1
+animales,lechuza.png,barn owl,animals.png,12,2
+animales,busardo.png,common buzzard,animals.png,12,3
+animales,canguro.png,kangaroo,animals.png,13,1
+animales,koala.png,koala,animals.png,13,2
+animales,pinguino.png,penguin,animals.png,14,1
+animales,pinguino_pequeno.png,little penguin,animals.png,14,2
+animales,casuario.png,cassowary,animals.png,14,3
+animales,emu.png,emu,animals.png,14,4
+animales,gallina.png,chicken,animals.png,15,1
+animales,gallo.png,rooster,animals.png,15,2
+animales,pato_real.png,mallard duck,animals.png,15,3
+animales,cisne.png,swan,animals.png,15,4
+animales,pavo.png,turkey,animals.png,15,5
+animales,gallina_de_guinea.png,guineafowl,animals.png,15,6
+animales,pavo_real.png,peacock,animals.png,15,7
+animales,cabra.png,goat,animals.png,16,1
+animales,cabra_montesa.png,mountain goat,animals.png,16,2
+animales,ibice.png,ibex,animals.png,16,3
+animales,carnero.png,sheep (ram),animals.png,16,4
+animales,oveja.png,sheep (ewe),animals.png,16,5
+objetos/espadas,daga.png,dagger,items.png,1,1
+objetos/espadas,espada_corta.png,short sword,items.png,1,2
+objetos/espadas,espada_corta_2.png,short sword 2,items.png,1,3
+objetos/espadas,espada_larga.png,long sword,items.png,1,4
+objetos/espadas,espada_bastarda.png,bastard sword,items.png,1,5
+objetos/espadas,montante.png,zweihander,items.png,1,6
+objetos/espadas,daga_sanguinea.png,sanguine dagger,items.png,1,7
+objetos/espadas,daga_magica.png,magic dagger,items.png,1,8
+objetos/espadas,espada_de_cristal.png,crystal sword,items.png,1,9
+objetos/espadas,espada_maligna.png,evil sword,items.png,1,10
+objetos/espadas,espada_de_fuego.png,flame sword,items.png,1,11
+objetos/espadas,espada_corta_ancha.png,wide short sword,items.png,2,1
+objetos/espadas,espada_larga_ancha.png,wide long sword,items.png,2,2
+objetos/espadas,estoque.png,rapier,items.png,2,3
+objetos/espadas,estoque_largo.png,long rapier,items.png,2,4
+objetos/espadas,flamberge.png,flamberge,items.png,2,5
+objetos/espadas,flamberge_grande.png,large flamberge,items.png,2,6
+objetos/espadas,espadon.png,great sword,items.png,2,7
+objetos/espadas,shotel.png,shotel,items.png,3,1
+objetos/espadas,cimitarra.png,scimitar,items.png,3,2
+objetos/espadas,cimitarra_grande.png,large scimitar,items.png,3,3
+objetos/espadas,cimitarra_enorme.png,great scimitar,items.png,3,4
+objetos/espadas,kukri.png,kukri,items.png,3,5
+objetos/hachas,hacha_de_mano.png,hand axe,items.png,4,1
+objetos/hachas,hacha_de_batalla.png,battle axe,items.png,4,2
+objetos/hachas,alabarda.png,halberd,items.png,4,3
+objetos/hachas,gran_hacha.png,great axe,items.png,4,4
+objetos/hachas,hacha_gigante.png,giant axe,items.png,4,5
+objetos/hachas,hachuela.png,hatchet,items.png,4,6
+objetos/hachas,hacha_de_lenador.png,woodcutter's axe,items.png,4,7
+objetos/martillos,martillo_de_herrero.png,blacksmiths hammer,items.png,5,1
+objetos/martillos,martillo_de_guerra_corto.png,short warhammer,items.png,5,2
+objetos/martillos,martillo_de_guerra_largo.png,long warhammer,items.png,5,3
+objetos/martillos,martillo.png,hammer,items.png,5,4
+objetos/martillos,gran_martillo.png,great hammer,items.png,5,5
+objetos/mazas,maza_1.png,mace 1,items.png,6,1
+objetos/mazas,maza_2.png,mace 2,items.png,6,2
+objetos/mazas,gran_maza.png,great mace,items.png,6,3
+objetos/mazas,bate_con_pinchos.png,spiked bat,items.png,6,4
+objetos/lanzas,lanza.png,spear,items.png,7,1
+objetos/lanzas,lanza_corta.png,short spear,items.png,7,2
+objetos/lanzas,horca.png,pitchfork,items.png,7,3
+objetos/lanzas,tridente.png,trident,items.png,7,4
+objetos/lanzas,lanza_magica.png,magic spear,items.png,7,5
+objetos/mangales,mangual_1.png,flail 1,items.png,8,1
+objetos/mangales,mangual_2.png,flail 2,items.png,8,2
+objetos/mangales,mangual_3.png,flail 3,items.png,8,3
+objetos/garrotes,garrote.png,club,items.png,9,1
+objetos/garrotes,garrote_con_pinchos.png,spiked club,items.png,9,2
+objetos/garrotes,gran_garrote.png,great club,items.png,9,3
+objetos/garrotes,garrote_con_clavos.png,club with nails,items.png,9,4
+objetos/arcos_y_ballestas,ballesta.png,crossbow,items.png,10,1
+objetos/arcos_y_ballestas,arco_corto.png,short bow,items.png,10,2
+objetos/arcos_y_ballestas,arco_largo.png,long bow,items.png,10,3
+objetos/arcos_y_ballestas,arco_largo_2.png,long bow 2,items.png,10,4
+objetos/arcos_y_ballestas,ballesta_grande.png,large crossbow,items.png,10,5
+objetos/bastones,baston_de_cristal.png,crystal staff,items.png,11,1
+objetos/bastones,baston_sagrado.png,holy staff,items.png,11,2
+objetos/bastones,baston_de_druida.png,druid staff,items.png,11,3
+objetos/bastones,baston_azul.png,blue staff,items.png,11,4
+objetos/bastones,baston_dorado.png,golden staff,items.png,11,5
+objetos/bastones,baston_de_cristal_rojo.png,red crystal staff,items.png,11,6
+objetos/bastones,baston_de_fuego.png,flame staff,items.png,11,7
+objetos/bastones,baston_de_cristal_azul.png,blue crystal staff,items.png,11,8
+objetos/bastones,baston_de_cruz.png,cross staff,items.png,11,9
+objetos/bastones,baston_de_santo.png,saint's staff,items.png,11,10
+objetos/escudos,broquel.png,buckler,items.png,12,1
+objetos/escudos,escudo_normando.png,kite shield,items.png,12,2
+objetos/escudos,escudo_con_cruz.png,cross shield,items.png,12,3
+objetos/escudos,escudo_oscuro.png,dark shield,items.png,12,4
+objetos/escudos,escudo_redondo.png,round shield,items.png,12,5
+objetos/escudos,broquel_2.png,buckler 2,items.png,12,6
+objetos/escudos,escudo_grande.png,large shield,items.png,12,7
+objetos/armaduras,armadura_de_tela.png,cloth armor,items.png,13,1
+objetos/armaduras,armadura_de_cuero.png,leather armor,items.png,13,2
+objetos/armaduras,tunica.png,robe,items.png,13,3
+objetos/armaduras,cota_de_malla.png,chain mail,items.png,13,4
+objetos/armaduras,armadura_de_escamas.png,scale mail,items.png,13,5
+objetos/armaduras,peto.png,chest plate,items.png,13,6
+objetos/guantes,guantes_de_tela.png,cloth gloves,items.png,14,1
+objetos/guantes,guantes_de_cuero.png,leather gloves,items.png,14,2
+objetos/guantes,guantes_de_tela_azules.png,blue cloth gloves,items.png,14,3
+objetos/guantes,guanteletes.png,gauntlets,items.png,14,4
+objetos/botas,zapatos.png,shoes,items.png,15,1
+objetos/botas,botas_de_cuero.png,leather boots,items.png,15,2
+objetos/botas,botas_altas_azules.png,high blue boots,items.png,15,3
+objetos/botas,grebas.png,greaves,items.png,15,4
+objetos/cascos,capucha_de_tela.png,cloth hood,items.png,16,1
+objetos/cascos,casco_de_cuero.png,leather helm,items.png,16,2
+objetos/cascos,sombrero_de_ala_ancha.png,wide-brimmed hat,items.png,16,3
+objetos/cascos,cofia_de_malla.png,chain mail coif,items.png,16,4
+objetos/cascos,yelmo.png,helm,items.png,16,5
+objetos/cascos,yelmo_con_malla.png,helm with chain mail,items.png,16,6
+objetos/cascos,yelmo_de_placas_1.png,plate helm 1,items.png,16,7
+objetos/cascos,yelmo_de_placas_2.png,plate helm 2,items.png,16,8
+objetos/colgantes,colgante_rojo.png,red pendant,items.png,17,1
+objetos/colgantes,colgante_de_metal.png,metal pendant,items.png,17,2
+objetos/colgantes,colgante_de_cristal.png,crystal pendant,items.png,17,3
+objetos/colgantes,colgante_de_disco.png,disc pendant,items.png,17,4
+objetos/colgantes,colgante_de_cruz.png,cross pendant,items.png,17,5
+objetos/colgantes,colgante_de_piedra.png,stone pendant,items.png,17,6
+objetos/colgantes,ankh.png,ankh,items.png,17,7
+objetos/anillos,anillo_de_oro_con_esmeralda.png,gold emerald ring,items.png,18,1
+objetos/anillos,anillo_de_oro_liso.png,gold band ring,items.png,18,2
+objetos/anillos,anillo_sello_verde.png,green signet ring,items.png,18,3
+objetos/anillos,anillo_de_rubi.png,ruby ring,items.png,18,4
+objetos/anillos,anillo_de_zafiro.png,sapphire ring,items.png,18,5
+objetos/anillos,anillo_de_onice.png,onyx ring,items.png,18,6
+objetos/anillos,anillo_sello_de_oro.png,gold signet ring,items.png,19,1
+objetos/anillos,anillo_sello_de_plata.png,silver signet ring,items.png,19,2
+objetos/anillos,anillo_de_jade.png,jade ring,items.png,19,3
+objetos/anillos,anillo_sello_de_plata_2.png,silver signet ring,items.png,19,4
+objetos/anillos,anillo_retorcido_de_oro.png,twisted gold ring,items.png,19,5
+objetos/anillos,anillo_retorcido_de_metal.png,twisted metal ring,items.png,19,6
+objetos/pociones,pocion_morada.png,purple potion,items.png,20,1
+objetos/pociones,pocion_roja.png,red potion,items.png,20,2
+objetos/pociones,frasco_marron.png,brown vial,items.png,20,3
+objetos/pociones,pocion_oscura_grande.png,large dark potion,items.png,20,4
+objetos/pociones,pocion_verde.png,green potion,items.png,20,5
+objetos/pociones,pocion_negra.png,black potion,items.png,21,1
+objetos/pociones,pocion_verde_brillante.png,bright green potion,items.png,21,2
+objetos/pociones,frasco_rosa.png,pink vial,items.png,21,3
+objetos/pociones,pocion_azul.png,blue potion,items.png,21,4
+objetos/pociones,pocion_naranja.png,orange potion,items.png,21,5
+objetos/libros_y_pergaminos,pergamino.png,scroll,items.png,22,1
+objetos/libros_y_pergaminos,libro.png,book,items.png,22,2
+objetos/libros_y_pergaminos,libro_rojo.png,red book,items.png,22,3
+objetos/libros_y_pergaminos,tomo_oscuro.png,dark tome,items.png,22,4
+objetos/libros_y_pergaminos,tomo.png,tome,items.png,22,5
+objetos/libros_y_pergaminos,tomo_2.png,tome 2,items.png,22,6
+objetos/libros_y_pergaminos,pergamino_2.png,scroll 2,items.png,22,7
+objetos/libros_y_pergaminos,pagina.png,page,items.png,22,8
+objetos/llaves,llave_dorada.png,gold key,items.png,23,1
+objetos/llaves,llave_ornamentada.png,ornate key,items.png,23,2
+objetos/llaves,llave_de_metal.png,metal key,items.png,23,3
+objetos/llaves,llave_primitiva.png,primitive key,items.png,23,4
+objetos/municion,flecha.png,arrow,items.png,24,1
+objetos/municion,flechas.png,arrows,items.png,24,2
+objetos/municion,virote.png,bolt,items.png,24,3
+objetos/municion,virotes.png,bolts,items.png,24,4
+objetos/monedas,moneda.png,coin,items.png,25,1
+objetos/monedas,pilas_pequenas_de_monedas.png,small stacks of coins,items.png,25,2
+objetos/monedas,pilas_grandes_de_monedas.png,large stacks of coins,items.png,25,3
+objetos/monedas,bolsa_de_monedas.png,coin purse,items.png,25,4
+objetos/comida_y_bebida,queso.png,cheese,items.png,26,1
+objetos/comida_y_bebida,pan.png,bread,items.png,26,2
+objetos/comida_y_bebida,manzana.png,apple,items.png,26,3
+objetos/comida_y_bebida,botella_de_cerveza.png,bottle of beer,items.png,26,4
+objetos/comida_y_bebida,botella_de_agua.png,bottle of water,items.png,26,5
+variantes_de_color/espadas,daga_variante_1.png,dagger (variante de color),items-palette-swaps.png,1,1
+variantes_de_color/espadas,espada_corta_variante_1.png,short sword (variante de color),items-palette-swaps.png,1,2
+variantes_de_color/espadas,espada_corta_2_variante_1.png,short sword 2 (variante de color),items-palette-swaps.png,1,3
+variantes_de_color/espadas,espada_larga_variante_1.png,long sword (variante de color),items-palette-swaps.png,1,4
+variantes_de_color/espadas,espada_bastarda_variante_1.png,bastard sword (variante de color),items-palette-swaps.png,1,5
+variantes_de_color/espadas,montante_variante_1.png,zweihander (variante de color),items-palette-swaps.png,1,6
+variantes_de_color/espadas,daga_sanguinea_variante_1.png,sanguine dagger (variante de color),items-palette-swaps.png,1,7
+variantes_de_color/espadas,espada_corta_ancha_variante_1.png,wide short sword (variante de color),items-palette-swaps.png,2,1
+variantes_de_color/espadas,espada_larga_ancha_variante_1.png,wide long sword (variante de color),items-palette-swaps.png,2,2
+variantes_de_color/espadas,estoque_variante_1.png,rapier (variante de color),items-palette-swaps.png,2,3
+variantes_de_color/espadas,estoque_largo_variante_1.png,long rapier (variante de color),items-palette-swaps.png,2,4
+variantes_de_color/espadas,flamberge_variante_1.png,flamberge (variante de color),items-palette-swaps.png,2,5
+variantes_de_color/espadas,flamberge_grande_variante_1.png,large flamberge (variante de color),items-palette-swaps.png,2,6
+variantes_de_color/espadas,espadon_variante_1.png,great sword (variante de color),items-palette-swaps.png,2,7
+variantes_de_color/espadas,shotel_variante_1.png,shotel (variante de color),items-palette-swaps.png,3,1
+variantes_de_color/espadas,cimitarra_variante_1.png,scimitar (variante de color),items-palette-swaps.png,3,2
+variantes_de_color/espadas,cimitarra_grande_variante_1.png,large scimitar (variante de color),items-palette-swaps.png,3,3
+variantes_de_color/espadas,cimitarra_enorme_variante_1.png,great scimitar (variante de color),items-palette-swaps.png,3,4
+variantes_de_color/espadas,kukri_variante_1.png,kukri (variante de color),items-palette-swaps.png,3,5
+variantes_de_color/hachas,hacha_de_mano_variante_1.png,hand axe (variante de color),items-palette-swaps.png,4,1
+variantes_de_color/hachas,hacha_de_batalla_variante_1.png,battle axe (variante de color),items-palette-swaps.png,4,2
+variantes_de_color/hachas,alabarda_variante_1.png,halberd (variante de color),items-palette-swaps.png,4,3
+variantes_de_color/hachas,gran_hacha_variante_1.png,great axe (variante de color),items-palette-swaps.png,4,4
+variantes_de_color/hachas,hacha_gigante_variante_1.png,giant axe (variante de color),items-palette-swaps.png,4,5
+variantes_de_color/hachas,hachuela_variante_1.png,hatchet (variante de color),items-palette-swaps.png,4,6
+variantes_de_color/hachas,hacha_de_lenador_variante_1.png,woodcutter's axe (variante de color),items-palette-swaps.png,4,7
+variantes_de_color/martillos,martillo_de_herrero_variante_1.png,blacksmiths hammer (variante de color),items-palette-swaps.png,5,1
+variantes_de_color/martillos,martillo_de_guerra_corto_variante_1.png,short warhammer (variante de color),items-palette-swaps.png,5,2
+variantes_de_color/martillos,martillo_de_guerra_largo_variante_1.png,long warhammer (variante de color),items-palette-swaps.png,5,3
+variantes_de_color/martillos,martillo_variante_1.png,hammer (variante de color),items-palette-swaps.png,5,4
+variantes_de_color/martillos,gran_martillo_variante_1.png,great hammer (variante de color),items-palette-swaps.png,5,5
+variantes_de_color/mazas,maza_1_variante_1.png,mace 1 (variante de color),items-palette-swaps.png,6,1
+variantes_de_color/mazas,maza_2_variante_1.png,mace 2 (variante de color),items-palette-swaps.png,6,2
+variantes_de_color/mazas,gran_maza_variante_1.png,great mace (variante de color),items-palette-swaps.png,6,3
+variantes_de_color/mazas,bate_con_pinchos_variante_1.png,spiked bat (variante de color),items-palette-swaps.png,6,4
+variantes_de_color/lanzas,lanza_variante_1.png,spear (variante de color),items-palette-swaps.png,7,1
+variantes_de_color/lanzas,lanza_corta_variante_1.png,short spear (variante de color),items-palette-swaps.png,7,2
+variantes_de_color/lanzas,horca_variante_1.png,pitchfork (variante de color),items-palette-swaps.png,7,3
+variantes_de_color/mangales,mangual_1_variante_1.png,flail 1 (variante de color),items-palette-swaps.png,8,1
+variantes_de_color/mangales,mangual_2_variante_1.png,flail 2 (variante de color),items-palette-swaps.png,8,2
+variantes_de_color/mangales,mangual_3_variante_1.png,flail 3 (variante de color),items-palette-swaps.png,8,3
+variantes_de_color/espadas,daga_variante_2.png,dagger (variante de color),items-palette-swaps.png,9,1
+variantes_de_color/espadas,espada_corta_variante_2.png,short sword (variante de color),items-palette-swaps.png,9,2
+variantes_de_color/espadas,espada_corta_2_variante_2.png,short sword 2 (variante de color),items-palette-swaps.png,9,3
+variantes_de_color/espadas,espada_larga_variante_2.png,long sword (variante de color),items-palette-swaps.png,9,4
+variantes_de_color/espadas,espada_bastarda_variante_2.png,bastard sword (variante de color),items-palette-swaps.png,9,5
+variantes_de_color/espadas,montante_variante_2.png,zweihander (variante de color),items-palette-swaps.png,9,6
+variantes_de_color/espadas,daga_sanguinea_variante_2.png,sanguine dagger (variante de color),items-palette-swaps.png,9,7
+variantes_de_color/espadas,espada_corta_ancha_variante_2.png,wide short sword (variante de color),items-palette-swaps.png,10,1
+variantes_de_color/espadas,espada_larga_ancha_variante_2.png,wide long sword (variante de color),items-palette-swaps.png,10,2
+variantes_de_color/espadas,estoque_variante_2.png,rapier (variante de color),items-palette-swaps.png,10,3
+variantes_de_color/espadas,estoque_largo_variante_2.png,long rapier (variante de color),items-palette-swaps.png,10,4
+variantes_de_color/espadas,flamberge_variante_2.png,flamberge (variante de color),items-palette-swaps.png,10,5
+variantes_de_color/espadas,flamberge_grande_variante_2.png,large flamberge (variante de color),items-palette-swaps.png,10,6
+variantes_de_color/espadas,espadon_variante_2.png,great sword (variante de color),items-palette-swaps.png,10,7
+variantes_de_color/espadas,shotel_variante_2.png,shotel (variante de color),items-palette-swaps.png,11,1
+variantes_de_color/espadas,cimitarra_variante_2.png,scimitar (variante de color),items-palette-swaps.png,11,2
+variantes_de_color/espadas,cimitarra_grande_variante_2.png,large scimitar (variante de color),items-palette-swaps.png,11,3
+variantes_de_color/espadas,cimitarra_enorme_variante_2.png,great scimitar (variante de color),items-palette-swaps.png,11,4
+variantes_de_color/espadas,kukri_variante_2.png,kukri (variante de color),items-palette-swaps.png,11,5
+variantes_de_color/hachas,hacha_de_mano_variante_2.png,hand axe (variante de color),items-palette-swaps.png,12,1
+variantes_de_color/hachas,hacha_de_batalla_variante_2.png,battle axe (variante de color),items-palette-swaps.png,12,2
+variantes_de_color/hachas,alabarda_variante_2.png,halberd (variante de color),items-palette-swaps.png,12,3
+variantes_de_color/hachas,gran_hacha_variante_2.png,great axe (variante de color),items-palette-swaps.png,12,4
+variantes_de_color/hachas,hacha_gigante_variante_2.png,giant axe (variante de color),items-palette-swaps.png,12,5
+variantes_de_color/hachas,hachuela_variante_2.png,hatchet (variante de color),items-palette-swaps.png,12,6
+variantes_de_color/hachas,hacha_de_lenador_variante_2.png,woodcutter's axe (variante de color),items-palette-swaps.png,12,7
+variantes_de_color/martillos,martillo_de_herrero_variante_2.png,blacksmiths hammer (variante de color),items-palette-swaps.png,13,1
+variantes_de_color/martillos,martillo_de_guerra_corto_variante_2.png,short warhammer (variante de color),items-palette-swaps.png,13,2
+variantes_de_color/martillos,martillo_de_guerra_largo_variante_2.png,long warhammer (variante de color),items-palette-swaps.png,13,3
+variantes_de_color/martillos,martillo_variante_2.png,hammer (variante de color),items-palette-swaps.png,13,4
+variantes_de_color/martillos,gran_martillo_variante_2.png,great hammer (variante de color),items-palette-swaps.png,13,5
+variantes_de_color/mazas,maza_1_variante_2.png,mace 1 (variante de color),items-palette-swaps.png,14,1
+variantes_de_color/mazas,maza_2_variante_2.png,mace 2 (variante de color),items-palette-swaps.png,14,2
+variantes_de_color/mazas,gran_maza_variante_2.png,great mace (variante de color),items-palette-swaps.png,14,3
+variantes_de_color/mazas,bate_con_pinchos_variante_2.png,spiked bat (variante de color),items-palette-swaps.png,14,4
+variantes_de_color/lanzas,lanza_variante_2.png,spear (variante de color),items-palette-swaps.png,15,1
+variantes_de_color/lanzas,lanza_corta_variante_2.png,short spear (variante de color),items-palette-swaps.png,15,2
+variantes_de_color/lanzas,horca_variante_2.png,pitchfork (variante de color),items-palette-swaps.png,15,3
+variantes_de_color/mangales,mangual_1_variante_2.png,flail 1 (variante de color),items-palette-swaps.png,16,1
+variantes_de_color/mangales,mangual_2_variante_2.png,flail 2 (variante de color),items-palette-swaps.png,16,2
+variantes_de_color/mangales,mangual_3_variante_2.png,flail 3 (variante de color),items-palette-swaps.png,16,3
+variantes_de_color/espadas,daga_variante_3.png,dagger (variante de color),items-palette-swaps.png,17,1
+variantes_de_color/espadas,espada_corta_variante_3.png,short sword (variante de color),items-palette-swaps.png,17,2
+variantes_de_color/espadas,espada_corta_2_variante_3.png,short sword 2 (variante de color),items-palette-swaps.png,17,3
+variantes_de_color/espadas,espada_larga_variante_3.png,long sword (variante de color),items-palette-swaps.png,17,4
+variantes_de_color/espadas,espada_bastarda_variante_3.png,bastard sword (variante de color),items-palette-swaps.png,17,5
+variantes_de_color/espadas,montante_variante_3.png,zweihander (variante de color),items-palette-swaps.png,17,6
+variantes_de_color/espadas,daga_sanguinea_variante_3.png,sanguine dagger (variante de color),items-palette-swaps.png,17,7
+variantes_de_color/espadas,espada_corta_ancha_variante_3.png,wide short sword (variante de color),items-palette-swaps.png,18,1
+variantes_de_color/espadas,espada_larga_ancha_variante_3.png,wide long sword (variante de color),items-palette-swaps.png,18,2
+variantes_de_color/espadas,estoque_variante_3.png,rapier (variante de color),items-palette-swaps.png,18,3
+variantes_de_color/espadas,estoque_largo_variante_3.png,long rapier (variante de color),items-palette-swaps.png,18,4
+variantes_de_color/espadas,flamberge_variante_3.png,flamberge (variante de color),items-palette-swaps.png,18,5
+variantes_de_color/espadas,flamberge_grande_variante_3.png,large flamberge (variante de color),items-palette-swaps.png,18,6
+variantes_de_color/espadas,espadon_variante_3.png,great sword (variante de color),items-palette-swaps.png,18,7
+variantes_de_color/espadas,shotel_variante_3.png,shotel (variante de color),items-palette-swaps.png,19,1
+variantes_de_color/espadas,cimitarra_variante_3.png,scimitar (variante de color),items-palette-swaps.png,19,2
+variantes_de_color/espadas,cimitarra_grande_variante_3.png,large scimitar (variante de color),items-palette-swaps.png,19,3
+variantes_de_color/espadas,cimitarra_enorme_variante_3.png,great scimitar (variante de color),items-palette-swaps.png,19,4
+variantes_de_color/espadas,kukri_variante_3.png,kukri (variante de color),items-palette-swaps.png,19,5
+variantes_de_color/hachas,hacha_de_mano_variante_3.png,hand axe (variante de color),items-palette-swaps.png,20,1
+variantes_de_color/hachas,hacha_de_batalla_variante_3.png,battle axe (variante de color),items-palette-swaps.png,20,2
+variantes_de_color/hachas,alabarda_variante_3.png,halberd (variante de color),items-palette-swaps.png,20,3
+variantes_de_color/hachas,gran_hacha_variante_3.png,great axe (variante de color),items-palette-swaps.png,20,4
+variantes_de_color/hachas,hacha_gigante_variante_3.png,giant axe (variante de color),items-palette-swaps.png,20,5
+variantes_de_color/hachas,hachuela_variante_3.png,hatchet (variante de color),items-palette-swaps.png,20,6
+variantes_de_color/hachas,hacha_de_lenador_variante_3.png,woodcutter's axe (variante de color),items-palette-swaps.png,20,7
+variantes_de_color/martillos,martillo_de_herrero_variante_3.png,blacksmiths hammer (variante de color),items-palette-swaps.png,21,1
+variantes_de_color/martillos,martillo_de_guerra_corto_variante_3.png,short warhammer (variante de color),items-palette-swaps.png,21,2
+variantes_de_color/martillos,martillo_de_guerra_largo_variante_3.png,long warhammer (variante de color),items-palette-swaps.png,21,3
+variantes_de_color/martillos,martillo_variante_3.png,hammer (variante de color),items-palette-swaps.png,21,4
+variantes_de_color/martillos,gran_martillo_variante_3.png,great hammer (variante de color),items-palette-swaps.png,21,5
+variantes_de_color/mazas,maza_1_variante_3.png,mace 1 (variante de color),items-palette-swaps.png,22,1
+variantes_de_color/mazas,maza_2_variante_3.png,mace 2 (variante de color),items-palette-swaps.png,22,2
+variantes_de_color/mazas,gran_maza_variante_3.png,great mace (variante de color),items-palette-swaps.png,22,3
+variantes_de_color/mazas,bate_con_pinchos_variante_3.png,spiked bat (variante de color),items-palette-swaps.png,22,4
+variantes_de_color/lanzas,lanza_variante_3.png,spear (variante de color),items-palette-swaps.png,23,1
+variantes_de_color/lanzas,lanza_corta_variante_3.png,short spear (variante de color),items-palette-swaps.png,23,2
+variantes_de_color/lanzas,horca_variante_3.png,pitchfork (variante de color),items-palette-swaps.png,23,3
+variantes_de_color/mangales,mangual_1_variante_3.png,flail 1 (variante de color),items-palette-swaps.png,24,1
+variantes_de_color/mangales,mangual_2_variante_3.png,flail 2 (variante de color),items-palette-swaps.png,24,2
+variantes_de_color/mangales,mangual_3_variante_3.png,flail 3 (variante de color),items-palette-swaps.png,24,3
+variantes_de_color/espadas,daga_variante_4.png,dagger (variante de color),items-palette-swaps.png,25,1
+variantes_de_color/espadas,espada_corta_variante_4.png,short sword (variante de color),items-palette-swaps.png,25,2
+variantes_de_color/espadas,espada_corta_2_variante_4.png,short sword 2 (variante de color),items-palette-swaps.png,25,3
+variantes_de_color/espadas,espada_larga_variante_4.png,long sword (variante de color),items-palette-swaps.png,25,4
+variantes_de_color/espadas,espada_bastarda_variante_4.png,bastard sword (variante de color),items-palette-swaps.png,25,5
+variantes_de_color/espadas,montante_variante_4.png,zweihander (variante de color),items-palette-swaps.png,25,6
+variantes_de_color/espadas,daga_sanguinea_variante_4.png,sanguine dagger (variante de color),items-palette-swaps.png,25,7
+variantes_de_color/espadas,espada_corta_ancha_variante_4.png,wide short sword (variante de color),items-palette-swaps.png,26,1
+variantes_de_color/espadas,espada_larga_ancha_variante_4.png,wide long sword (variante de color),items-palette-swaps.png,26,2
+variantes_de_color/espadas,estoque_variante_4.png,rapier (variante de color),items-palette-swaps.png,26,3
+variantes_de_color/espadas,estoque_largo_variante_4.png,long rapier (variante de color),items-palette-swaps.png,26,4
+variantes_de_color/espadas,flamberge_variante_4.png,flamberge (variante de color),items-palette-swaps.png,26,5
+variantes_de_color/espadas,flamberge_grande_variante_4.png,large flamberge (variante de color),items-palette-swaps.png,26,6
+variantes_de_color/espadas,espadon_variante_4.png,great sword (variante de color),items-palette-swaps.png,26,7
+variantes_de_color/espadas,shotel_variante_4.png,shotel (variante de color),items-palette-swaps.png,27,1
+variantes_de_color/espadas,cimitarra_variante_4.png,scimitar (variante de color),items-palette-swaps.png,27,2
+variantes_de_color/espadas,cimitarra_grande_variante_4.png,large scimitar (variante de color),items-palette-swaps.png,27,3
+variantes_de_color/espadas,cimitarra_enorme_variante_4.png,great scimitar (variante de color),items-palette-swaps.png,27,4
+variantes_de_color/espadas,kukri_variante_4.png,kukri (variante de color),items-palette-swaps.png,27,5
+variantes_de_color/hachas,hacha_de_mano_variante_4.png,hand axe (variante de color),items-palette-swaps.png,28,1
+variantes_de_color/hachas,hacha_de_batalla_variante_4.png,battle axe (variante de color),items-palette-swaps.png,28,2
+variantes_de_color/hachas,alabarda_variante_4.png,halberd (variante de color),items-palette-swaps.png,28,3
+variantes_de_color/hachas,gran_hacha_variante_4.png,great axe (variante de color),items-palette-swaps.png,28,4
+variantes_de_color/hachas,hacha_gigante_variante_4.png,giant axe (variante de color),items-palette-swaps.png,28,5
+variantes_de_color/hachas,hachuela_variante_4.png,hatchet (variante de color),items-palette-swaps.png,28,6
+variantes_de_color/hachas,hacha_de_lenador_variante_4.png,woodcutter's axe (variante de color),items-palette-swaps.png,28,7
+variantes_de_color/martillos,martillo_de_herrero_variante_4.png,blacksmiths hammer (variante de color),items-palette-swaps.png,29,1
+variantes_de_color/martillos,martillo_de_guerra_corto_variante_4.png,short warhammer (variante de color),items-palette-swaps.png,29,2
+variantes_de_color/martillos,martillo_de_guerra_largo_variante_4.png,long warhammer (variante de color),items-palette-swaps.png,29,3
+variantes_de_color/martillos,martillo_variante_4.png,hammer (variante de color),items-palette-swaps.png,29,4
+variantes_de_color/martillos,gran_martillo_variante_4.png,great hammer (variante de color),items-palette-swaps.png,29,5
+variantes_de_color/mazas,maza_1_variante_4.png,mace 1 (variante de color),items-palette-swaps.png,30,1
+variantes_de_color/mazas,maza_2_variante_4.png,mace 2 (variante de color),items-palette-swaps.png,30,2
+variantes_de_color/mazas,gran_maza_variante_4.png,great mace (variante de color),items-palette-swaps.png,30,3
+variantes_de_color/mazas,bate_con_pinchos_variante_4.png,spiked bat (variante de color),items-palette-swaps.png,30,4
+variantes_de_color/lanzas,lanza_variante_4.png,spear (variante de color),items-palette-swaps.png,31,1
+variantes_de_color/lanzas,lanza_corta_variante_4.png,short spear (variante de color),items-palette-swaps.png,31,2
+variantes_de_color/lanzas,horca_variante_4.png,pitchfork (variante de color),items-palette-swaps.png,31,3
+variantes_de_color/mangales,mangual_1_variante_4.png,flail 1 (variante de color),items-palette-swaps.png,32,1
+variantes_de_color/mangales,mangual_2_variante_4.png,flail 2 (variante de color),items-palette-swaps.png,32,2
+variantes_de_color/mangales,mangual_3_variante_4.png,flail 3 (variante de color),items-palette-swaps.png,32,3
+variantes_de_color/municion,flecha_variante_1.png,arrow (variante de color),items-palette-swaps.png,33,1
+variantes_de_color/municion,flechas_variante_1.png,arrows (variante de color),items-palette-swaps.png,33,2
+variantes_de_color/municion,virote_variante_1.png,bolt (variante de color),items-palette-swaps.png,33,3
+variantes_de_color/municion,virotes_variante_1.png,bolts (variante de color),items-palette-swaps.png,33,4
+variantes_de_color/municion,flecha_variante_2.png,arrow (variante de color),items-palette-swaps.png,33,5
+variantes_de_color/municion,flechas_variante_2.png,arrows (variante de color),items-palette-swaps.png,33,6
+variantes_de_color/municion,virote_variante_2.png,bolt (variante de color),items-palette-swaps.png,33,7
+variantes_de_color/municion,virotes_variante_2.png,bolts (variante de color),items-palette-swaps.png,33,8
+variantes_de_color/arcos_y_ballestas,ballesta_variante_1.png,crossbow (variante de color),items-palette-swaps.png,34,1
+variantes_de_color/arcos_y_ballestas,arco_corto_variante_1.png,short bow (variante de color),items-palette-swaps.png,34,2
+variantes_de_color/arcos_y_ballestas,arco_largo_variante_1.png,long bow (variante de color),items-palette-swaps.png,34,3
+variantes_de_color/arcos_y_ballestas,arco_largo_2_variante_1.png,long bow 2 (variante de color),items-palette-swaps.png,34,4
+variantes_de_color/arcos_y_ballestas,ballesta_grande_variante_1.png,large crossbow (variante de color),items-palette-swaps.png,34,5
+variantes_de_color/escudos,broquel_variante_1.png,buckler (variante de color),items-palette-swaps.png,35,1
+variantes_de_color/escudos,escudo_normando_variante_1.png,kite shield (variante de color),items-palette-swaps.png,35,2
+variantes_de_color/escudos,escudo_con_cruz_variante_1.png,cross shield (variante de color),items-palette-swaps.png,35,3
+variantes_de_color/escudos,escudo_oscuro_variante_1.png,dark shield (variante de color),items-palette-swaps.png,35,4
+variantes_de_color/escudos,escudo_redondo_variante_1.png,round shield (variante de color),items-palette-swaps.png,35,5
+variantes_de_color/escudos,broquel_2_variante_1.png,buckler 2 (variante de color),items-palette-swaps.png,35,6
+variantes_de_color/escudos,escudo_grande_variante_1.png,large shield (variante de color),items-palette-swaps.png,35,7
+variantes_de_color/armaduras,armadura_de_tela_variante_1.png,cloth armor (variante de color),items-palette-swaps.png,36,1
+variantes_de_color/armaduras,armadura_de_cuero_variante_1.png,leather armor (variante de color),items-palette-swaps.png,36,2
+variantes_de_color/armaduras,tunica_variante_1.png,robe (variante de color),items-palette-swaps.png,36,3
+variantes_de_color/armaduras,cota_de_malla_variante_1.png,chain mail (variante de color),items-palette-swaps.png,36,4
+variantes_de_color/armaduras,armadura_de_escamas_variante_1.png,scale mail (variante de color),items-palette-swaps.png,36,5
+variantes_de_color/armaduras,peto_variante_1.png,chest plate (variante de color),items-palette-swaps.png,36,6
+variantes_de_color/guantes,guantes_de_tela_variante_1.png,cloth gloves (variante de color),items-palette-swaps.png,37,1
+variantes_de_color/guantes,guantes_de_cuero_variante_1.png,leather gloves (variante de color),items-palette-swaps.png,37,2
+variantes_de_color/guantes,guantes_de_tela_azules_variante_1.png,blue cloth gloves (variante de color),items-palette-swaps.png,37,3
+variantes_de_color/guantes,guanteletes_variante_1.png,gauntlets (variante de color),items-palette-swaps.png,37,6
+variantes_de_color/botas,zapatos_variante_1.png,shoes (variante de color),items-palette-swaps.png,38,1
+variantes_de_color/botas,botas_de_cuero_variante_1.png,leather boots (variante de color),items-palette-swaps.png,38,2
+variantes_de_color/botas,botas_altas_azules_variante_1.png,high blue boots (variante de color),items-palette-swaps.png,38,3
+variantes_de_color/botas,grebas_variante_1.png,greaves (variante de color),items-palette-swaps.png,38,6
+variantes_de_color/cascos,capucha_de_tela_variante_1.png,cloth hood (variante de color),items-palette-swaps.png,39,1
+variantes_de_color/cascos,casco_de_cuero_variante_1.png,leather helm (variante de color),items-palette-swaps.png,39,2
+variantes_de_color/cascos,sombrero_de_ala_ancha_variante_1.png,wide-brimmed hat (variante de color),items-palette-swaps.png,39,3
+variantes_de_color/cascos,cofia_de_malla_variante_1.png,chain mail coif (variante de color),items-palette-swaps.png,39,4
+variantes_de_color/cascos,yelmo_variante_1.png,helm (variante de color),items-palette-swaps.png,39,5
+variantes_de_color/cascos,yelmo_con_malla_variante_1.png,helm with chain mail (variante de color),items-palette-swaps.png,39,6
+variantes_de_color/cascos,yelmo_de_placas_1_variante_1.png,plate helm 1 (variante de color),items-palette-swaps.png,39,7
+variantes_de_color/cascos,yelmo_de_placas_2_variante_1.png,plate helm 2 (variante de color),items-palette-swaps.png,39,8
+variantes_de_color/espadas,daga_sanguinea_variante_5.png,sanguine dagger (variante de color),items-palette-swaps.png,40,1
+variantes_de_color/espadas,daga_magica_variante_1.png,magic dagger (variante de color),items-palette-swaps.png,40,2
+variantes_de_color/espadas,espada_de_cristal_variante_1.png,crystal sword (variante de color),items-palette-swaps.png,40,3
+variantes_de_color/espadas,espada_maligna_variante_1.png,evil sword (variante de color),items-palette-swaps.png,40,4
+variantes_de_color/espadas,espada_de_fuego_variante_1.png,flame sword (variante de color),items-palette-swaps.png,40,5
+variantes_de_color/espadas,daga_sanguinea_variante_6.png,sanguine dagger (variante de color),items-palette-swaps.png,41,1
+variantes_de_color/espadas,daga_magica_variante_2.png,magic dagger (variante de color),items-palette-swaps.png,41,2
+variantes_de_color/espadas,espada_de_cristal_variante_2.png,crystal sword (variante de color),items-palette-swaps.png,41,3
+variantes_de_color/espadas,espada_maligna_variante_2.png,evil sword (variante de color),items-palette-swaps.png,41,4
+variantes_de_color/espadas,espada_de_fuego_variante_2.png,flame sword (variante de color),items-palette-swaps.png,41,5
+variantes_de_color/espadas,daga_sanguinea_variante_7.png,sanguine dagger (variante de color),items-palette-swaps.png,42,1
+variantes_de_color/espadas,daga_magica_variante_3.png,magic dagger (variante de color),items-palette-swaps.png,42,2
+variantes_de_color/espadas,espada_de_cristal_variante_3.png,crystal sword (variante de color),items-palette-swaps.png,42,3
+variantes_de_color/espadas,espada_maligna_variante_3.png,evil sword (variante de color),items-palette-swaps.png,42,4
+variantes_de_color/espadas,espada_de_fuego_variante_3.png,flame sword (variante de color),items-palette-swaps.png,42,5
+variantes_de_color/espadas,daga_sanguinea_variante_8.png,sanguine dagger (variante de color),items-palette-swaps.png,43,1
+variantes_de_color/espadas,daga_magica_variante_4.png,magic dagger (variante de color),items-palette-swaps.png,43,2
+variantes_de_color/espadas,espada_de_cristal_variante_4.png,crystal sword (variante de color),items-palette-swaps.png,43,3
+variantes_de_color/espadas,espada_maligna_variante_4.png,evil sword (variante de color),items-palette-swaps.png,43,4
+variantes_de_color/espadas,espada_de_fuego_variante_4.png,flame sword (variante de color),items-palette-swaps.png,43,5
+tiles/muros,muro_tierra_superior.png,dirt wall (top),tiles.png,1,1
+tiles/muros,muro_tierra_lateral.png,dirt wall (side),tiles.png,1,2
+tiles/muros,muro_piedra_rugosa_superior.png,rough stone wall (top),tiles.png,2,1
+tiles/muros,muro_piedra_rugosa_lateral.png,rough stone wall (side),tiles.png,2,2
+tiles/muros,muro_ladrillo_de_piedra_superior.png,stone brick wall (top),tiles.png,3,1
+tiles/muros,muro_ladrillo_de_piedra_lateral_1.png,stone brick wall (side 1),tiles.png,3,2
+tiles/muros,muro_ladrillo_de_piedra_lateral_2.png,stone brick wall (side 2),tiles.png,3,3
+tiles/muros,muro_igneo_superior.png,igneous wall (top),tiles.png,4,1
+tiles/muros,muro_igneo_lateral.png,igneous wall (side),tiles.png,4,2
+tiles/muros,muro_piedra_grande_superior.png,large stone wall (top),tiles.png,5,1
+tiles/muros,muro_piedra_grande_lateral.png,large stone wall (side),tiles.png,5,2
+tiles/muros,muro_catacumbas_calaveras_superior.png,catacombs / skull wall (top),tiles.png,6,1
+tiles/muros,muro_catacumbas_calaveras_lateral.png,catacombs / skull walls (side),tiles.png,6,2
+tiles/suelos,suelo_vacio_gris_oscuro.png,blank floor (dark grey),tiles.png,7,1
+tiles/suelos,suelo_piedra_gris_1.png,floor stone 1,tiles.png,7,2
+tiles/suelos,suelo_piedra_gris_2.png,floor stone 2,tiles.png,7,3
+tiles/suelos,suelo_piedra_gris_3.png,floor stone 3,tiles.png,7,4
+tiles/suelos,suelo_piedra_gris_1_sin_fondo.png,floor stone 1 (no bg),tiles.png,7,5
+tiles/suelos,suelo_piedra_gris_2_sin_fondo.png,floor stone 2 (no bg),tiles.png,7,6
+tiles/suelos,suelo_piedra_gris_3_sin_fondo.png,floor stone 3 (no bg),tiles.png,7,7
+tiles/suelos,suelo_vacio_morado_oscuro.png,blank floor (dark purple),tiles.png,8,1
+tiles/suelos,cesped_1.png,grass 1,tiles.png,8,2
+tiles/suelos,cesped_2.png,grass 2,tiles.png,8,3
+tiles/suelos,cesped_3.png,grass 3,tiles.png,8,4
+tiles/suelos,cesped_1_sin_fondo.png,grass 1 (no bg),tiles.png,8,5
+tiles/suelos,cesped_2_sin_fondo.png,grass 2 (no bg),tiles.png,8,6
+tiles/suelos,cesped_3_sin_fondo.png,grass 3 (no bg),tiles.png,8,7
+tiles/suelos,tierra_1.png,dirt 1,tiles.png,9,2
+tiles/suelos,tierra_2.png,dirt 2,tiles.png,9,3
+tiles/suelos,tierra_3.png,dirt 3,tiles.png,9,4
+tiles/suelos,tierra_1_sin_fondo.png,dirt 1 (no bg),tiles.png,9,5
+tiles/suelos,tierra_2_sin_fondo.png,dirt 2 (no bg),tiles.png,9,6
+tiles/suelos,tierra_3_sin_fondo.png,dirt 3 (no bg),tiles.png,9,7
+tiles/suelos,suelo_losa_1.png,stone floor 1,tiles.png,10,2
+tiles/suelos,suelo_losa_2.png,stone floor 2,tiles.png,10,3
+tiles/suelos,suelo_losa_3.png,stone floor 3,tiles.png,10,4
+tiles/suelos,suelo_losa_1_sin_fondo.png,stone floor 1 (no bg),tiles.png,10,5
+tiles/suelos,suelo_losa_2_sin_fondo.png,stone floor 2 (no bg),tiles.png,10,6
+tiles/suelos,suelo_losa_3_sin_fondo.png,stone floor 3 (no bg),tiles.png,10,7
+tiles/suelos,hueso_1.png,bone 1,tiles.png,11,2
+tiles/suelos,hueso_2.png,bone 2,tiles.png,11,3
+tiles/suelos,hueso_3.png,bone 3,tiles.png,11,4
+tiles/suelos,hueso_1_sin_fondo.png,bone 1 (no bg),tiles.png,11,5
+tiles/suelos,hueso_2_sin_fondo.png,bone 2 (no bg),tiles.png,11,6
+tiles/suelos,hueso_3_sin_fondo.png,bone 3 (no bg),tiles.png,11,7
+tiles/suelos,suelo_vacio_rojo.png,blank red floor,tiles.png,12,1
+tiles/suelos,suelo_piedra_roja_1_fondo_rojo.png,red stone floor 1 (red bg),tiles.png,12,2
+tiles/suelos,suelo_piedra_roja_2_fondo_rojo.png,red stone floor 2 (red bg),tiles.png,12,3
+tiles/suelos,suelo_piedra_roja_3_fondo_rojo.png,red stone floor 3 (red bg),tiles.png,12,4
+tiles/suelos,suelo_piedra_roja_1_sin_fondo.png,red stone floor 1 (no bg),tiles.png,12,5
+tiles/suelos,suelo_piedra_roja_2_sin_fondo.png,red stone floor 2 (no bg),tiles.png,12,6
+tiles/suelos,suelo_piedra_roja_3_sin_fondo.png,red stone floor 3 (no bg),tiles.png,12,7
+tiles/suelos,suelo_vacio_azul.png,blank blue floor,tiles.png,13,1
+tiles/suelos,suelo_piedra_azul_1_fondo_azul.png,blue stone floor 1 (blue bg),tiles.png,13,2
+tiles/suelos,suelo_piedra_azul_2_fondo_azul.png,blue stone floor 2 (blue bg),tiles.png,13,3
+tiles/suelos,suelo_piedra_azul_3_fondo_azul.png,blue stone floor 3 (blue bg),tiles.png,13,4
+tiles/suelos,suelo_vacio_verde.png,blank green floor,tiles.png,14,1
+tiles/suelos,tierra_1_fondo_verde.png,dirt 1 (green bg),tiles.png,14,2
+tiles/suelos,tierra_2_fondo_verde.png,dirt 2 (green bg),tiles.png,14,3
+tiles/suelos,tierra_3_fondo_verde.png,dirt 3 (green bg),tiles.png,14,4
+tiles/suelos,cesped_1_fondo_verde.png,grass 1 (green bg),tiles.png,15,2
+tiles/suelos,cesped_2_fondo_verde.png,grass 2 (green bg),tiles.png,15,3
+tiles/suelos,cesped_3_fondo_verde.png,grass 3 (green bg),tiles.png,15,4
+tiles/suelos,fondo_marron_oscuro.png,dark brown bg,tiles.png,16,1
+tiles/suelos,huesos_1_fondo_marron.png,bones 1 (dark brown bg),tiles.png,16,2
+tiles/suelos,huesos_2_fondo_marron.png,bones 2 (dark brown bg),tiles.png,16,3
+tiles/suelos,huesos_3_fondo_marron.png,bones 3 (dark brown bg),tiles.png,16,4
+tiles/puertas_escaleras_y_trampas,puerta_1.png,door 1,tiles.png,17,1
+tiles/puertas_escaleras_y_trampas,puerta_2.png,door 2,tiles.png,17,2
+tiles/puertas_escaleras_y_trampas,puerta_con_marco_1_cerrada.png,framed door 1 (shut),tiles.png,17,3
+tiles/puertas_escaleras_y_trampas,puerta_con_marco_1_abierta.png,framed door 1 (open),tiles.png,17,4
+tiles/puertas_escaleras_y_trampas,puerta_con_marco_2_cerrada.png,framed door 2 (shut),tiles.png,17,5
+tiles/puertas_escaleras_y_trampas,puerta_con_marco_2_abierta.png,framed door 2 (open),tiles.png,17,6
+tiles/puertas_escaleras_y_trampas,puerta_enrejada.png,grated door,tiles.png,17,7
+tiles/puertas_escaleras_y_trampas,escalera_bajada.png,staircase down,tiles.png,17,8
+tiles/puertas_escaleras_y_trampas,escalera_subida.png,staircase up,tiles.png,17,9
+tiles/puertas_escaleras_y_trampas,placa_de_presion_arriba.png,pressure plate (up),tiles.png,17,10
+tiles/puertas_escaleras_y_trampas,placa_de_presion_abajo.png,pressure plate (down),tiles.png,17,11
+tiles/puertas_escaleras_y_trampas,conducto.png,chute,tiles.png,17,12
+tiles/puertas_escaleras_y_trampas,foso.png,pit,tiles.png,17,13
+tiles/puertas_escaleras_y_trampas,trampilla.png,trap door,tiles.png,17,14
+tiles/puertas_escaleras_y_trampas,pentagrama.png,pentagram,tiles.png,17,15
+tiles/puertas_escaleras_y_trampas,pinchos_ocultos.png,spikes (down),tiles.png,17,16
+tiles/puertas_escaleras_y_trampas,pinchos_activos.png,spites (up),tiles.png,17,17
+tiles/contenedores_y_objetos,cofre_cerrado.png,chest (closed),tiles.png,18,1
+tiles/contenedores_y_objetos,cofre_abierto.png,chest (open),tiles.png,18,2
+tiles/contenedores_y_objetos,jarron_cerrado.png,jar (closed),tiles.png,18,3
+tiles/contenedores_y_objetos,jarron_abierto.png,jar (open),tiles.png,18,4
+tiles/contenedores_y_objetos,barril.png,barrel,tiles.png,18,5
+tiles/contenedores_y_objetos,saco_de_mineral.png,ore sack,tiles.png,18,6
+tiles/contenedores_y_objetos,pila_de_troncos.png,log pile,tiles.png,18,7
+tiles/rocas,roca_grande_1.png,large rock 1,tiles.png,19,1
+tiles/rocas,roca_grande_2.png,large rock 2,tiles.png,19,2
+tiles/cultivos,alforfon.png,buckwheet,tiles.png,20,1
+tiles/cultivos,lino.png,flax,tiles.png,20,2
+tiles/cultivos,papiro.png,papyrus sedge,tiles.png,20,3
+tiles/cultivos,kenaf.png,kenaf,tiles.png,20,4
+tiles/cultivos,ramio.png,ramie,tiles.png,20,5
+tiles/cultivos,yute.png,jute,tiles.png,20,6
+tiles/cultivos,arroz.png,rice,tiles.png,20,7
+tiles/cultivos,trigo.png,wheat,tiles.png,20,8
+tiles/cultivos,maiz.png,maize / corn,tiles.png,20,9
+tiles/cultivos,amaranto.png,amaranth,tiles.png,20,10
+tiles/cultivos,quinoa.png,quinoa,tiles.png,20,11
+tiles/cultivos,yero.png,bitter vetch,tiles.png,20,12
+tiles/cultivos,sorgo.png,sorghum,tiles.png,20,13
+tiles/cultivos,espinaca_roja.png,red spinach,tiles.png,20,14
+tiles/cultivos,algodon.png,cotton,tiles.png,20,15
+tiles/cultivos,alfalfa.png,alfalfa,tiles.png,20,16
+tiles/hongos,hongos_pequenos.png,small mushrooms,tiles.png,21,1
+tiles/hongos,hongo_grande.png,large mushroom,tiles.png,21,2
+tiles/restos,cadaver_huesos_1.png,corpse (bones) 1,tiles.png,22,1
+tiles/restos,cadaver_huesos_2.png,corpse (bones) 2,tiles.png,22,2
+tiles/manchas,mancha_de_sangre_1.png,blood spatter 1,tiles.png,23,1
+tiles/manchas,mancha_de_sangre_2.png,blood spatter 2,tiles.png,23,2
+tiles/manchas,baba_pequena.png,slime (small),tiles.png,23,3
+tiles/manchas,baba_grande.png,slime (large),tiles.png,23,4
+tiles/ataudes_y_sarcofagos,ataud_cerrado.png,coffin (closed),tiles.png,24,1
+tiles/ataudes_y_sarcofagos,ataud_entreabierto.png,coffin (ajar),tiles.png,24,2
+tiles/ataudes_y_sarcofagos,ataud_abierto.png,coffin (open),tiles.png,24,3
+tiles/ataudes_y_sarcofagos,sarcofago_cerrado.png,sarcophagus (closed),tiles.png,24,4
+tiles/ataudes_y_sarcofagos,sarcofago_entreabierto.png,sarcophagus (ajar),tiles.png,24,5
+tiles/ataudes_y_sarcofagos,sarcofago_abierto.png,sarcophagus (open),tiles.png,24,6
+tiles/arboles,arbol_joven.png,sapling,tiles.png,26,1
+tiles/arboles,arbol_pequeno.png,small tree,tiles.png,26,2
+tiles/arboles,arbol.png,tree,tiles.png,26,3
+tiles/arboles,arbol_alto_2_tiles.png,two tile tree (2 tiles de alto),tiles.png,25-26,4
+animaciones,brasero_apagado.png,animated-tiles #1 frame 1,animated-tiles.png,1,1
+animaciones,brasero_encendido_1.png,animated-tiles #2 frame 1,animated-tiles.png,2,1
+animaciones,brasero_encendido_2.png,animated-tiles #2 frame 2,animated-tiles.png,2,2
+animaciones,brasero_encendido_3.png,animated-tiles #2 frame 3,animated-tiles.png,2,3
+animaciones,brasero_encendido_4.png,animated-tiles #2 frame 4,animated-tiles.png,2,4
+animaciones,brasero_encendido_5.png,animated-tiles #2 frame 5,animated-tiles.png,2,5
+animaciones,brasero_encendido_6.png,animated-tiles #2 frame 6,animated-tiles.png,2,6
+animaciones,hoguera_apagada.png,animated-tiles #3 frame 1,animated-tiles.png,3,1
+animaciones,hoguera_encendida_1.png,animated-tiles #4 frame 1,animated-tiles.png,4,1
+animaciones,hoguera_encendida_2.png,animated-tiles #4 frame 2,animated-tiles.png,4,2
+animaciones,hoguera_encendida_3.png,animated-tiles #4 frame 3,animated-tiles.png,4,3
+animaciones,hoguera_encendida_4.png,animated-tiles #4 frame 4,animated-tiles.png,4,4
+animaciones,hoguera_encendida_5.png,animated-tiles #4 frame 5,animated-tiles.png,4,5
+animaciones,hoguera_encendida_6.png,animated-tiles #4 frame 6,animated-tiles.png,4,6
+animaciones,antorcha_apagada.png,animated-tiles #5 frame 1,animated-tiles.png,5,1
+animaciones,antorcha_encendida_1.png,animated-tiles #6 frame 1,animated-tiles.png,6,1
+animaciones,antorcha_encendida_2.png,animated-tiles #6 frame 2,animated-tiles.png,6,2
+animaciones,antorcha_encendida_3.png,animated-tiles #6 frame 3,animated-tiles.png,6,3
+animaciones,antorcha_encendida_4.png,animated-tiles #6 frame 4,animated-tiles.png,6,4
+animaciones,antorcha_encendida_5.png,animated-tiles #6 frame 5,animated-tiles.png,6,5
+animaciones,antorcha_encendida_6.png,animated-tiles #6 frame 6,animated-tiles.png,6,6
+animaciones,lampara_apagada.png,animated-tiles #7 frame 1,animated-tiles.png,7,1
+animaciones,lampara_encendida_1.png,animated-tiles #8 frame 1,animated-tiles.png,8,1
+animaciones,lampara_encendida_2.png,animated-tiles #8 frame 2,animated-tiles.png,8,2
+animaciones,lampara_encendida_3.png,animated-tiles #8 frame 3,animated-tiles.png,8,3
+animaciones,lampara_encendida_4.png,animated-tiles #8 frame 4,animated-tiles.png,8,4
+animaciones,fuego_1.png,animated-tiles #9 frame 1,animated-tiles.png,9,1
+animaciones,fuego_2.png,animated-tiles #9 frame 2,animated-tiles.png,9,2
+animaciones,fuego_3.png,animated-tiles #9 frame 3,animated-tiles.png,9,3
+animaciones,fuego_4.png,animated-tiles #9 frame 4,animated-tiles.png,9,4
+animaciones,fuego_5.png,animated-tiles #9 frame 5,animated-tiles.png,9,5
+animaciones,fuego_6.png,animated-tiles #9 frame 6,animated-tiles.png,9,6
+animaciones,fuego_pequeno_1.png,animated-tiles #10 frame 1,animated-tiles.png,10,1
+animaciones,fuego_pequeno_2.png,animated-tiles #10 frame 2,animated-tiles.png,10,2
+animaciones,fuego_pequeno_3.png,animated-tiles #10 frame 3,animated-tiles.png,10,3
+animaciones,fuego_pequeno_4.png,animated-tiles #10 frame 4,animated-tiles.png,10,4
+animaciones,fuego_pequeno_5.png,animated-tiles #10 frame 5,animated-tiles.png,10,5
+animaciones,fuego_pequeno_6.png,animated-tiles #10 frame 6,animated-tiles.png,10,6
+animaciones,olas_de_agua_1.png,animated-tiles #11 frame 1,animated-tiles.png,11,1
+animaciones,olas_de_agua_2.png,animated-tiles #11 frame 2,animated-tiles.png,11,2
+animaciones,olas_de_agua_3.png,animated-tiles #11 frame 3,animated-tiles.png,11,3
+animaciones,olas_de_agua_4.png,animated-tiles #11 frame 4,animated-tiles.png,11,4
+animaciones,olas_de_agua_5.png,animated-tiles #11 frame 5,animated-tiles.png,11,5
+animaciones,olas_de_agua_6.png,animated-tiles #11 frame 6,animated-tiles.png,11,6
+animaciones,olas_de_agua_7.png,animated-tiles #11 frame 7,animated-tiles.png,11,7
+animaciones,olas_de_agua_8.png,animated-tiles #11 frame 8,animated-tiles.png,11,8
+animaciones,olas_de_agua_9.png,animated-tiles #11 frame 9,animated-tiles.png,11,9
+animaciones,olas_de_agua_10.png,animated-tiles #11 frame 10,animated-tiles.png,11,10
+animaciones,olas_de_agua_11.png,animated-tiles #11 frame 11,animated-tiles.png,11,11
+animaciones,burbujas_de_veneno_1.png,animated-tiles #12 frame 1,animated-tiles.png,12,1
+animaciones,burbujas_de_veneno_2.png,animated-tiles #12 frame 2,animated-tiles.png,12,2
+animaciones,burbujas_de_veneno_3.png,animated-tiles #12 frame 3,animated-tiles.png,12,3
+animaciones,burbujas_de_veneno_4.png,animated-tiles #12 frame 4,animated-tiles.png,12,4
+animaciones,burbujas_de_veneno_5.png,animated-tiles #12 frame 5,animated-tiles.png,12,5
+animaciones,burbujas_de_veneno_6.png,animated-tiles #12 frame 6,animated-tiles.png,12,6
+animaciones,burbujas_de_veneno_7.png,animated-tiles #12 frame 7,animated-tiles.png,12,7
+animaciones,burbujas_de_veneno_8.png,animated-tiles #12 frame 8,animated-tiles.png,12,8
+animaciones,burbujas_de_veneno_9.png,animated-tiles #12 frame 9,animated-tiles.png,12,9
+animaciones,burbujas_de_veneno_10.png,animated-tiles #12 frame 10,animated-tiles.png,12,10
+animaciones,burbujas_de_veneno_11.png,animated-tiles #12 frame 11,animated-tiles.png,12,11
+autotiles,agua_completo.png,agua (set completo),autotiles.png,1-4,1-12
+autotiles/agua,agua_fila1_col1.png,agua pieza,autotiles.png,1,1
+autotiles/agua,agua_fila1_col2.png,agua pieza,autotiles.png,1,2
+autotiles/agua,agua_fila1_col3.png,agua pieza,autotiles.png,1,3
+autotiles/agua,agua_fila1_col4.png,agua pieza,autotiles.png,1,4
+autotiles/agua,agua_fila1_col5.png,agua pieza,autotiles.png,1,5
+autotiles/agua,agua_fila1_col6.png,agua pieza,autotiles.png,1,6
+autotiles/agua,agua_fila1_col7.png,agua pieza,autotiles.png,1,7
+autotiles/agua,agua_fila1_col8.png,agua pieza,autotiles.png,1,8
+autotiles/agua,agua_fila1_col9.png,agua pieza,autotiles.png,1,9
+autotiles/agua,agua_fila1_col10.png,agua pieza,autotiles.png,1,10
+autotiles/agua,agua_fila1_col11.png,agua pieza,autotiles.png,1,11
+autotiles/agua,agua_fila1_col12.png,agua pieza,autotiles.png,1,12
+autotiles/agua,agua_fila2_col1.png,agua pieza,autotiles.png,2,1
+autotiles/agua,agua_fila2_col2.png,agua pieza,autotiles.png,2,2
+autotiles/agua,agua_fila2_col3.png,agua pieza,autotiles.png,2,3
+autotiles/agua,agua_fila2_col4.png,agua pieza,autotiles.png,2,4
+autotiles/agua,agua_fila2_col5.png,agua pieza,autotiles.png,2,5
+autotiles/agua,agua_fila2_col6.png,agua pieza,autotiles.png,2,6
+autotiles/agua,agua_fila2_col7.png,agua pieza,autotiles.png,2,7
+autotiles/agua,agua_fila2_col8.png,agua pieza,autotiles.png,2,8
+autotiles/agua,agua_fila2_col9.png,agua pieza,autotiles.png,2,9
+autotiles/agua,agua_fila2_col10.png,agua pieza,autotiles.png,2,10
+autotiles/agua,agua_fila2_col12.png,agua pieza,autotiles.png,2,12
+autotiles/agua,agua_fila3_col1.png,agua pieza,autotiles.png,3,1
+autotiles/agua,agua_fila3_col2.png,agua pieza,autotiles.png,3,2
+autotiles/agua,agua_fila3_col3.png,agua pieza,autotiles.png,3,3
+autotiles/agua,agua_fila3_col4.png,agua pieza,autotiles.png,3,4
+autotiles/agua,agua_fila3_col5.png,agua pieza,autotiles.png,3,5
+autotiles/agua,agua_fila3_col6.png,agua pieza,autotiles.png,3,6
+autotiles/agua,agua_fila3_col7.png,agua pieza,autotiles.png,3,7
+autotiles/agua,agua_fila3_col8.png,agua pieza,autotiles.png,3,8
+autotiles/agua,agua_fila3_col9.png,agua pieza,autotiles.png,3,9
+autotiles/agua,agua_fila3_col10.png,agua pieza,autotiles.png,3,10
+autotiles/agua,agua_fila3_col11.png,agua pieza,autotiles.png,3,11
+autotiles/agua,agua_fila3_col12.png,agua pieza,autotiles.png,3,12
+autotiles/agua,agua_fila4_col1.png,agua pieza,autotiles.png,4,1
+autotiles/agua,agua_fila4_col2.png,agua pieza,autotiles.png,4,2
+autotiles/agua,agua_fila4_col3.png,agua pieza,autotiles.png,4,3
+autotiles/agua,agua_fila4_col4.png,agua pieza,autotiles.png,4,4
+autotiles/agua,agua_fila4_col5.png,agua pieza,autotiles.png,4,5
+autotiles/agua,agua_fila4_col6.png,agua pieza,autotiles.png,4,6
+autotiles/agua,agua_fila4_col7.png,agua pieza,autotiles.png,4,7
+autotiles/agua,agua_fila4_col8.png,agua pieza,autotiles.png,4,8
+autotiles/agua,agua_fila4_col9.png,agua pieza,autotiles.png,4,9
+autotiles/agua,agua_fila4_col10.png,agua pieza,autotiles.png,4,10
+autotiles/agua,agua_fila4_col11.png,agua pieza,autotiles.png,4,11
+autotiles/agua,agua_fila4_col12.png,agua pieza,autotiles.png,4,12
+autotiles,pantano_de_veneno_completo.png,pantano_de_veneno (set completo),autotiles.png,5-8,1-12
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col1.png,pantano_de_veneno pieza,autotiles.png,5,1
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col2.png,pantano_de_veneno pieza,autotiles.png,5,2
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col3.png,pantano_de_veneno pieza,autotiles.png,5,3
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col4.png,pantano_de_veneno pieza,autotiles.png,5,4
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col5.png,pantano_de_veneno pieza,autotiles.png,5,5
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col6.png,pantano_de_veneno pieza,autotiles.png,5,6
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col7.png,pantano_de_veneno pieza,autotiles.png,5,7
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col8.png,pantano_de_veneno pieza,autotiles.png,5,8
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col9.png,pantano_de_veneno pieza,autotiles.png,5,9
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col10.png,pantano_de_veneno pieza,autotiles.png,5,10
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col11.png,pantano_de_veneno pieza,autotiles.png,5,11
+autotiles/pantano_de_veneno,pantano_de_veneno_fila1_col12.png,pantano_de_veneno pieza,autotiles.png,5,12
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col1.png,pantano_de_veneno pieza,autotiles.png,6,1
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col2.png,pantano_de_veneno pieza,autotiles.png,6,2
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col3.png,pantano_de_veneno pieza,autotiles.png,6,3
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col4.png,pantano_de_veneno pieza,autotiles.png,6,4
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col5.png,pantano_de_veneno pieza,autotiles.png,6,5
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col6.png,pantano_de_veneno pieza,autotiles.png,6,6
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col7.png,pantano_de_veneno pieza,autotiles.png,6,7
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col8.png,pantano_de_veneno pieza,autotiles.png,6,8
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col9.png,pantano_de_veneno pieza,autotiles.png,6,9
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col10.png,pantano_de_veneno pieza,autotiles.png,6,10
+autotiles/pantano_de_veneno,pantano_de_veneno_fila2_col12.png,pantano_de_veneno pieza,autotiles.png,6,12
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col1.png,pantano_de_veneno pieza,autotiles.png,7,1
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col2.png,pantano_de_veneno pieza,autotiles.png,7,2
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col3.png,pantano_de_veneno pieza,autotiles.png,7,3
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col4.png,pantano_de_veneno pieza,autotiles.png,7,4
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col5.png,pantano_de_veneno pieza,autotiles.png,7,5
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col6.png,pantano_de_veneno pieza,autotiles.png,7,6
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col7.png,pantano_de_veneno pieza,autotiles.png,7,7
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col8.png,pantano_de_veneno pieza,autotiles.png,7,8
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col9.png,pantano_de_veneno pieza,autotiles.png,7,9
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col10.png,pantano_de_veneno pieza,autotiles.png,7,10
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col11.png,pantano_de_veneno pieza,autotiles.png,7,11
+autotiles/pantano_de_veneno,pantano_de_veneno_fila3_col12.png,pantano_de_veneno pieza,autotiles.png,7,12
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col1.png,pantano_de_veneno pieza,autotiles.png,8,1
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col2.png,pantano_de_veneno pieza,autotiles.png,8,2
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col3.png,pantano_de_veneno pieza,autotiles.png,8,3
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col4.png,pantano_de_veneno pieza,autotiles.png,8,4
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col5.png,pantano_de_veneno pieza,autotiles.png,8,5
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col6.png,pantano_de_veneno pieza,autotiles.png,8,6
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col7.png,pantano_de_veneno pieza,autotiles.png,8,7
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col8.png,pantano_de_veneno pieza,autotiles.png,8,8
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col9.png,pantano_de_veneno pieza,autotiles.png,8,9
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col10.png,pantano_de_veneno pieza,autotiles.png,8,10
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col11.png,pantano_de_veneno pieza,autotiles.png,8,11
+autotiles/pantano_de_veneno,pantano_de_veneno_fila4_col12.png,pantano_de_veneno pieza,autotiles.png,8,12

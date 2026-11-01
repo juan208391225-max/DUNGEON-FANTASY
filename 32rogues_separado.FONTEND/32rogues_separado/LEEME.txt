@@ -1,0 +1,25 @@
+32rogues separado - un PNG por cada sprite (32x32, fondo transparente)
+=====================================================================
+Salvo el arbol alto (32x64) y los sets completos de autotiles.
+
+Carpetas
+  personajes/           40 personajes jugables y NPC (rogues.png)
+  monstruos/            64 monstruos (monsters.png)
+  animales/             87 animales (animals.png)
+  objetos/<categoria>/  149 objetos: espadas, hachas, escudos, pociones, llaves, comida...
+  variantes_de_color/   226 objetos en otros colores, nombrados <objeto>_variante_N
+                        (emparejados con el objeto original por su silueta)
+  tiles/<categoria>/    127 tiles: muros, suelos, puertas/trampas, cofres, cultivos, arboles...
+  animaciones/          12 animaciones de tiles, un archivo por frame (fuego_1, fuego_2...)
+  autotiles/            agua y pantano de veneno: set completo + cada pieza (fila/columna)
+  paleta/               la paleta de colores del pack
+  vista_previa/         hojas con todos los sprites y su nombre, para buscar a ojo
+  INDICE.csv            cada archivo con su nombre original en ingles, hoja de origen, fila y columna
+
+Notas
+  - Los nombres en espanol son traduccion de los .txt originales del pack (sin tildes ni espacios).
+  - El pack no trae un ciervo; el mas parecido es el reno/caribu: animales/ciervo_reno_caribu.png
+  - Si dos sprites tenian el mismo nombre, el segundo lleva _2.
+  - Omitidos (celdas vacias en la hoja original): "inner wall" y 4 tiles "empty" de tiles.png.
+  - Licencia: se puede usar en proyectos comerciales y modificar, pero NO redistribuir ni revender
+    el pack (ni estos recortes). Ver LICENSE_32rogues.txt.
