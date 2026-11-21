@@ -1,5 +1,8 @@
-evidencia1.mp4 
-evidencia3.mp4 
-evidencia3.zip 
-*.mp4 
-*.zip 
+.idea/
+.venv/
+__pycache__/
+*.pyc
+docs/
+*.docx
+*.mp4
+*.zip
