@@ -1,14 +1,15 @@
-import math 
-import os 
-import random   #aleatoriedad
-import sys  # nuevas funciones relacionadas al sistema
-import pygame  # Importa una biblioteca o clase auxiliar usada por el juego.
-from guardado_mysql import MySQLSaveSlots  # Importa la base de datos
-from sonidos_acciones import AudioAcciones  # Importa los sonidos
+import math
+import os
+import random
+import sys
+import pygame
+from guardado_mysql import MySQLSaveSlots
+from sonidos_acciones import AudioAcciones
 
 
+# Inicializa Pygame antes de cargar cualquier recurso.
 print("---------- INICIO DE PYGAME ----------")
-pygame.init()  # Ejecuta la operacion del objeto o biblioteca indicada.l arranque
+pygame.init()
 
 
 
@@ -16,1171 +17,1196 @@ print("---------- 1. OLEADAS: CUANTOS ENEMIGOS SALEN, CUANTOS A LA VEZ Y QUE TAN
 
 # Cada zona define el área, destino, límites de enemigos y tipos de encuentro.
 
-ZONAS = [  # Asigna un valor a regiones y encuentros.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Bosque Susurrante", "casillas": (1, 1, 14, 15), "color": (255, 170, 60),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (7, 8), "distancia_aparicion": 300,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 10, "max_vivos": 3, "intervalo_aparicion": 1.0,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("goblin", "mago"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((17, 7), (17, 8), (17, 9), (17, 10)),  # Cubre el ancho del paso y se abre al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Ruinas del Templo", "casillas": (19, 1, 31, 15), "color": (235, 70, 110),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (25, 8), "distancia_aparicion": 300,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 12, "max_vivos": 3, "intervalo_aparicion": 0.8,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("goblin", "mago"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((34, 8),),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Pantano Venenoso", "casillas": (36, 1, 54, 15), "color": (70, 190, 150),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (45, 8), "distancia_aparicion": 300,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 15, "max_vivos": 3, "intervalo_aparicion": 0.6,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("bruja", "trol"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((27, 18), (23, 21), (23, 24), (23, 27)),  # Rejas interiores que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Prision", "casillas": (19, 19, 33, 29), "color": (150, 130, 235),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (26, 24), "distancia_aparicion": 300,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 15, "max_vivos": 4, "intervalo_aparicion": 0.5,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("bruja", "trol"),  # Define clases de enemigos del encuentro para este encuentro.
-        "reja_temporal": (24, 19, 4),  # Superpone una reja en la entrada mientras esta oleada está en curso.
-        "puertas": ((36, 24), (42, 18), (46, 18), (50, 18), (41, 29), (44, 29)),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Arena del Carcelero", "casillas": (38, 18, 54, 29), "color": (245, 75, 45),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (46, 24), "distancia_aparicion": 350,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 1, "max_vivos": 1, "intervalo_aparicion": 0.4,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": (), "jefe": True, "sprite_jefe": "orco_jefe_de_guerra", "tipo_jefe": "orco",  # Define clases de enemigos del encuentro para este encuentro.
-        "tipos_apoyo": ("lich", "espectro"), "max_apoyos": 3,  # Define clases de enemigos de apoyo para este encuentro.
-        "puertas": ((56, 9),),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Aldea Abandonada", "casillas": (58, 2, 75, 16), "color": (150, 210, 95),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (66, 9), "distancia_aparicion": 350,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 20, "max_vivos": 4, "intervalo_aparicion": 0.35,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("lich", "espectro"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((66, 20),),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Selva Antigua", "casillas": (39, 33, 57, 46), "color": (65, 185, 100),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (48, 39), "distancia_aparicion": 350,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 25, "max_vivos": 5, "intervalo_aparicion": 0.25,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("lich", "espectro"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((58, 39),),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Desfiladero de la Mina", "casillas": (59, 19, 77, 32), "color": (215, 145, 80),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (68, 25), "distancia_aparicion": 300,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 30, "max_vivos": 5, "intervalo_aparicion": 0.15,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": ("lich", "espectro"),  # Define clases de enemigos del encuentro para este encuentro.
-        "puertas": ((68, 33),),  # Puertas de salida que se abren al completar esta zona.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    {  # Completa los argumentos o datos usados por esta parte del juego.
-        "nombre": "Cumbre del Dragon", "casillas": (60, 35, 78, 46), "color": (225, 70, 65),  # Define nombre visible de la zona para este encuentro.
-        "cerrada": False, "destino": (69, 40), "distancia_aparicion": 450,  # Define estado inicial de acceso a la zona para este encuentro.
-        "enemigos_derrotar": 1, "max_vivos": 1, "intervalo_aparicion": 0.10,  # Define cantidad de enemigos a derrotar para este encuentro.
-        "tipos_enemigos": (), "jefe": True, "sprite_jefe": "dragon", "tipo_jefe": "dragon",  # Define clases de enemigos del encuentro para este encuentro.
-    },  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-]  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+ZONAS = [
+    {
+        "nombre": "Bosque Susurrante", "casillas": (1, 1, 14, 15), "color": (255, 170, 60),
+        "cerrada": False, "destino": (7, 8), "distancia_aparicion": 300,
+        "enemigos_derrotar": 10, "max_vivos": 3, "intervalo_aparicion": 1.0,
+        "tipos_enemigos": ("goblin", "mago"),
+        "puertas": ((17, 7), (17, 8), (17, 9), (17, 10)),
+    },
+    {
+        "nombre": "Ruinas del Templo", "casillas": (19, 1, 31, 15), "color": (235, 70, 110),
+        "cerrada": False, "destino": (25, 8), "distancia_aparicion": 300,
+        "enemigos_derrotar": 12, "max_vivos": 3, "intervalo_aparicion": 0.8,
+        "tipos_enemigos": ("goblin", "mago"),
+        "puertas": ((34, 8),),
+    },
+    {
+        "nombre": "Pantano Venenoso", "casillas": (36, 1, 54, 15), "color": (70, 190, 150),
+        "cerrada": False, "destino": (45, 8), "distancia_aparicion": 300,
+        "enemigos_derrotar": 15, "max_vivos": 3, "intervalo_aparicion": 0.6,
+        "tipos_enemigos": ("bruja", "trol"),
+        "puertas": ((27, 18), (23, 21), (23, 24), (23, 27)),
+    },
+    {
+        "nombre": "Prision", "casillas": (19, 19, 33, 29), "color": (150, 130, 235),
+        "cerrada": False, "destino": (26, 24), "distancia_aparicion": 300,
+        "enemigos_derrotar": 15, "max_vivos": 4, "intervalo_aparicion": 0.5,
+        "tipos_enemigos": ("bruja", "trol"),
+        "reja_temporal": (24, 19, 4),
+        "puertas": ((36, 24), (42, 18), (46, 18), (50, 18), (41, 29), (44, 29)),
+    },
+    {
+        "nombre": "Arena del Carcelero", "casillas": (38, 18, 54, 29), "color": (245, 75, 45),
+        "cerrada": False, "destino": (46, 24), "distancia_aparicion": 350,
+        "enemigos_derrotar": 1, "max_vivos": 1, "intervalo_aparicion": 0.4,
+        "tipos_enemigos": (), "jefe": True, "sprite_jefe": "orco_jefe_de_guerra", "tipo_jefe": "orco",
+        "tipos_apoyo": ("lich", "espectro"), "max_apoyos": 3,
+        "puertas": ((56, 9),),
+    },
+    {
+        "nombre": "Aldea Abandonada", "casillas": (58, 2, 75, 16), "color": (150, 210, 95),
+        "cerrada": False, "destino": (66, 9), "distancia_aparicion": 350,
+        "enemigos_derrotar": 20, "max_vivos": 4, "intervalo_aparicion": 0.35,
+        "tipos_enemigos": ("lich", "espectro"),
+        "puertas": ((66, 20),),
+    },
+    {
+        "nombre": "Selva Antigua", "casillas": (39, 33, 57, 46), "color": (65, 185, 100),
+        "cerrada": False, "destino": (48, 39), "distancia_aparicion": 350,
+        "enemigos_derrotar": 25, "max_vivos": 5, "intervalo_aparicion": 0.25,
+        "tipos_enemigos": ("lich", "espectro"),
+        "puertas": ((58, 39),),
+    },
+    {
+        "nombre": "Desfiladero de la Mina", "casillas": (59, 19, 77, 32), "color": (215, 145, 80),
+        "cerrada": False, "destino": (68, 25), "distancia_aparicion": 300,
+        "enemigos_derrotar": 30, "max_vivos": 5, "intervalo_aparicion": 0.15,
+        "tipos_enemigos": ("lich", "espectro"),
+        "puertas": ((68, 33),),
+    },
+    {
+        "nombre": "Cumbre del Dragon", "casillas": (60, 35, 78, 46), "color": (225, 70, 65),
+        "cerrada": False, "destino": (69, 40), "distancia_aparicion": 450,
+        "enemigos_derrotar": 1, "max_vivos": 1, "intervalo_aparicion": 0.10,
+        "tipos_enemigos": (), "jefe": True, "sprite_jefe": "dragon", "tipo_jefe": "dragon",
+    },
+]
 # Mantiene una vista por numero de zona para consultas externas y compatibilidad.
 PUERTAS_POR_OLEADA = {
     indice: zona.get("puertas", ())
     for indice, zona in enumerate(ZONAS, 1)
     if zona.get("puertas")
 }
-OLEADA_ENEMIGOS_BASE = 8  # Asigna un valor a OLEADA_ENEMIGOS_BASE.
-OLEADA_ENEMIGOS_MAS = 6  # Asigna un valor a OLEADA_ENEMIGOS_MAS.
-OLEADA_MAX_VIVOS_BASE = 3  # Asigna un valor a OLEADA_MAX_VIVOS_BASE.
-OLEADA_MAX_VIVOS_MAS = 2  # Asigna un valor a OLEADA_MAX_VIVOS_MAS.
-OLEADA_INTERVALO_BASE = 3.0  # Asigna un valor a OLEADA_INTERVALO_BASE.
-OLEADA_INTERVALO_MENOS = 0.6  # Asigna un valor a OLEADA_INTERVALO_MENOS.
-OLEADA_INTERVALO_MIN = 0.8  # Asigna un valor a OLEADA_INTERVALO_MIN.
-OLEADA_ESPERA = 3.0  # Asigna un valor a OLEADA_ESPERA.
-ENEMIGOS_OLEADA_AGRESIVOS = True  # Asigna un valor a ENEMIGOS_OLEADA_AGRESIVOS.
-ENEMIGO_TIEMPO_APARICION = 0.6  # Asigna un valor a ENEMIGO_TIEMPO_APARICION.
-OLEADA_MARGEN_ENTRADA = 40  # Asigna un valor a OLEADA_MARGEN_ENTRADA.
-PUNTUACION_TIEMPO_MAX_REDUCCION = 300.0  # Asigna un valor a PUNTUACION_TIEMPO_MAX_REDUCCION.
-MEJORAS_MAXIMAS_POR_PODER = 3  # Asigna un valor a MEJORAS_MAXIMAS_POR_PODER.
-RETARDO_ELECCION_BONIFICACION = 1.0  # Asigna un valor a RETARDO_ELECCION_BONIFICACION.
-BONIFICACIONES = (  # Asigna un valor a mejoras del jugador.
-    ("viento", "Tajo de viento", "Cada pocos golpes conectados lanza un proyectil de largo alcance."),  # Continua la lista de datos de esta configuracion o llamada.
-    ("dano", "Filo mejorado", "Aumenta el dano de todos tus ataques."),  # Continua la lista de datos de esta configuracion o llamada.
-    ("berserker", "Modo berserker", "Pulsa V para ganar dano y velocidad, y recibir menos dano."),  # Continua la lista de datos de esta configuracion o llamada.
-)  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+OLEADA_ENEMIGOS_BASE = 8
+OLEADA_ENEMIGOS_MAS = 6
+OLEADA_MAX_VIVOS_BASE = 3
+OLEADA_MAX_VIVOS_MAS = 2
+OLEADA_INTERVALO_BASE = 3.0
+OLEADA_INTERVALO_MENOS = 0.6
+OLEADA_INTERVALO_MIN = 0.8
+OLEADA_ESPERA = 3.0
+ENEMIGOS_OLEADA_AGRESIVOS = True
+ENEMIGO_TIEMPO_APARICION = 0.6
+OLEADA_MARGEN_ENTRADA = 40
+PUNTUACION_TIEMPO_MAX_REDUCCION = 300.0
+MEJORAS_MAXIMAS_POR_PODER = 3
+RETARDO_ELECCION_BONIFICACION = 1.0
+BONIFICACIONES = (
+    ("viento", "Tajo de viento", "Cada pocos golpes conectados lanza un proyectil de largo alcance."),
+    ("dano", "Filo mejorado", "Aumenta el dano de todos tus ataques."),
+    ("berserker", "Modo berserker", "Pulsa V para ganar dano y velocidad, y recibir menos dano."),
+)
 
 # Parámetros base compartidos por la IA, sus ventanas de ataque y los jefes.
-print("---------- 2. ENEMIGOS: COMPORTAMIENTO COMPARTIDO ----------")  # Muestra un encabezado en la consola durante el arranque.
-RETROCESO_ENEMIGO = 35  # Asigna un valor a RETROCESO_ENEMIGO.
-TIEMPO_RETROCESO = 0.35  # Asigna un valor a TIEMPO_RETROCESO.
+print("---------- 2. ENEMIGOS: COMPORTAMIENTO COMPARTIDO ----------")
+RETROCESO_ENEMIGO = 35
+TIEMPO_RETROCESO = 0.35
 
-VEL_ENEMIGO_VAGAR = 60  # Asigna un valor a VEL_ENEMIGO_VAGAR.
-RADIO_DETECCION = 380  # Asigna un valor a RADIO_DETECCION.
-RADIO_PERDER = 650  # Asigna un valor a RADIO_PERDER.
-RADIO_VAGAR = 260  # Asigna un valor a RADIO_VAGAR.
-ENEMIGO_PREPARAR = 0.40  # Asigna un valor a ENEMIGO_PREPARAR.
-ENEMIGO_GOLPE = 0.15  # Asigna un valor a ENEMIGO_GOLPE.
-ENEMIGO_RECUPERAR = 0.35  # Asigna un valor a ENEMIGO_RECUPERAR.
-ENEMIGO_UMBRAL_GIRO = 14  # Asigna un valor a ENEMIGO_UMBRAL_GIRO.
-ENEMIGO_MIRA_A_LA_DERECHA = False  # Asigna un valor a ENEMIGO_MIRA_A_LA_DERECHA.
-DANO_POR_CONTACTO = False  # Asigna un valor a DANO_POR_CONTACTO.
-JEFE_ORCO_INTERVALO_ATAQUE = 3.0  # Asigna un valor a JEFE_ORCO_INTERVALO_ATAQUE.
-JEFE_ORCO_APOYOS_POR_ATAQUE = 3  # Asigna un valor a JEFE_ORCO_APOYOS_POR_ATAQUE.
-JEFE_ORCO_MULTIPLICADOR_VIDA = 20  # Asigna un valor a JEFE_ORCO_MULTIPLICADOR_VIDA.
-JEFE_DRAGON_MULTIPLICADOR_VIDA = 80  # Asigna un valor a JEFE_DRAGON_MULTIPLICADOR_VIDA.
-JEFE_DRAGON_TIEMPO_INICIAL = 0.5  # Asigna un valor a JEFE_DRAGON_TIEMPO_INICIAL.
-JEFE_DRAGON_RECUPERACION_ATAQUE = 0.4  # Asigna un valor a JEFE_DRAGON_RECUPERACION_ATAQUE.
-JEFE_DRAGON_INTERVALO_ATAQUE = 0.25  # Asigna un valor a JEFE_DRAGON_INTERVALO_ATAQUE.
+VEL_ENEMIGO_VAGAR = 60
+RADIO_DETECCION = 380
+RADIO_PERDER = 650
+RADIO_VAGAR = 260
+ENEMIGO_PREPARAR = 0.40
+ENEMIGO_GOLPE = 0.15
+ENEMIGO_RECUPERAR = 0.35
+ENEMIGO_UMBRAL_GIRO = 14
+ENEMIGO_MIRA_A_LA_DERECHA = False
+DANO_POR_CONTACTO = False
+JEFE_ORCO_INTERVALO_ATAQUE = 3.0
+JEFE_ORCO_APOYOS_POR_ATAQUE = 3
+JEFE_ORCO_MULTIPLICADOR_VIDA = 20
+JEFE_DRAGON_MULTIPLICADOR_VIDA = 80
+JEFE_DRAGON_TIEMPO_INICIAL = 0.5
+JEFE_DRAGON_RECUPERACION_ATAQUE = 0.4
+JEFE_DRAGON_INTERVALO_ATAQUE = 0.25
 
 # Valores de movimiento y daño consultados durante la simulación de cada fotograma.
-print("---------- 3. JUGADOR: VIDA, VELOCIDAD, SALTO Y ATAQUES ----------")  # Muestra un encabezado en la consola durante el arranque.
-VIDA_JUGADOR = 100  # Asigna un valor a vida maxima del jugador.
-VEL_JUGADOR_CAMINAR = 300  # Asigna un valor a velocidad al caminar.
-VEL_JUGADOR_CORRER = 520  # Asigna un valor a velocidad al correr.
-VEL_JUGADOR_AGACHADO = 130  # Asigna un valor a velocidad agachado.
-VEL_JUGADOR_RODAR = 620  # Asigna un valor a velocidad al rodar.
-FUERZA_SALTO = 820  # Asigna un valor a impulso inicial del salto.
-GRAVEDAD = 2400  # Asigna un valor a aceleracion de caida.
-GRAVEDAD_GOLPE_ABAJO = 3800  # Asigna un valor a GRAVEDAD_GOLPE_ABAJO.
-INVULNERABLE_TRAS_GOLPE = 1.2  # Asigna un valor a INVULNERABLE_TRAS_GOLPE.
-ENFRIAMIENTO_ATAQUE = 0.1  # Asigna un valor a ENFRIAMIENTO_ATAQUE.
-TIEMPO_COMBO = 0.5  # Asigna un valor a TIEMPO_COMBO.
-ENFRIAMIENTO_GIRO = 5.0  # Asigna un valor a ENFRIAMIENTO_GIRO.
-TIEMPO_ESPADA_EN_MANO = 3.0  # Asigna un valor a TIEMPO_ESPADA_EN_MANO.
-DANO_ATAQUE = {  # Asigna un valor a danio base de los ataques.
-    "atacar": 20,  # Define el dato asociado a la clave atacar.
-    "atacar2": 20,  # Define el dato asociado a la clave atacar2.
-    "atacar_dash": 25,  # Define el dato asociado a la clave atacar_dash.
-    "agachado_atacar": 12,  # Define el dato asociado a la clave agachado_atacar.
-    "atacar_abajo": 30,  # Define el dato asociado a la clave atacar_abajo.
-    "atacar_giro": 40,  # Define el dato asociado a la clave atacar_giro.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+print("---------- 3. JUGADOR: VIDA, VELOCIDAD, SALTO Y ATAQUES ----------")
+VIDA_JUGADOR = 100
+VEL_JUGADOR_CAMINAR = 300
+VEL_JUGADOR_CORRER = 520
+VEL_JUGADOR_AGACHADO = 130
+VEL_JUGADOR_RODAR = 620
+FUERZA_SALTO = 820
+GRAVEDAD = 2400
+GRAVEDAD_GOLPE_ABAJO = 3800
+INVULNERABLE_TRAS_GOLPE = 1.2
+ENFRIAMIENTO_ATAQUE = 0.1
+TIEMPO_COMBO = 0.5
+ENFRIAMIENTO_GIRO = 5.0
+TIEMPO_ESPADA_EN_MANO = 3.0
+DANO_ATAQUE = {
+    "atacar": 20,
+    "atacar2": 20,
+    "atacar_dash": 25,
+    "agachado_atacar": 12,
+    "atacar_abajo": 30,
+    "atacar_giro": 40,
+}
 
 # Las escalas convierten dimensiones de sprites y las hitboxes expresan colisiones lógicas.
-print("---------- 4. TAMANOS: ESCALAS Y HITBOXES ----------")  # Muestra un encabezado en la consola durante el arranque.
-ESCALA_GLOBAL = 1  # Asigna un valor a factor global de escala.
-ESCALA_JUGADOR = 2  # Asigna un valor a escala visual del jugador.
-ESCALA_ENEMIGOS = 5  # Asigna un valor a escala visual de los enemigos.
-escala_jugador = ESCALA_JUGADOR * ESCALA_GLOBAL  # Asigna un valor a escala_jugador.
-escala_enemigos = ESCALA_ENEMIGOS * ESCALA_GLOBAL  # Asigna un valor a escala_enemigos.
+print("---------- 4. TAMANOS: ESCALAS Y HITBOXES ----------")
+ESCALA_GLOBAL = 1
+ESCALA_JUGADOR = 2
+ESCALA_ENEMIGOS = 5
+escala_jugador = ESCALA_JUGADOR * ESCALA_GLOBAL
+escala_enemigos = ESCALA_ENEMIGOS * ESCALA_GLOBAL
 
 
-print("---------- HITBOXES ----------")  # Muestra un encabezado en la consola durante el arranque.
-HITBOX_JUGADOR_PIES = (20, 10)  # Asigna un valor a HITBOX_JUGADOR_PIES.
-HITBOX_JUGADOR_CUERPO = (28, 62)  # Asigna un valor a HITBOX_JUGADOR_CUERPO.
-HITBOX_JUGADOR_CUERPO_AGACHADO = (28, 32)  # Asigna un valor a HITBOX_JUGADOR_CUERPO_AGACHADO.
-HITBOX_ENEMIGO_PIES = (9, 5)  # Asigna un valor a HITBOX_ENEMIGO_PIES.
-HITBOX_ENEMIGO_CUERPO = (11, 14)  # Asigna un valor a HITBOX_ENEMIGO_CUERPO.
-HITBOX_ENEMIGO_ATAQUE = (9, 6)  # Asigna un valor a HITBOX_ENEMIGO_ATAQUE.
-HITBOX_ENEMIGO_ATAQUE_POS = (5, 10)  # Asigna un valor a HITBOX_ENEMIGO_ATAQUE_POS.
-HITBOX_ATAQUES = {  # Asigna un valor a HITBOX_ATAQUES.
-    "atacar": (80, 60),  # Define el dato asociado a la clave atacar.
-    "atacar2": (80, 60),  # Define el dato asociado a la clave atacar2.
-    "atacar_dash": (75, 45),  # Define el dato asociado a la clave atacar_dash.
-    "agachado_atacar": (55, 30),  # Define el dato asociado a la clave agachado_atacar.
-    "atacar_abajo": (65, 55),  # Define el dato asociado a la clave atacar_abajo.
-    "atacar_giro": (130, 75),  # Define el dato asociado a la clave atacar_giro.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-HITBOX_ATAQUE_POS = {  # Asigna un valor a HITBOX_ATAQUE_POS.
-    "atacar": (5, 55),  # Define el dato asociado a la clave atacar.
-    "atacar2": (5, 60),  # Define el dato asociado a la clave atacar2.
-    "atacar_dash": (5, 30),  # Define el dato asociado a la clave atacar_dash.
-    "agachado_atacar": (5, 30),  # Define el dato asociado a la clave agachado_atacar.
-    "atacar_abajo": (5, 30),  # Define el dato asociado a la clave atacar_abajo.
-    "atacar_giro": (5, 30),  # Define el dato asociado a la clave atacar_giro.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+# Cajas de colision de jugador, enemigos y ataques, en pixeles antes de aplicar la escala.
+print("---------- HITBOXES ----------")
+HITBOX_JUGADOR_PIES = (20, 10)
+HITBOX_JUGADOR_CUERPO = (28, 62)
+HITBOX_JUGADOR_CUERPO_AGACHADO = (28, 32)
+HITBOX_ENEMIGO_PIES = (9, 5)
+HITBOX_ENEMIGO_CUERPO = (11, 14)
+HITBOX_ENEMIGO_ATAQUE = (9, 6)
+HITBOX_ENEMIGO_ATAQUE_POS = (5, 10)
+HITBOX_ATAQUES = {
+    "atacar": (80, 60),
+    "atacar2": (80, 60),
+    "atacar_dash": (75, 45),
+    "agachado_atacar": (55, 30),
+    "atacar_abajo": (65, 55),
+    "atacar_giro": (130, 75),
+}
+HITBOX_ATAQUE_POS = {
+    "atacar": (5, 55),
+    "atacar2": (5, 60),
+    "atacar_dash": (5, 30),
+    "agachado_atacar": (5, 30),
+    "atacar_abajo": (5, 30),
+    "atacar_giro": (5, 30),
+}
 
 
 # Opciones de seguimiento del jugador y límites de la cámara.
-print("---------- 5. CAMARA Y MIRA ----------")  # Muestra un encabezado en la consola durante el arranque.
-CAMARA_SUAVIDAD = 0  # Asigna un valor a CAMARA_SUAVIDAD.
-CAMARA_LIMITADA = True  # Asigna un valor a CAMARA_LIMITADA.
+print("---------- 5. CAMARA Y MIRA ----------")
+CAMARA_SUAVIDAD = 0
+CAMARA_LIMITADA = True
 
 
 # La generación del mapa utiliza estas medidas para convertir casillas en píxeles.
-print("---------- 6. MAPA ----------")  # Muestra un encabezado en la consola durante el arranque.
-ESCALA_TILES = 4  # Asigna un valor a escala de los tiles.
-TAM_TILE = 32 * ESCALA_TILES  # Asigna un valor a tamano de casilla en pixeles.
-JEFE_ALTURA_SPRITE = TAM_TILE * 2.5  # Asigna un valor a JEFE_ALTURA_SPRITE.
+print("---------- 6. MAPA ----------")
+ESCALA_TILES = 4
+TAM_TILE = 32 * ESCALA_TILES
+JEFE_ALTURA_SPRITE = TAM_TILE * 2.5
 
 
 # Genera de forma determinista el plano del mundo, sus zonas y su decoración.
-def _crear_mapa():  # Define la funcion _crear_mapa: genera las casillas, zonas, caminos y decoracion del mundo.
-    ancho, alto = 80, 48  # Asigna un valor a ancho.
-    celdas = [["."] * ancho for _ in range(alto)]  # Asigna un valor a rejilla de caracteres del mapa.
-    reservado = [[False] * ancho for _ in range(alto)]  # Asigna un valor a casillas protegidas.
-    rng = random.Random(19)  # Asigna un valor a generador aleatorio con semilla fija.
-    Z = [z["casillas"] for z in ZONAS]  # Asigna un valor a Z.
-    VERDES = (".", ";", ",")  # Asigna un valor a VERDES.
-    lattice = {}  # Asigna un valor a cache de valores del ruido.
+def _crear_mapa():
+    ancho, alto = 80, 48
+    celdas = [["."] * ancho for _ in range(alto)]
+    reservado = [[False] * ancho for _ in range(alto)]
+    rng = random.Random(19)
+    Z = [z["casillas"] for z in ZONAS]
+    VERDES = (".", ";", ",")
+    lattice = {}
 
     # Produce valores pseudoaleatorios estables para cada punto de la cuadrícula de ruido.
-    def valor(ix, iy, semilla):  # Define la funcion valor: obtiene un valor pseudoaleatorio estable.
-        clave = (ix, iy, semilla)  # Asigna un valor a clave.
-        if clave not in lattice:  # Comprueba una condicion que controla el bloque siguiente.
-            lattice[clave] = random.Random(ix * 73856093 ^ iy * 19349663 ^ semilla * 83492791).random()  # Asigna un valor a lattice[clave].
-        return lattice[clave]  # Devuelve el resultado y termina la funcion.
+    def valor(ix, iy, semilla):
+        clave = (ix, iy, semilla)
+        if clave not in lattice:
+            lattice[clave] = random.Random(ix * 73856093 ^ iy * 19349663 ^ semilla * 83492791).random()
+        return lattice[clave]
 
     # Interpola el ruido entre puntos para formar variaciones suaves del terreno.
-    def ruido(x, y, escala, semilla):  # Define la funcion ruido: suaviza variaciones del terreno mediante interpolacion.
-        fx, fy = x / escala, y / escala  # Asigna un valor a fx.
-        ix, iy = math.floor(fx), math.floor(fy)  # Asigna un valor a ix.
-        tx, ty = fx - ix, fy - iy  # Asigna un valor a tx.
-        tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)  # Asigna un valor a tx.
-        a, b = valor(ix, iy, semilla), valor(ix + 1, iy, semilla)  # Asigna un valor a a.
-        c, d = valor(ix, iy + 1, semilla), valor(ix + 1, iy + 1, semilla)  # Asigna un valor a c.
-        return (a * (1 - tx) + b * tx) * (1 - ty) + (c * (1 - tx) + d * tx) * ty  # Devuelve el resultado y termina la funcion.
+    def ruido(x, y, escala, semilla):
+        fx, fy = x / escala, y / escala
+        ix, iy = math.floor(fx), math.floor(fy)
+        tx, ty = fx - ix, fy - iy
+        tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+        a, b = valor(ix, iy, semilla), valor(ix + 1, iy, semilla)
+        c, d = valor(ix, iy + 1, semilla), valor(ix + 1, iy + 1, semilla)
+        return (a * (1 - tx) + b * tx) * (1 - ty) + (c * (1 - tx) + d * tx) * ty
 
-    def dentro(x, y):  # Define la funcion dentro: comprueba si una coordenada cae dentro del mapa.
-        return 0 <= x < ancho and 0 <= y < alto  # Devuelve el resultado y termina la funcion.
+    # Comprueba si una coordenada cae dentro de los limites del mapa.
+    def dentro(x, y):
+        return 0 <= x < ancho and 0 <= y < alto
 
     # Escribe un símbolo dentro del mapa y opcionalmente protege esa casilla de decorado posterior.
-    def poner(x, y, ch, reservar_celda=True):  # Define la funcion poner: escribe un simbolo en una casilla.
-        if dentro(x, y):  # Comprueba una condicion que controla el bloque siguiente.
-            celdas[y][x] = ch  # Asigna un valor a celdas[y][x].
-            if reservar_celda:  # Comprueba una condicion que controla el bloque siguiente.
-                reservado[y][x] = True  # Asigna un valor a reservado[y][x].
+    def poner(x, y, ch, reservar_celda=True):
+        if dentro(x, y):
+            celdas[y][x] = ch
+            if reservar_celda:
+                reservado[y][x] = True
 
     # Rellena un rectángulo de casillas con el símbolo indicado.
-    def pintar(limites, ch, reservar_celdas=False):  # Define la funcion pintar: rellena un rectangulo de casillas.
-        x0, y0, x1, y1 = limites  # Asigna un valor a x0.
-        for y in range(y0, y1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-            for x in range(x0, x1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-                poner(x, y, ch, reservar_celdas)  # Escribe un simbolo en una casilla.
+    def pintar(limites, ch, reservar_celdas=False):
+        x0, y0, x1, y1 = limites
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                poner(x, y, ch, reservar_celdas)
 
     # Evita que la generación aleatoria altere una estructura y su margen circundante.
-    def reservar(limites, margen=0):  # Define la funcion reservar: protege casillas contra cambios aleatorios.
-        x0, y0, x1, y1 = limites  # Asigna un valor a x0.
-        for y in range(y0 - margen, y1 + margen + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-            for x in range(x0 - margen, x1 + margen + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-                if dentro(x, y):  # Comprueba una condicion que controla el bloque siguiente.
-                    reservado[y][x] = True  # Asigna un valor a reservado[y][x].
+    def reservar(limites, margen=0):
+        x0, y0, x1, y1 = limites
+        for y in range(y0 - margen, y1 + margen + 1):
+            for x in range(x0 - margen, x1 + margen + 1):
+                if dentro(x, y):
+                    reservado[y][x] = True
 
     # Reserva un área circular para mantener despejados destinos y puntos de interés.
-    def reservar_circulo(cx, cy, radio):  # Define la funcion reservar_circulo: protege un area circular.
-        for y in range(int(cy - radio) - 1, int(cy + radio) + 2):  # Inicia un ciclo que procesa cada elemento indicado.
-            for x in range(int(cx - radio) - 1, int(cx + radio) + 2):  # Inicia un ciclo que procesa cada elemento indicado.
-                if dentro(x, y) and math.hypot(x - cx, y - cy) <= radio:  # Comprueba una condicion que controla el bloque siguiente.
-                    reservado[y][x] = True  # Asigna un valor a reservado[y][x].
+    def reservar_circulo(cx, cy, radio):
+        for y in range(int(cy - radio) - 1, int(cy + radio) + 2):
+            for x in range(int(cx - radio) - 1, int(cx + radio) + 2):
+                if dentro(x, y) and math.hypot(x - cx, y - cy) <= radio:
+                    reservado[y][x] = True
 
     # Dibuja una mancha ovalada con borde irregular controlado por ruido.
-    def mancha(cx, cy, rx, ry, ch, semilla=0):  # Define la funcion mancha: dibuja una mancha de terreno o liquido.
-        for y in range(int(cy - ry) - 2, int(cy + ry) + 3):  # Inicia un ciclo que procesa cada elemento indicado.
-            for x in range(int(cx - rx) - 2, int(cx + rx) + 3):  # Inicia un ciclo que procesa cada elemento indicado.
-                if dentro(x, y):  # Comprueba una condicion que controla el bloque siguiente.
-                    d = math.hypot((x - cx) / rx, (y - cy) / ry)  # Asigna un valor a d.
-                    if d <= 1.0 + 0.4 * (ruido(x, y, 2.5, 40 + semilla) - 0.5):  # Comprueba una condicion que controla el bloque siguiente.
-                        poner(x, y, ch)  # Escribe un simbolo en una casilla.
+    def mancha(cx, cy, rx, ry, ch, semilla=0):
+        for y in range(int(cy - ry) - 2, int(cy + ry) + 3):
+            for x in range(int(cx - rx) - 2, int(cx + rx) + 3):
+                if dentro(x, y):
+                    d = math.hypot((x - cx) / rx, (y - cy) / ry)
+                    if d <= 1.0 + 0.4 * (ruido(x, y, 2.5, 40 + semilla) - 0.5):
+                        poner(x, y, ch)
 
     # Construye el contorno de un muro, respetando puertas, huecos y partes derruidas.
-    def muro(limites, ch, huecos=(), ruina=0.0):  # Define la funcion muro: construye el contorno de un muro.
-        x0, y0, x1, y1 = limites  # Asigna un valor a x0.
-        huecos = set(huecos)  # Asigna un valor a huecos.
-        for y in range(y0, y1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-            for x in range(x0, x1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-                if x not in (x0, x1) and y not in (y0, y1):  # Comprueba una condicion que controla el bloque siguiente.
-                    continue  # Pasa a la siguiente vuelta del ciclo.
-                if (x, y) in huecos:  # Comprueba una condicion que controla el bloque siguiente.
-                    reservado[y][x] = True  # Asigna un valor a reservado[y][x].
-                    continue  # Pasa a la siguiente vuelta del ciclo.
-                esquina = x in (x0, x1) and y in (y0, y1)  # Asigna un valor a esquina.
-                if ruina and not esquina and rng.random() < ruina:  # Comprueba una condicion que controla el bloque siguiente.
-                    reservado[y][x] = True  # Asigna un valor a reservado[y][x].
-                    continue  # Pasa a la siguiente vuelta del ciclo.
-                poner(x, y, ch)  # Escribe un simbolo en una casilla.
+    def muro(limites, ch, huecos=(), ruina=0.0):
+        x0, y0, x1, y1 = limites
+        huecos = set(huecos)
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                if x not in (x0, x1) and y not in (y0, y1):
+                    continue
+                if (x, y) in huecos:
+                    reservado[y][x] = True
+                    continue
+                esquina = x in (x0, x1) and y in (y0, y1)
+                if ruina and not esquina and rng.random() < ruina:
+                    reservado[y][x] = True
+                    continue
+                poner(x, y, ch)
 
     # Combina suelo interior, perímetro, puerta y zona protegida para crear un edificio.
-    def edificio(limites, ch, suelo, puerta, puerta_ch="D"):  # Define la funcion edificio: construye suelo, paredes, puerta y margen protegido.
-        x0, y0, x1, y1 = limites  # Asigna un valor a x0.
-        pintar((x0 + 1, y0 + 1, x1 - 1, y1 - 1), suelo, True)  # Rellena el area del mapa.
-        muro(limites, ch)  # Dibuja un muro en el area indicada.
-        poner(puerta[0], puerta[1], puerta_ch)  # Escribe un simbolo en una casilla.
-        reservar(limites, 1)  # Protege casillas contra cambios aleatorios.
+    def edificio(limites, ch, suelo, puerta, puerta_ch="D"):
+        x0, y0, x1, y1 = limites
+        pintar((x0 + 1, y0 + 1, x1 - 1, y1 - 1), suelo, True)
+        muro(limites, ch)
+        poner(puerta[0], puerta[1], puerta_ch)
+        reservar(limites, 1)
 
     # Distribuye coordenadas alrededor de una elipse para colocar objetos en círculo.
-    def puntos_circulo(cx, cy, radio, cantidad, fase=0.0):  # Define la funcion puntos_circulo: calcula posiciones alrededor de una elipse.
-        return [(round(cx + radio * math.cos(fase + 2 * math.pi * i / cantidad)),  # Devuelve el resultado y termina la funcion.
-                 round(cy + radio * math.sin(fase + 2 * math.pi * i / cantidad) * 0.8)) for i in range(cantidad)]  # Completa los argumentos o datos usados por esta parte del juego.
+    def puntos_circulo(cx, cy, radio, cantidad, fase=0.0):
+        return [(round(cx + radio * math.cos(fase + 2 * math.pi * i / cantidad)),
+                 round(cy + radio * math.sin(fase + 2 * math.pi * i / cantidad) * 0.8)) for i in range(cantidad)]
 
     # Coloca el mismo elemento en una colección de coordenadas.
-    def colocar(ch, puntos):  # Define la funcion colocar: coloca un simbolo en varias coordenadas.
-        for x, y in puntos:  # Inicia un ciclo que procesa cada elemento indicado.
-            poner(x, y, ch)  # Escribe un simbolo en una casilla.
+    def colocar(ch, puntos):
+        for x, y in puntos:
+            poner(x, y, ch)
 
     # Devuelve el índice de la zona que contiene la casilla o None si está fuera de ellas.
-    def zona_en(x, y):  # Define la funcion zona_en: busca que zona contiene una casilla.
-        for i, (x0, y0, x1, y1) in enumerate(Z):  # Inicia un ciclo que procesa cada elemento indicado.
-            if x0 <= x <= x1 and y0 <= y <= y1:  # Comprueba una condicion que controla el bloque siguiente.
-                return i  # Devuelve el resultado y termina la funcion.
-        return None  # Devuelve el resultado y termina la funcion.
+    def zona_en(x, y):
+        for i, (x0, y0, x1, y1) in enumerate(Z):
+            if x0 <= x <= x1 and y0 <= y <= y1:
+                return i
+        return None
 
-    pintar(Z[1], "_")  # Rellena el area del mapa.
-    pintar(Z[2], ",")  # Rellena el area del mapa.
-    pintar(Z[3], "_")  # Rellena el area del mapa.
-    pintar(Z[4], "r")  # Rellena el area del mapa.
-    pintar(Z[5], ";")  # Rellena el area del mapa.
-    pintar(Z[7], ":")  # Rellena el area del mapa.
-    pintar(Z[8], "r")  # Rellena el area del mapa.
-    for y in range(alto):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(ancho):  # Inicia un ciclo que procesa cada elemento indicado.
-            if celdas[y][x] == "." and zona_en(x, y) is None and ruido(x, y, 7.0, 3) > 0.62:  # Comprueba una condicion que controla el bloque siguiente.
-                celdas[y][x] = ";"  # Asigna un valor a celdas[y][x].
+    pintar(Z[1], "_")
+    pintar(Z[2], ",")
+    pintar(Z[3], "_")
+    pintar(Z[4], "r")
+    pintar(Z[5], ";")
+    pintar(Z[7], ":")
+    pintar(Z[8], "r")
+    for y in range(alto):
+        for x in range(ancho):
+            if celdas[y][x] == "." and zona_en(x, y) is None and ruido(x, y, 7.0, 3) > 0.62:
+                celdas[y][x] = ";"
 
-    for z in ZONAS:  # Inicia un ciclo que procesa cada elemento indicado.
-        reservar_circulo(z["destino"][0], z["destino"][1], 3.6)  # Protege el area circular de cambios aleatorios.
+    for z in ZONAS:
+        reservar_circulo(z["destino"][0], z["destino"][1], 3.6)
 
-    for y in range(0, 32):  # Inicia un ciclo que procesa cada elemento indicado.
-        cx = 55 + (1 if math.sin(y / 3.2) > 0.2 else 0)  # Asigna un valor a cx.
-        for x in (cx, cx + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-            poner(x, y, "~")  # Escribe un simbolo en una casilla.
-    mancha(56.5, 30.5, 3.0, 2.2, "~", 1)  # Crea un terreno o liquido irregular.
-    mancha(7, 23, 5.2, 3.2, "~", 2)  # Crea un terreno o liquido irregular.
-    mancha(11.5, 13, 2.2, 1.3, "~", 3)  # Crea un terreno o liquido irregular.
-    mancha(73.5, 8.5, 1.8, 1.0, "~", 4)  # Crea un terreno o liquido irregular.
-    mancha(54.5, 43.5, 2.3, 1.7, "~", 5)  # Crea un terreno o liquido irregular.
-    mancha(39, 4, 3.2, 2.2, "v", 6)  # Crea un terreno o liquido irregular.
-    mancha(51.5, 12.5, 3.0, 2.0, "v", 7)  # Crea un terreno o liquido irregular.
-    mancha(45.5, 13.5, 2.5, 1.4, "v", 8)  # Crea un terreno o liquido irregular.
-    mancha(53, 4, 1.3, 2.0, "v", 9)  # Crea un terreno o liquido irregular.
+    for y in range(0, 32):
+        cx = 55 + (1 if math.sin(y / 3.2) > 0.2 else 0)
+        for x in (cx, cx + 1):
+            poner(x, y, "~")
+    mancha(56.5, 30.5, 3.0, 2.2, "~", 1)
+    mancha(7, 23, 5.2, 3.2, "~", 2)
+    mancha(11.5, 13, 2.2, 1.3, "~", 3)
+    mancha(73.5, 8.5, 1.8, 1.0, "~", 4)
+    mancha(54.5, 43.5, 2.3, 1.7, "~", 5)
+    mancha(39, 4, 3.2, 2.2, "v", 6)
+    mancha(51.5, 12.5, 3.0, 2.0, "v", 7)
+    mancha(45.5, 13.5, 2.5, 1.4, "v", 8)
+    mancha(53, 4, 1.3, 2.0, "v", 9)
 
-    CAMINOS = ((13, 7, 65, 10), (24, 9, 27, 39), (24, 21, 70, 25),  # Asigna un valor a CAMINOS.
-               (48, 24, 51, 40), (65, 8, 68, 41), (50, 37, 70, 40))  # Completa los argumentos o datos usados por esta parte del juego.
-    for camino in CAMINOS:  # Inicia un ciclo que procesa cada elemento indicado.
-        pintar(camino, ":", True)  # Rellena el area del mapa.
-    for y0, y1 in ((7, 10), (21, 25)):  # Inicia un ciclo que procesa cada elemento indicado.
-        pintar((55, y0, 58, y1), "_", True)  # Rellena el area del mapa.
+    CAMINOS = ((13, 7, 65, 10), (24, 9, 27, 39), (24, 21, 70, 25),
+               (48, 24, 51, 40), (65, 8, 68, 41), (50, 37, 70, 40))
+    for camino in CAMINOS:
+        pintar(camino, ":", True)
+    for y0, y1 in ((7, 10), (21, 25)):
+        pintar((55, y0, 58, y1), "_", True)
 
-    for limites in ((8, 30, 23, 31), (8, 32, 9, 32), (16, 26, 17, 29), (28, 38, 31, 39), (32, 41, 33, 42)):  # Inicia un ciclo que procesa cada elemento indicado.
-        pintar(limites, ":", True)  # Rellena el area del mapa.
+    for limites in ((8, 30, 23, 31), (8, 32, 9, 32), (16, 26, 17, 29), (28, 38, 31, 39), (32, 41, 33, 42)):
+        pintar(limites, ":", True)
 
-    c0, f0, c1, f1 = Z[0]  # Asigna un valor a c0.
-    edificio((2, 2, 6, 5), "d", ":", (4, 5))  # Construye un edificio y su entrada.
-    colocar("C", [(5, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("B", [(3, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("O", [(10, 9)])  # Coloca elementos en las coordenadas listadas. El simbolo 'O' representa objeto animado.
-    colocar("L", [(10, 7), (12, 10), (11, 9)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("B", [(9, 10)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("M", [(3, 12), (5, 13), (2, 14), (6, 11), (4, 10)])  # Coloca elementos en las coordenadas listadas. El simbolo 'M' representa hongo.
-    for x, y in puntos_circulo(10, 4, 2.3, 7):  # Inicia un ciclo que procesa cada elemento indicado.
-        poner(x, y, "R")  # Escribe un simbolo en una casilla.
-    poner(10, 4, "p")  # Escribe un simbolo en una casilla.
-    reservar_circulo(10, 4, 3.5)  # Protege el area circular de cambios aleatorios.
-    reservar_circulo(7, 12, 2.5)  # Protege el area circular de cambios aleatorios.
-    reservar_circulo(11.5, 13, 3.2)  # Protege el area circular de cambios aleatorios.
+    c0, f0, c1, f1 = Z[0]
+    edificio((2, 2, 6, 5), "d", ":", (4, 5))
+    colocar("C", [(5, 3)])
+    colocar("B", [(3, 3)])
+    colocar("O", [(10, 9)])
+    colocar("L", [(10, 7), (12, 10), (11, 9)])
+    colocar("B", [(9, 10)])
+    colocar("M", [(3, 12), (5, 13), (2, 14), (6, 11), (4, 10)])
+    for x, y in puntos_circulo(10, 4, 2.3, 7):
+        poner(x, y, "R")
+    poner(10, 4, "p")
+    reservar_circulo(10, 4, 3.5)
+    reservar_circulo(7, 12, 2.5)
+    reservar_circulo(11.5, 13, 3.2)
 
-    muro((20, 2, 28, 6), "#", huecos=[(23, 6), (24, 6), (25, 6)], ruina=0.18)  # Dibuja el perimetro de las ruinas y deja huecos en la entrada.
-    pintar((21, 3, 27, 5), "_", True)  # Rellena el area del mapa.
-    colocar("S", [(24, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'S' representa elemento de escenario.
-    colocar("F", [(21, 3), (27, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("K", [(22, 5), (26, 5)])  # Coloca elementos en las coordenadas listadas. El simbolo 'K' representa objeto de ruina.
-    poner(24, 4, "p")  # Escribe un simbolo en una casilla.
-    muro((29, 2, 31, 5), "k", huecos=[(30, 5)], ruina=0.3)  # Dibuja un muro en el area indicada.
-    colocar("R", [(30, 3), (29, 6)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    reservar((20, 2, 31, 6), 1)  # Protege casillas contra cambios aleatorios.
-    for y in (11, 13, 15):  # Inicia un ciclo que procesa cada elemento indicado.
-        colocar("#", [(23, y), (28, y)])  # Coloca dos columnas de muro en las filas listadas.
-    for puntos in (((20, 11), (21, 11), (22, 11), (20, 12), (20, 13)), ((29, 11), (30, 11), (31, 11), (31, 12))):  # Inicia un ciclo que procesa cada elemento indicado.
-        colocar("k", puntos)  # Coloca elementos en las coordenadas listadas. El simbolo 'k' representa pared de ruina.
-    colocar("K", [(30, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'K' representa objeto de ruina.
-    colocar("Z", [(30, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'Z' representa elemento de escenario.
-    colocar("N", [(21, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'N' representa objeto de ruina.
-    colocar("S", [(21, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'S' representa elemento de escenario.
-    colocar("R", [(19, 15), (22, 15), (29, 15), (31, 14), (19, 6)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("b", [(22, 13), (30, 12), (29, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
+    muro((20, 2, 28, 6), "#", huecos=[(23, 6), (24, 6), (25, 6)], ruina=0.18)
+    pintar((21, 3, 27, 5), "_", True)
+    colocar("S", [(24, 3)])
+    colocar("F", [(21, 3), (27, 3)])
+    colocar("K", [(22, 5), (26, 5)])
+    poner(24, 4, "p")
+    muro((29, 2, 31, 5), "k", huecos=[(30, 5)], ruina=0.3)
+    colocar("R", [(30, 3), (29, 6)])
+    reservar((20, 2, 31, 6), 1)
+    for y in (11, 13, 15):
+        colocar("#", [(23, y), (28, y)])
+    for puntos in (((20, 11), (21, 11), (22, 11), (20, 12), (20, 13)), ((29, 11), (30, 11), (31, 11), (31, 12))):
+        colocar("k", puntos)
+    colocar("K", [(30, 13)])
+    colocar("Z", [(30, 14)])
+    colocar("N", [(21, 14)])
+    colocar("S", [(21, 13)])
+    colocar("R", [(19, 15), (22, 15), (29, 15), (31, 14), (19, 6)])
+    colocar("b", [(22, 13), (30, 12), (29, 14)])
 
-    edificio((44, 2, 50, 5), "c", "g", (47, 5))  # Construye un edificio y su entrada.
-    colocar("F", [(45, 3), (49, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("N", [(48, 4)])  # Coloca elementos en las coordenadas listadas. El simbolo 'N' representa objeto de ruina.
-    colocar("J", [(46, 4), (46, 3)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    poner(47, 3, "p")  # Escribe un simbolo en una casilla.
-    edificio((37, 11, 41, 14), "d", ":", (39, 14))  # Construye un edificio y su entrada.
-    colocar("J", [(38, 12), (40, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    colocar("B", [(38, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("C", [(40, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("O", [(43, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'O' representa objeto animado.
-    colocar("L", [(44, 11), (42, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("M", [(43, 6), (36, 6), (43, 15), (36, 9)])  # Coloca elementos en las coordenadas listadas. El simbolo 'M' representa hongo.
-    colocar("R", [(48, 11), (43, 3), (41, 6)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("b", [(44, 12), (43, 13), (36, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    colocar("K", [(36, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'K' representa objeto de ruina.
+    edificio((44, 2, 50, 5), "c", "g", (47, 5))
+    colocar("F", [(45, 3), (49, 3)])
+    colocar("N", [(48, 4)])
+    colocar("J", [(46, 4), (46, 3)])
+    poner(47, 3, "p")
+    edificio((37, 11, 41, 14), "d", ":", (39, 14))
+    colocar("J", [(38, 12), (40, 12)])
+    colocar("B", [(38, 13)])
+    colocar("C", [(40, 13)])
+    colocar("O", [(43, 12)])
+    colocar("L", [(44, 11), (42, 13)])
+    colocar("M", [(43, 6), (36, 6), (43, 15), (36, 9)])
+    colocar("R", [(48, 11), (43, 3), (41, 6)])
+    colocar("b", [(44, 12), (43, 13), (36, 12)])
+    colocar("K", [(36, 14)])
 
-    muro(Z[3], "#", huecos=[(x, Z[3][1]) for x in range(24, 28)] + [(x, Z[3][3]) for x in range(24, 28)]  # Levanta los bordes de la prision y deja huecos para accesos.
-         + [(Z[3][2], y) for y in range(21, 26)])  # Completa los argumentos o datos usados por esta parte del juego.
-    pintar((20, 20, 32, 28), "_", True)  # Rellena el area del mapa.
-    pintar((24, 19, 27, 29), ":", True)  # Rellena el area del mapa.
-    pintar((24, 21, 33, 25), ":", True)  # Rellena el area del mapa.
-    pintar((20, 20, 22, 22), "g", True)  # Rellena el area del mapa.
-    pintar((20, 24, 22, 25), "g", True)  # Rellena el area del mapa.
-    pintar((20, 27, 22, 28), "g", True)  # Rellena el area del mapa.
-    colocar("#", [(23, y) for y in range(20, 29)])  # Forma una pared vertical dentro de la prision.
-    colocar("#", [(x, 23) for x in range(20, 23)] + [(x, 26) for x in range(20, 23)])  # Separa las celdas con dos paredes horizontales.
-    colocar("G", [(23, 21), (23, 24), (23, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'G' representa reja desbloqueable.
-    poner(21, 21, "b")  # Escribe un simbolo en una casilla.
-    poner(22, 22, "x")  # Escribe un simbolo en una casilla.
-    poner(20, 24, "x")  # Escribe un simbolo en una casilla.
-    colocar("J", [(22, 25)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    colocar("C", [(22, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    poner(21, 28, "b")  # Escribe un simbolo en una casilla.
-    colocar("#", [(28, 20), (29, 20)])  # Agrega dos casillas de muro al recinto.
-    colocar("F", [(30, 20), (32, 20), (32, 26), (28, 28)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("B", [(30, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("X", [(31, 28)])  # Coloca elementos en las coordenadas listadas. El simbolo 'X' representa mueble.
-    colocar("C", [(29, 28)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    poner(31, 27, "Q")  # Escribe un simbolo en una casilla.
-    poner(29, 26, "U")  # Escribe un simbolo en una casilla.
-    colocar("x", [(30, 26), (32, 27), (28, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'x' representa un elemento del plano.
-    colocar("b", [(32, 28), (30, 28)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    reservar(Z[3], 0)  # Protege casillas contra cambios aleatorios.
+    muro(Z[3], "#", huecos=[(x, Z[3][1]) for x in range(24, 28)] + [(x, Z[3][3]) for x in range(24, 28)]
+         + [(Z[3][2], y) for y in range(21, 26)])
+    pintar((20, 20, 32, 28), "_", True)
+    pintar((24, 19, 27, 29), ":", True)
+    pintar((24, 21, 33, 25), ":", True)
+    pintar((20, 20, 22, 22), "g", True)
+    pintar((20, 24, 22, 25), "g", True)
+    pintar((20, 27, 22, 28), "g", True)
+    colocar("#", [(23, y) for y in range(20, 29)])
+    colocar("#", [(x, 23) for x in range(20, 23)] + [(x, 26) for x in range(20, 23)])
+    colocar("G", [(23, 21), (23, 24), (23, 27)])
+    poner(21, 21, "b")
+    poner(22, 22, "x")
+    poner(20, 24, "x")
+    colocar("J", [(22, 25)])
+    colocar("C", [(22, 27)])
+    poner(21, 28, "b")
+    colocar("#", [(28, 20), (29, 20)])
+    colocar("F", [(30, 20), (32, 20), (32, 26), (28, 28)])
+    colocar("B", [(30, 27)])
+    colocar("X", [(31, 28)])
+    colocar("C", [(29, 28)])
+    poner(31, 27, "Q")
+    poner(29, 26, "U")
+    colocar("x", [(30, 26), (32, 27), (28, 27)])
+    colocar("b", [(32, 28), (30, 28)])
+    reservar(Z[3], 0)
 
-    muro(Z[4], "l", huecos=[(38, y) for y in range(22, 25)] + [(54, y) for y in range(22, 25)]  # Dibuja un muro en el area indicada.
-         + [(x, Z[4][3]) for x in range(48, 52)])  # Completa los argumentos o datos usados por esta parte del juego.
-    pintar((39, 19, 53, 28), "r", True)  # Rellena el area del mapa.
-    pintar((38, 22, 38, 24), ":", True)  # Rellena el area del mapa.
-    pintar((54, 22, 54, 24), ":", True)  # Rellena el area del mapa.
-    pintar((48, 29, 51, 29), ":", True)  # Rellena el area del mapa.
-    colocar("l", [(39, 20), (39, 26), (53, 20), (53, 26), (43, 22), (49, 22), (43, 26), (49, 26)])  # Coloca elementos en las coordenadas listadas. El simbolo 'l' representa pared de arena.
-    colocar("G", [(42, 18), (46, 18), (50, 18), (41, 29), (44, 29)])  # Coloca elementos en las coordenadas listadas. El simbolo 'G' representa reja desbloqueable.
-    colocar("F", [(40, 20), (52, 20), (40, 27), (52, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("e", [(44, 24), (48, 24), (46, 22), (46, 26)])  # Coloca elementos en las coordenadas listadas. El simbolo 'e' representa un elemento del plano.
-    colocar("x", [(45, 23), (47, 25), (46, 25), (44, 25)])  # Coloca elementos en las coordenadas listadas. El simbolo 'x' representa un elemento del plano.
-    colocar("b", [(47, 23), (45, 25), (42, 24), (50, 24), (41, 22), (51, 26)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    reservar(Z[4], 0)  # Protege casillas contra cambios aleatorios.
+    muro(Z[4], "l", huecos=[(38, y) for y in range(22, 25)] + [(54, y) for y in range(22, 25)]
+         + [(x, Z[4][3]) for x in range(48, 52)])
+    pintar((39, 19, 53, 28), "r", True)
+    pintar((38, 22, 38, 24), ":", True)
+    pintar((54, 22, 54, 24), ":", True)
+    pintar((48, 29, 51, 29), ":", True)
+    colocar("l", [(39, 20), (39, 26), (53, 20), (53, 26), (43, 22), (49, 22), (43, 26), (49, 26)])
+    colocar("G", [(42, 18), (46, 18), (50, 18), (41, 29), (44, 29)])
+    colocar("F", [(40, 20), (52, 20), (40, 27), (52, 27)])
+    colocar("e", [(44, 24), (48, 24), (46, 22), (46, 26)])
+    colocar("x", [(45, 23), (47, 25), (46, 25), (44, 25)])
+    colocar("b", [(47, 23), (45, 25), (42, 24), (50, 24), (41, 22), (51, 26)])
+    reservar(Z[4], 0)
 
-    edificio((59, 3, 63, 6), "d", ":", (61, 6))  # Construye un edificio y su entrada.
-    colocar("B", [(60, 4)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("J", [(62, 4)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    edificio((70, 3, 74, 6), "d", ":", (72, 6))  # Construye un edificio y su entrada.
-    colocar("C", [(71, 4)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("X", [(73, 4)])  # Coloca elementos en las coordenadas listadas. El simbolo 'X' representa mueble.
-    edificio((70, 11, 75, 15), "d", ":", (72, 15))  # Construye un edificio y su entrada.
-    colocar("X", [(71, 12), (72, 12), (74, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'X' representa mueble.
-    colocar("B", [(71, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("L", [(74, 14)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    for fila, ch in ((12, "w"), (13, "z"), (14, "w"), (15, "z")):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(59, 65):  # Inicia un ciclo que procesa cada elemento indicado.
-            poner(x, fila, ch)  # Escribe un simbolo en una casilla.
-    colocar("t", [(59, 11), (61, 11), (63, 11)])  # Coloca elementos en las coordenadas listadas. El simbolo 't' representa arbol.
-    colocar("L", [(58, 13), (69, 16), (69, 8)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("B", [(58, 5)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("R", [(60, 16), (64, 3), (68, 5)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("A", [(69, 13)])  # Coloca elementos en las coordenadas listadas. El simbolo 'A' representa decoracion.
-    reservar_circulo(73.5, 8.5, 3.0)  # Protege el area circular de cambios aleatorios.
+    edificio((59, 3, 63, 6), "d", ":", (61, 6))
+    colocar("B", [(60, 4)])
+    colocar("J", [(62, 4)])
+    edificio((70, 3, 74, 6), "d", ":", (72, 6))
+    colocar("C", [(71, 4)])
+    colocar("X", [(73, 4)])
+    edificio((70, 11, 75, 15), "d", ":", (72, 15))
+    colocar("X", [(71, 12), (72, 12), (74, 12)])
+    colocar("B", [(71, 14)])
+    colocar("L", [(74, 14)])
+    for fila, ch in ((12, "w"), (13, "z"), (14, "w"), (15, "z")):
+        for x in range(59, 65):
+            poner(x, fila, ch)
+    colocar("t", [(59, 11), (61, 11), (63, 11)])
+    colocar("L", [(58, 13), (69, 16), (69, 8)])
+    colocar("B", [(58, 5)])
+    colocar("R", [(60, 16), (64, 3), (68, 5)])
+    colocar("A", [(69, 13)])
+    reservar_circulo(73.5, 8.5, 3.0)
 
-    muro((40, 41, 46, 45), "k", huecos=[(46, 43), (40, 43)], ruina=0.22)  # Dibuja un muro en el area indicada.
-    pintar((41, 42, 45, 44), "_", True)  # Rellena el area del mapa.
-    colocar("S", [(43, 43)])  # Coloca elementos en las coordenadas listadas. El simbolo 'S' representa elemento de escenario.
-    colocar("F", [(41, 42), (45, 42)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    poner(43, 42, "p")  # Escribe un simbolo en una casilla.
-    colocar("Z", [(42, 44)])  # Coloca elementos en las coordenadas listadas. El simbolo 'Z' representa elemento de escenario.
-    colocar("K", [(44, 44)])  # Coloca elementos en las coordenadas listadas. El simbolo 'K' representa objeto de ruina.
-    reservar((40, 41, 46, 45), 1)  # Protege casillas contra cambios aleatorios.
-    colocar("M", [(41, 35), (43, 37), (45, 34), (40, 38), (44, 39), (42, 34)])  # Coloca elementos en las coordenadas listadas. El simbolo 'M' representa hongo.
-    colocar("O", [(54, 35)])  # Coloca elementos en las coordenadas listadas. El simbolo 'O' representa objeto animado.
-    colocar("B", [(55, 35)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("C", [(53, 36)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("L", [(55, 36), (53, 34)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("T", [(55, 33), (56, 34), (54, 33)])  # Coloca elementos en las coordenadas listadas. El simbolo 'T' representa pino.
-    colocar("R", [(47, 44), (52, 41), (56, 41), (40, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    reservar_circulo(54.5, 43.5, 3.2)  # Protege el area circular de cambios aleatorios.
+    muro((40, 41, 46, 45), "k", huecos=[(46, 43), (40, 43)], ruina=0.22)
+    pintar((41, 42, 45, 44), "_", True)
+    colocar("S", [(43, 43)])
+    colocar("F", [(41, 42), (45, 42)])
+    poner(43, 42, "p")
+    colocar("Z", [(42, 44)])
+    colocar("K", [(44, 44)])
+    reservar((40, 41, 46, 45), 1)
+    colocar("M", [(41, 35), (43, 37), (45, 34), (40, 38), (44, 39), (42, 34)])
+    colocar("O", [(54, 35)])
+    colocar("B", [(55, 35)])
+    colocar("C", [(53, 36)])
+    colocar("L", [(55, 36), (53, 34)])
+    colocar("T", [(55, 33), (56, 34), (54, 33)])
+    colocar("R", [(47, 44), (52, 41), (56, 41), (40, 40)])
+    reservar_circulo(54.5, 43.5, 3.2)
 
-    c0, f0, c1, f1 = Z[7]  # Asigna un valor a c0.
-    for x in range(c0, c1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-        grosor_norte = 3 if 71 <= x <= 75 else 1 + int(ruido(x, 0, 2.0, 11) * 2.6)  # Completa los argumentos o datos usados por esta parte del juego.
-        for y in range(f0, f0 + grosor_norte):  # Inicia un ciclo que procesa cada elemento indicado.
-            if not reservado[y][x]:  # Comprueba una condicion que controla el bloque siguiente.
-                poner(x, y, "d")  # Escribe un simbolo en una casilla.
-        for y in range(f1, f1 - 1 - int(ruido(x, 1, 2.0, 12) * 2.6), -1):  # Inicia un ciclo que procesa cada elemento indicado.
-            if not reservado[y][x]:  # Comprueba una condicion que controla el bloque siguiente.
-                poner(x, y, "d")  # Escribe un simbolo en una casilla.
-    for y in range(f0, f1 + 1):  # Inicia un ciclo que procesa cada elemento indicado.
-        for k in range(1 + int(ruido(0, y, 2.0, 13) * 2.4)):  # Inicia un ciclo que procesa cada elemento indicado.
-            if not reservado[y][c0 + k]:  # Comprueba una condicion que controla el bloque siguiente.
-                poner(c0 + k, y, "d")  # Escribe un simbolo en una casilla.
-        for k in range(2 + int(ruido(1, y, 2.0, 14) * 1.6)):  # Inicia un ciclo que procesa cada elemento indicado.
-            if not reservado[y][c1 - k]:  # Comprueba una condicion que controla el bloque siguiente.
-                poner(c1 - k, y, "d")  # Escribe un simbolo en una casilla.
-    for cx, cy, rx, ry, semilla in ((62.5, 28, 1.7, 1.2, 15), (72, 28.5, 2.2, 1.2, 16), (72.5, 23.5, 1.4, 0.9, 17)):  # Inicia un ciclo que procesa cada elemento indicado.
-        mancha(cx, cy, rx, ry, "d", semilla)  # Crea un terreno o liquido irregular.
-    poner(73, 21, "D")  # Escribe un simbolo en una casilla.
-    colocar("X", [(72, 22), (75, 22)])  # Coloca elementos en las coordenadas listadas. El simbolo 'X' representa mueble.
-    colocar("L", [(74, 22)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("B", [(71, 21)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("R", [(61, 27), (75, 26), (69, 28), (60, 28), (64, 29), (76, 24)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("b", [(66, 27), (73, 25), (62, 26)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    colocar("C", [(74, 30)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    reservar(Z[7], 0)  # Protege casillas contra cambios aleatorios.
+    c0, f0, c1, f1 = Z[7]
+    for x in range(c0, c1 + 1):
+        grosor_norte = 3 if 71 <= x <= 75 else 1 + int(ruido(x, 0, 2.0, 11) * 2.6)
+        for y in range(f0, f0 + grosor_norte):
+            if not reservado[y][x]:
+                poner(x, y, "d")
+        for y in range(f1, f1 - 1 - int(ruido(x, 1, 2.0, 12) * 2.6), -1):
+            if not reservado[y][x]:
+                poner(x, y, "d")
+    for y in range(f0, f1 + 1):
+        for k in range(1 + int(ruido(0, y, 2.0, 13) * 2.4)):
+            if not reservado[y][c0 + k]:
+                poner(c0 + k, y, "d")
+        for k in range(2 + int(ruido(1, y, 2.0, 14) * 1.6)):
+            if not reservado[y][c1 - k]:
+                poner(c1 - k, y, "d")
+    for cx, cy, rx, ry, semilla in ((62.5, 28, 1.7, 1.2, 15), (72, 28.5, 2.2, 1.2, 16), (72.5, 23.5, 1.4, 0.9, 17)):
+        mancha(cx, cy, rx, ry, "d", semilla)
+    poner(73, 21, "D")
+    colocar("X", [(72, 22), (75, 22)])
+    colocar("L", [(74, 22)])
+    colocar("B", [(71, 21)])
+    colocar("R", [(61, 27), (75, 26), (69, 28), (60, 28), (64, 29), (76, 24)])
+    colocar("b", [(66, 27), (73, 25), (62, 26)])
+    colocar("C", [(74, 30)])
+    reservar(Z[7], 0)
 
-    c0, f0, c1, f1 = Z[8]  # Asigna un valor a c0.
-    pintar((c0 + 1, f0 + 1, c1 - 1, f1 - 1), "r", True)  # Rellena el area del mapa.
-    for y in range(f0 + 1, f1):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(c0 + 1, c1):  # Inicia un ciclo que procesa cada elemento indicado.
-            if ruido(x, y, 3.0, 21) > 0.66:  # Comprueba una condicion que controla el bloque siguiente.
-                celdas[y][x] = "o"  # Asigna un valor a celdas[y][x].
-    muro(Z[8], "i", huecos=[(x, f0) for x in range(65, 69)] + [(c0, y) for y in range(37, 41)])  # Dibuja un muro en el area indicada.
-    pintar((65, f0, 68, f0), ":", True)  # Rellena el area del mapa.
-    pintar((c0, 37, c0, 40), ":", True)  # Rellena el area del mapa.
-    colocar("i", [(61, 36), (61, 44), (77, 36), (77, 44)])  # Coloca elementos en las coordenadas listadas. El simbolo 'i' representa pared de zona.
-    colocar("F", [(63, 37), (76, 37), (63, 44), (76, 44)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("C", [(74, 38), (75, 38), (75, 41), (74, 42), (76, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("A", [(76, 38), (75, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'A' representa decoracion.
-    colocar("S", [(62, 42), (64, 36)])  # Coloca elementos en las coordenadas listadas. El simbolo 'S' representa elemento de escenario.
-    colocar("R", [(66, 43), (72, 37), (72, 44), (70, 44), (66, 37), (77, 42)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("b", [(65, 41), (67, 39), (71, 41), (73, 39), (70, 42), (68, 43), (73, 43), (64, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    colocar("x", [(69, 42), (71, 39)])  # Coloca elementos en las coordenadas listadas. El simbolo 'x' representa un elemento del plano.
-    poner(72, 42, "p")  # Escribe un simbolo en una casilla.
-    reservar(Z[8], 0)  # Protege casillas contra cambios aleatorios.
+    c0, f0, c1, f1 = Z[8]
+    pintar((c0 + 1, f0 + 1, c1 - 1, f1 - 1), "r", True)
+    for y in range(f0 + 1, f1):
+        for x in range(c0 + 1, c1):
+            if ruido(x, y, 3.0, 21) > 0.66:
+                celdas[y][x] = "o"
+    muro(Z[8], "i", huecos=[(x, f0) for x in range(65, 69)] + [(c0, y) for y in range(37, 41)])
+    pintar((65, f0, 68, f0), ":", True)
+    pintar((c0, 37, c0, 40), ":", True)
+    colocar("i", [(61, 36), (61, 44), (77, 36), (77, 44)])
+    colocar("F", [(63, 37), (76, 37), (63, 44), (76, 44)])
+    colocar("C", [(74, 38), (75, 38), (75, 41), (74, 42), (76, 40)])
+    colocar("A", [(76, 38), (75, 40)])
+    colocar("S", [(62, 42), (64, 36)])
+    colocar("R", [(66, 43), (72, 37), (72, 44), (70, 44), (66, 37), (77, 42)])
+    colocar("b", [(65, 41), (67, 39), (71, 41), (73, 39), (70, 42), (68, 43), (73, 43), (64, 40)])
+    colocar("x", [(69, 42), (71, 39)])
+    poner(72, 42, "p")
+    reservar(Z[8], 0)
 
-    muro((3, 33, 13, 42), "c", huecos=[(8, 33), (9, 33)], ruina=0.12)  # Dibuja un muro en el area indicada.
-    pintar((4, 34, 12, 41), "o", True)  # Rellena el area del mapa.
-    for y in (35, 37, 39):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in (5, 7, 9, 11):  # Inicia un ciclo que procesa cada elemento indicado.
-            poner(x, y, rng.choice("KKSN"))  # Escribe un simbolo en una casilla.
-    poner(8, 38, "p")  # Escribe un simbolo en una casilla.
-    colocar("F", [(5, 41), (11, 41), (5, 34), (11, 34)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("b", [(6, 36), (10, 38), (8, 35), (6, 40), (10, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    reservar((3, 33, 13, 42), 1)  # Protege casillas contra cambios aleatorios.
+    muro((3, 33, 13, 42), "c", huecos=[(8, 33), (9, 33)], ruina=0.12)
+    pintar((4, 34, 12, 41), "o", True)
+    for y in (35, 37, 39):
+        for x in (5, 7, 9, 11):
+            poner(x, y, rng.choice("KKSN"))
+    poner(8, 38, "p")
+    colocar("F", [(5, 41), (11, 41), (5, 34), (11, 34)])
+    colocar("b", [(6, 36), (10, 38), (8, 35), (6, 40), (10, 40)])
+    reservar((3, 33, 13, 42), 1)
 
-    edificio((14, 22, 18, 25), "d", ":", (16, 25))  # Construye un edificio y su entrada.
-    colocar("B", [(15, 23)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("J", [(17, 23)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    colocar("O", [(15, 27)])  # Coloca elementos en las coordenadas listadas. El simbolo 'O' representa objeto animado.
-    colocar("L", [(13, 28), (19, 26)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("R", [(13, 20), (12, 27), (2, 26), (12, 22)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    reservar_circulo(7, 23, 6.0)  # Protege el area circular de cambios aleatorios.
+    edificio((14, 22, 18, 25), "d", ":", (16, 25))
+    colocar("B", [(15, 23)])
+    colocar("J", [(17, 23)])
+    colocar("O", [(15, 27)])
+    colocar("L", [(13, 28), (19, 26)])
+    colocar("R", [(13, 20), (12, 27), (2, 26), (12, 22)])
+    reservar_circulo(7, 23, 6.0)
 
-    edificio((32, 33, 36, 36), "d", ":", (34, 36))  # Construye un edificio y su entrada.
-    colocar("C", [(33, 34)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("J", [(35, 34)])  # Coloca elementos en las coordenadas listadas. El simbolo 'J' representa jarron.
-    colocar("O", [(32, 40)])  # Coloca elementos en las coordenadas listadas. El simbolo 'O' representa objeto animado.
-    colocar("L", [(29, 40), (34, 41), (30, 41)])  # Coloca elementos en las coordenadas listadas. El simbolo 'L' representa troncos.
-    colocar("B", [(28, 41), (34, 39)])  # Coloca elementos en las coordenadas listadas. El simbolo 'B' representa barril.
-    colocar("X", [(30, 37), (35, 39)])  # Coloca elementos en las coordenadas listadas. El simbolo 'X' representa mueble.
-    colocar("C", [(35, 41)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("b", [(33, 40), (31, 38), (33, 42)])  # Coloca elementos en las coordenadas listadas. El simbolo 'b' representa huesos.
-    reservar_circulo(32, 40, 4.0)  # Protege el area circular de cambios aleatorios.
-    edificio((30, 43, 35, 46), "#", "_", (32, 43))  # Crea un edificio de losas con paredes de piedra y puerta.
-    colocar("F", [(31, 44), (34, 44)])  # Coloca elementos en las coordenadas listadas. El simbolo 'F' representa brasero animado.
-    colocar("C", [(33, 45)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
-    colocar("S", [(31, 45)])  # Coloca elementos en las coordenadas listadas. El simbolo 'S' representa elemento de escenario.
+    edificio((32, 33, 36, 36), "d", ":", (34, 36))
+    colocar("C", [(33, 34)])
+    colocar("J", [(35, 34)])
+    colocar("O", [(32, 40)])
+    colocar("L", [(29, 40), (34, 41), (30, 41)])
+    colocar("B", [(28, 41), (34, 39)])
+    colocar("X", [(30, 37), (35, 39)])
+    colocar("C", [(35, 41)])
+    colocar("b", [(33, 40), (31, 38), (33, 42)])
+    reservar_circulo(32, 40, 4.0)
+    edificio((30, 43, 35, 46), "#", "_", (32, 43))
+    colocar("F", [(31, 44), (34, 44)])
+    colocar("C", [(33, 45)])
+    colocar("S", [(31, 45)])
 
-    colocar("R", [(35, 18), (36, 27), (35, 31), (34, 20), (36, 19), (16, 3), (17, 13), (16, 12), (33, 12), (34, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("M", [(35, 5), (34, 13), (16, 5), (17, 12), (36, 32), (47, 31)])  # Coloca elementos en las coordenadas listadas. El simbolo 'M' representa hongo.
-    colocar("R", [(60, 34), (64, 17), (70, 17), (76, 17)])  # Coloca elementos en las coordenadas listadas. El simbolo 'R' representa roca.
-    colocar("C", [(77, 12)])  # Coloca elementos en las coordenadas listadas. El simbolo 'C' representa cofre.
+    colocar("R", [(35, 18), (36, 27), (35, 31), (34, 20), (36, 19), (16, 3), (17, 13), (16, 12), (33, 12), (34, 12)])
+    colocar("M", [(35, 5), (34, 13), (16, 5), (17, 12), (36, 32), (47, 31)])
+    colocar("R", [(60, 34), (64, 17), (70, 17), (76, 17)])
+    colocar("C", [(77, 12)])
 
-    for x, y in ((23, 6), (28, 6), (23, 11), (28, 11), (12, 6), (12, 11), (35, 6), (35, 11), (46, 6), (46, 11),  # Inicia un ciclo que procesa cada elemento indicado.
-                 (55, 6), (58, 6), (55, 11), (58, 11), (55, 20), (58, 20), (55, 26), (58, 26),  # Continua la lista de datos de esta configuracion o llamada.
-                 (23, 30), (28, 30), (23, 38), (28, 38), (47, 30), (52, 30), (47, 36), (52, 41),  # Continua la lista de datos de esta configuracion o llamada.
-                 (64, 7), (69, 7), (64, 11), (69, 11), (64, 27), (69, 27), (64, 33), (69, 33), (64, 42), (69, 42)):  # Inicia el bloque de instrucciones de esta estructura.
-        if dentro(x, y) and celdas[y][x] in VERDES:  # Comprueba una condicion que controla el bloque siguiente.
-            poner(x, y, "q")  # Escribe un simbolo en una casilla.
+    for x, y in ((23, 6), (28, 6), (23, 11), (28, 11), (12, 6), (12, 11), (35, 6), (35, 11), (46, 6), (46, 11),
+                 (55, 6), (58, 6), (55, 11), (58, 11), (55, 20), (58, 20), (55, 26), (58, 26),
+                 (23, 30), (28, 30), (23, 38), (28, 38), (47, 30), (52, 30), (47, 36), (52, 41),
+                 (64, 7), (69, 7), (64, 11), (69, 11), (64, 27), (69, 27), (64, 33), (69, 33), (64, 42), (69, 42)):
+        if dentro(x, y) and celdas[y][x] in VERDES:
+            poner(x, y, "q")
 
-    DENSIDAD = {None: 0.55, 0: 0.42, 1: 0.10, 2: 0.15, 3: 0.0, 4: 0.0, 5: 0.09, 6: 0.66, 7: 0.0, 8: 0.0}  # Asigna un valor a densidad de arboles por zona.
-    for y in range(alto):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(ancho):  # Inicia un ciclo que procesa cada elemento indicado.
-            if celdas[y][x] not in VERDES or reservado[y][x]:  # Comprueba una condicion que controla el bloque siguiente.
-                continue  # Pasa a la siguiente vuelta del ciclo.
-            zona = zona_en(x, y)  # Asigna un valor a zona.
-            borde = min(x, y, ancho - 1 - x, alto - 1 - y)  # Asigna un valor a borde.
-            if zona is None and borde <= 1:  # Comprueba una condicion que controla el bloque siguiente.
-                p = 0.93  # Asigna un valor a p.
-            elif zona is None and borde <= 3:  # Comprueba una condicion alternativa.
-                p = 0.62  # Asigna un valor a p.
-            else:  # Inicia la alternativa si las condiciones anteriores son falsas.
-                p = DENSIDAD[zona] * (0.3 + 1.5 * ruido(x, y, 5.0, 1) ** 1.3)  # Asigna un valor a p.
-            if rng.random() >= p:  # Comprueba una condicion que controla el bloque siguiente.
-                continue  # Pasa a la siguiente vuelta del ciclo.
-            r = rng.random()  # Asigna un valor a r.
-            if zona == 2:  # Comprueba una condicion que controla el bloque siguiente.
-                celdas[y][x] = "y" if r < 0.55 else ("t" if r < 0.9 else "T")  # Asigna un valor a celdas[y][x].
-            elif zona == 6:  # Comprueba una condicion alternativa.
-                celdas[y][x] = "T" if r < 0.58 else ("t" if r < 0.88 else "y")  # Asigna un valor a celdas[y][x].
-            else:  # Inicia la alternativa si las condiciones anteriores son falsas.
-                celdas[y][x] = "T" if r < 0.36 else ("t" if r < 0.76 else "y")  # Asigna un valor a celdas[y][x].
+    DENSIDAD = {None: 0.55, 0: 0.42, 1: 0.10, 2: 0.15, 3: 0.0, 4: 0.0, 5: 0.09, 6: 0.66, 7: 0.0, 8: 0.0}
+    for y in range(alto):
+        for x in range(ancho):
+            if celdas[y][x] not in VERDES or reservado[y][x]:
+                continue
+            zona = zona_en(x, y)
+            borde = min(x, y, ancho - 1 - x, alto - 1 - y)
+            if zona is None and borde <= 1:
+                p = 0.93
+            elif zona is None and borde <= 3:
+                p = 0.62
+            else:
+                p = DENSIDAD[zona] * (0.3 + 1.5 * ruido(x, y, 5.0, 1) ** 1.3)
+            if rng.random() >= p:
+                continue
+            r = rng.random()
+            if zona == 2:
+                celdas[y][x] = "y" if r < 0.55 else ("t" if r < 0.9 else "T")
+            elif zona == 6:
+                celdas[y][x] = "T" if r < 0.58 else ("t" if r < 0.88 else "y")
+            else:
+                celdas[y][x] = "T" if r < 0.36 else ("t" if r < 0.76 else "y")
 
-    DECORACION = {  # Asigna un valor a probabilidades de decoracion por zona.
-        None: (("h", 0.07), ("f", 0.05), ("m", 0.02), ("b", 0.004)),  # Continua la lista de datos de esta configuracion o llamada.
-        0: (("h", 0.10), ("f", 0.04), ("m", 0.05), ("b", 0.004)),  # Continua la lista de datos de esta configuracion o llamada.
-        2: (("s", 0.05), ("j", 0.05), ("m", 0.04), ("b", 0.015)),  # Continua la lista de datos de esta configuracion o llamada.
-        5: (("f", 0.22), ("h", 0.05)),  # Continua la lista de datos de esta configuracion o llamada.
-        6: (("h", 0.14), ("m", 0.06), ("f", 0.02)),  # Continua la lista de datos de esta configuracion o llamada.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    for y in range(alto):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(ancho):  # Inicia un ciclo que procesa cada elemento indicado.
-            if celdas[y][x] not in VERDES:  # Comprueba una condicion que controla el bloque siguiente.
-                continue  # Pasa a la siguiente vuelta del ciclo.
-            tabla = DECORACION.get(zona_en(x, y), ())  # Asigna un valor a tabla.
-            r = rng.random()  # Asigna un valor a r.
-            acumulado = 0.0  # Asigna un valor a acumulado.
-            for ch, prob in tabla:  # Inicia un ciclo que procesa cada elemento indicado.
-                acumulado += prob  # Asigna un valor a acumulado +.
-                if r < acumulado:  # Comprueba una condicion que controla el bloque siguiente.
-                    celdas[y][x] = ch  # Asigna un valor a celdas[y][x].
-                    break  # Termina anticipadamente el ciclo.
-    for y in range(alto):  # Inicia un ciclo que procesa cada elemento indicado.
-        for x in range(ancho):  # Inicia un ciclo que procesa cada elemento indicado.
-            if celdas[y][x] in VERDES and any(dentro(x + dx, y + dy) and celdas[y + dy][x + dx] in ("~", "v")  # Comprueba una condicion que controla el bloque siguiente.
-                                              for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):  # Inicia un ciclo que procesa cada elemento indicado.
-                if rng.random() < 0.55:  # Comprueba una condicion que controla el bloque siguiente.
-                    celdas[y][x] = "j"  # Asigna un valor a celdas[y][x].
+    DECORACION = {
+        None: (("h", 0.07), ("f", 0.05), ("m", 0.02), ("b", 0.004)),
+        0: (("h", 0.10), ("f", 0.04), ("m", 0.05), ("b", 0.004)),
+        2: (("s", 0.05), ("j", 0.05), ("m", 0.04), ("b", 0.015)),
+        5: (("f", 0.22), ("h", 0.05)),
+        6: (("h", 0.14), ("m", 0.06), ("f", 0.02)),
+    }
+    for y in range(alto):
+        for x in range(ancho):
+            if celdas[y][x] not in VERDES:
+                continue
+            tabla = DECORACION.get(zona_en(x, y), ())
+            r = rng.random()
+            acumulado = 0.0
+            for ch, prob in tabla:
+                acumulado += prob
+                if r < acumulado:
+                    celdas[y][x] = ch
+                    break
+    for y in range(alto):
+        for x in range(ancho):
+            if celdas[y][x] in VERDES and any(dentro(x + dx, y + dy) and celdas[y + dy][x + dx] in ("~", "v")
+                                              for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                if rng.random() < 0.55:
+                    celdas[y][x] = "j"
 
-    celdas[8][7] = "P"  # Asigna un valor a celdas[8][7].
-    for zona in ZONAS:  # Recorre las zonas para colocar sus puertas de salida.
-        for x, y in zona.get("puertas", ()):  # Recorre solo las puertas asociadas a esta zona.
-            celdas[y][x] = "G"  # Asigna un valor a celdas[y][x].
-    return ["".join(fila) for fila in celdas]  # Devuelve el resultado y termina la funcion.
+    celdas[8][7] = "P"
+    for zona in ZONAS:
+        for x, y in zona.get("puertas", ()):
+            celdas[y][x] = "G"
+    return ["".join(fila) for fila in celdas]
 
 
 # El plano generado se comparte entre renderizado, navegación y zonas de oleadas.
-MAPA = _crear_mapa()  # Asigna un valor a plano del mundo.
+MAPA = _crear_mapa()
 
-MUNDO_ANCHO = len(MAPA[0]) * TAM_TILE  # Asigna un valor a ancho total del mundo.
-MUNDO_ALTO = len(MAPA) * TAM_TILE  # Asigna un valor a alto total del mundo.
+MUNDO_ANCHO = len(MAPA[0]) * TAM_TILE
+MUNDO_ALTO = len(MAPA) * TAM_TILE
 
-print("---------- FIN DE LA CONFIGURACION ----------")  # Muestra un encabezado en la consola durante el arranque.
+# Fin de las constantes de configuracion y del plano del mundo.
+print("---------- FIN DE LA CONFIGURACION ----------")
 
-print("---------- ESTADO DE LA PARTIDA Y RECURSOS GRAFICOS ----------")  # Muestra un encabezado en la consola durante el arranque.
+print("---------- ESTADO DE LA PARTIDA Y RECURSOS GRAFICOS ----------")
 # Estados de interfaz y referencias globales compartidas entre el bucle y las pantallas.
-print("---------- ESTADO INTERNO, COLORES Y FUENTES ----------")  # Muestra un encabezado en la consola durante el arranque.
-blanco = (255, 255, 255)  # Asigna un valor a blanco.
-negro = (0, 0, 0)  # Asigna un valor a negro.
-amarillo = (255, 220, 80)  # Asigna un valor a amarillo.
-width = 1549  # Asigna un valor a width.
-height = 900  # Asigna un valor a height.
-RUN = True  # Asigna un valor a RUN.
-JUGAR = False  # Asigna un valor a JUGAR.
-CARGANDO = False  # Asigna un valor a CARGANDO.
-TIEMPO_CARGA = 1.8  # Asigna un valor a TIEMPO_CARGA.
-tiempo_carga_restante = 0.0  # Asigna un valor a tiempo_carga_restante.
-AJUSTES = False  # Asigna un valor a AJUSTES.
-MUSICA = False  # Asigna un valor a MUSICA.
-PAUSA = False  # Asigna un valor a PAUSA.
-RANURAS = False  # Asigna un valor a RANURAS.
-CONTROLES = False  # Asigna un valor a CONTROLES.
-MOSTRAR_HITBOX = False  # Asigna un valor a MOSTRAR_HITBOX.
-MOSTRAR_HUD = True  # Asigna un valor a MOSTRAR_HUD.
-MOSTRAR_CONTROLES = True  # Asigna un valor a MOSTRAR_CONTROLES.
-CURSOR_BLOQUEADO = False  # Asigna un valor a CURSOR_BLOQUEADO.
-camara = pygame.Vector2(0, 0)  # Asigna un valor a camara.
-mapa = None  # Asigna un valor a mapa.
-partida = None  # Asigna un valor a partida.
-captura = None  # Asigna un valor a captura.
-menu_font = pygame.font.Font(None, 45)  # Asigna un valor a menu_font.
-titulo_font = pygame.font.Font(None, 110)  # Asigna un valor a titulo_font.
-fuente_peq = pygame.font.Font(None, 34)  # Asigna un valor a fuente_peq.
-reloj = pygame.time.Clock()  # Asigna un valor a reloj.
+print("---------- ESTADO INTERNO, COLORES Y FUENTES ----------")
+blanco = (255, 255, 255)
+negro = (0, 0, 0)
+amarillo = (255, 220, 80)
+width = 1549
+height = 900
+RUN = True
+JUGAR = False
+CARGANDO = False
+TIEMPO_CARGA = 1.8
+tiempo_carga_restante = 0.0
+AJUSTES = False
+MUSICA = False
+PAUSA = False
+RANURAS = False
+CONTROLES = False
+MOSTRAR_HITBOX = False
+MOSTRAR_HUD = True
+MOSTRAR_CONTROLES = True
+CURSOR_BLOQUEADO = False
+camara = pygame.Vector2(0, 0)
+mapa = None
+partida = None
+captura = None
+menu_font = pygame.font.Font(None, 45)
+titulo_font = pygame.font.Font(None, 110)
+fuente_peq = pygame.font.Font(None, 34)
+reloj = pygame.time.Clock()
 
-print("---------- MUSICA: LISTA DE REPRODUCCION ----------")  # Muestra un encabezado en la consola durante el arranque.
-MUSICA_EXT = (".mp3", ".ogg", ".wav")  # Asigna un valor a MUSICA_EXT.
+# Busca las canciones de la carpeta 'musica' y prepara la lista de reproduccion.
+print("---------- MUSICA: LISTA DE REPRODUCCION ----------")
+MUSICA_EXT = (".mp3", ".ogg", ".wav")
 
 
 # Descubre las pistas reproducibles en la carpeta de música del proyecto.
-def buscar_canciones():  # Define la funcion buscar_canciones: busca pistas compatibles en la carpeta de musica.
-    rutas = []  # Asigna un valor a rutas.
-    if os.path.isdir("musica"):  # Comprueba una condicion que controla el bloque siguiente.
-        for n in sorted(os.listdir("musica")):  # Inicia un ciclo que procesa cada elemento indicado.
-            if n.lower().endswith(MUSICA_EXT):  # Comprueba una condicion que controla el bloque siguiente.
-                rutas.append(os.path.join("musica", n))  # Completa los argumentos o datos usados por esta parte del juego.
-    return rutas  # Devuelve el resultado y termina la funcion.
+def buscar_canciones():
+    rutas = []
+    if os.path.isdir("musica"):
+        for n in sorted(os.listdir("musica")):
+            if n.lower().endswith(MUSICA_EXT):
+                rutas.append(os.path.join("musica", n))
+    return rutas
 
 
-canciones = buscar_canciones()  # Asigna un valor a canciones.
-activas = {c: True for c in canciones}  # Asigna un valor a activas.
-actual = -1  # Asigna un valor a actual.
-scroll = 0  # Asigna un valor a scroll.
-FILAS_VISIBLES = 7  # Asigna un valor a FILAS_VISIBLES.
+canciones = buscar_canciones()
+activas = {c: True for c in canciones}
+actual = -1
+scroll = 0
+FILAS_VISIBLES = 7
 
-ajustes = {"musica": 0.0, "efectos": 0.5, "pantalla_completa": True, "mostrar_fps": False}  # Asigna un valor a ajustes.
-audio_acciones = AudioAcciones(  # Asigna un valor a audio_acciones.
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "sonidos")  # Ejecuta la operacion del objeto o biblioteca indicada.
-)  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-audio_acciones.cargar()  # Ejecuta la operacion del objeto o biblioteca indicada.
+ajustes = {"musica": 0.0, "efectos": 0.5, "pantalla_completa": True, "mostrar_fps": False}
+audio_acciones = AudioAcciones(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "sonidos")
+)
+audio_acciones.cargar()
 
-SONIDOS_ATAQUE = (  # Asigna un valor a SONIDOS_ATAQUE.
-    "ataque_espada",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_embestida",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_aereo",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_giro",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_enemigo_cuerpo",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_enemigo_distancia",  # Continua la lista de datos de esta configuracion o llamada.
-    "ataque_jefe",  # Continua la lista de datos de esta configuracion o llamada.
-)  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+SONIDOS_ATAQUE = (
+    "ataque_espada",
+    "ataque_embestida",
+    "ataque_aereo",
+    "ataque_giro",
+    "ataque_enemigo_cuerpo",
+    "ataque_enemigo_distancia",
+    "ataque_jefe",
+)
 
 
 # Aplica el volumen de efectos y delega la reproducción al gestor de sonidos.
-def reproducir_sonido(nombre, bloquear_si_activo=(), reemplazar=()):  # Define la funcion reproducir_sonido: agrupa instrucciones relacionadas.
-    return audio_acciones.reproducir(  # Devuelve el resultado y termina la funcion.
-        nombre,  # Continua la lista de datos de esta configuracion o llamada.
-        ajustes["efectos"],  # Continua la lista de datos de esta configuracion o llamada.
-        bloquear_si_activo=bloquear_si_activo,  # Asigna un valor a bloquear_si_activo.
-        reemplazar=reemplazar,  # Asigna un valor a reemplazar.
-    )  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+def reproducir_sonido(nombre, bloquear_si_activo=(), reemplazar=()):
+    return audio_acciones.reproducir(
+        nombre,
+        ajustes["efectos"],
+        bloquear_si_activo=bloquear_si_activo,
+        reemplazar=reemplazar,
+    )
 
 
-print("---------- GUARDADO DE PARTIDAS ----------")  # Muestra un encabezado en la consola durante el arranque.
-almacen_guardados = MySQLSaveSlots()  # Asigna un valor a almacen_guardados.
-ranuras_guardadas = {}  # Asigna un valor a ranuras_guardadas.
-estado_ranuras = ""  # Asigna un valor a estado_ranuras.
-ranura_activa = None  # Asigna un valor a ranura_activa.
-progreso_carga_pendiente = None  # Asigna un valor a progreso_carga_pendiente.
-ranuras_boton = pygame.Rect(0, 0, 380, 56)  # Asigna un valor a ranuras_boton.
-ranuras_boton.center = (width // 2, 690)  # Asigna un valor a ranuras_boton.center.
-ranuras_filas = {  # Asigna un valor a ranuras_filas.
-    numero: pygame.Rect(150, 240 + (numero - 1) * 145, 1300, 112)  # Completa los argumentos o datos usados por esta parte del juego.
-    for numero in (1, 2, 3)  # Inicia un ciclo que procesa cada elemento indicado.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-ranuras_cargar = {  # Asigna un valor a ranuras_cargar.
-    numero: pygame.Rect(1000, 270 + (numero - 1) * 145, 180, 54)  # Completa los argumentos o datos usados por esta parte del juego.
-    for numero in (1, 2, 3)  # Inicia un ciclo que procesa cada elemento indicado.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-ranuras_guardar = {  # Asigna un valor a ranuras_guardar.
-    numero: pygame.Rect(1200, 270 + (numero - 1) * 145, 180, 54)  # Completa los argumentos o datos usados por esta parte del juego.
-    for numero in (1, 2, 3)  # Inicia un ciclo que procesa cada elemento indicado.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-boton_ranuras_final = pygame.Rect(0, 0, 380, 56)  # Asigna un valor a boton_ranuras_final.
-boton_ranuras_final.center = (width // 2, 205)  # Asigna un valor a boton_ranuras_final.center.
-sliders = {  # Asigna un valor a sliders.
-    "musica": pygame.Rect(800, 294, 400, 12),  # Define el dato asociado a la clave musica.
-    "efectos": pygame.Rect(800, 374, 400, 12),  # Define el dato asociado a la clave efectos.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-interruptores = {  # Asigna un valor a interruptores.
-    "pantalla_completa": pygame.Rect(800, 438, 120, 48),  # Define el dato asociado a la clave pantalla_completa.
-    "mostrar_fps": pygame.Rect(800, 518, 120, 48),  # Define el dato asociado a la clave mostrar_fps.
-}  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-arrastrando = None  # Asigna un valor a arrastrando.
+# Prepara el almacen MySQL, las ranuras de guardado y los rectangulos de la interfaz de ajustes.
+print("---------- GUARDADO DE PARTIDAS ----------")
+almacen_guardados = MySQLSaveSlots()
+ranuras_guardadas = {}
+estado_ranuras = ""
+ranura_activa = None
+progreso_carga_pendiente = None
+ranuras_boton = pygame.Rect(0, 0, 380, 56)
+ranuras_boton.center = (width // 2, 690)
+ranuras_filas = {
+    numero: pygame.Rect(150, 240 + (numero - 1) * 145, 1300, 112)
+    for numero in (1, 2, 3)
+}
+ranuras_cargar = {
+    numero: pygame.Rect(1000, 270 + (numero - 1) * 145, 180, 54)
+    for numero in (1, 2, 3)
+}
+ranuras_guardar = {
+    numero: pygame.Rect(1200, 270 + (numero - 1) * 145, 180, 54)
+    for numero in (1, 2, 3)
+}
+boton_ranuras_final = pygame.Rect(0, 0, 380, 56)
+boton_ranuras_final.center = (width // 2, 205)
+sliders = {
+    "musica": pygame.Rect(800, 294, 400, 12),
+    "efectos": pygame.Rect(800, 374, 400, 12),
+}
+interruptores = {
+    "pantalla_completa": pygame.Rect(800, 438, 120, 48),
+    "mostrar_fps": pygame.Rect(800, 518, 120, 48),
+}
+arrastrando = None
 
-print("---------- CONFIGURACION DE VENTANA ----------")  # Muestra un encabezado en la consola durante el arranque.
+# Crea la superficie logica del juego y la ventana en pantalla completa.
+print("---------- CONFIGURACION DE VENTANA ----------")
 
-game_surface = pygame.Surface((width, height))  # Asigna un valor a game_surface.
-ventana = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Asigna un valor a ventana.
-pygame.display.set_caption("DUNGEON FANTASY")  # Ejecuta la operacion del objeto o biblioteca indicada.
+game_surface = pygame.Surface((width, height))
+ventana = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+pygame.display.set_caption("DUNGEON FANTASY")
 
 
-print("---------- FONDO PERSONALIZADO Y VIDEO ----------")  # Muestra un encabezado en la consola durante el arranque.
+print("---------- FONDO PERSONALIZADO Y VIDEO ----------")
 # Carga una imagen estática de menú o genera un degradado como alternativa.
-def cargar_fondo():  # Define la funcion cargar_fondo: carga una imagen o genera un fondo degradado.
-    carpeta_proyecto = os.path.dirname(os.path.abspath(__file__))  # Asigna un valor a carpeta_proyecto.
-    for nombre in ("fondo.png", "fondo.jpg", "fondo.jpeg"):  # Inicia un ciclo que procesa cada elemento indicado.
-        ruta = os.path.join(carpeta_proyecto, nombre)  # Asigna un valor a ruta.
-        if os.path.exists(ruta):  # Comprueba una condicion que controla el bloque siguiente.
-            img = pygame.image.load(ruta).convert()  # Asigna un valor a img.
-            return pygame.transform.smoothscale(img, (width, height))  # Devuelve el resultado y termina la funcion.
-    s = pygame.Surface((width, height))  # Asigna un valor a s.
-    for y in range(height):  # Inicia un ciclo que procesa cada elemento indicado.
-        t = y / height  # Asigna un valor a t.
-        pygame.draw.line(s, (int(20 + 30 * t), int(15 + 10 * t), int(50 + 60 * t)), (0, y), (width, y))  # Ejecuta la operacion del objeto o biblioteca indicada.
-    return s  # Devuelve el resultado y termina la funcion.
+def cargar_fondo():
+    carpeta_proyecto = os.path.dirname(os.path.abspath(__file__))
+    for nombre in ("fondo.png", "fondo.jpg", "fondo.jpeg"):
+        ruta = os.path.join(carpeta_proyecto, nombre)
+        if os.path.exists(ruta):
+            img = pygame.image.load(ruta).convert()
+            return pygame.transform.smoothscale(img, (width, height))
+    s = pygame.Surface((width, height))
+    for y in range(height):
+        t = y / height
+        pygame.draw.line(s, (int(20 + 30 * t), int(15 + 10 * t), int(50 + 60 * t)), (0, y), (width, y))
+    return s
 
 
-class FondoVideo:  # Define la clase FondoVideo: agrupa instrucciones relacionadas.
+# Reproduce un video en bucle como fondo del menu, leyendo fotogramas con OpenCV.
+class FondoVideo:
     # Gestiona la lectura cíclica y conversión de fotogramas de un vídeo para Pygame.
-    def __init__(self, ruta):  # Define la funcion __init__: agrupa instrucciones relacionadas.
-        import cv2  # Importa una biblioteca o clase auxiliar usada por el juego.
+    def __init__(self, ruta):
+        import cv2
 
-        self.cv2 = cv2  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.captura = cv2.VideoCapture(ruta)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        if not self.captura.isOpened():  # Comprueba una condicion que controla el bloque siguiente.
-            self.captura.release()  # Ejecuta la operacion del objeto o biblioteca indicada.
-            raise RuntimeError(f"No se pudo abrir el video de fondo: {ruta}")  # Informa del error y detiene esta operacion.
-        fps = self.captura.get(cv2.CAP_PROP_FPS)  # Asigna un valor a fps.
-        self.intervalo = 1.0 / fps if fps > 0 else 1.0 / 30  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.siguiente_frame = 0  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.superficie = None  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self._leer_frame()  # Ejecuta la operacion del objeto o biblioteca indicada.
+        self.cv2 = cv2
+        self.captura = cv2.VideoCapture(ruta)
+        if not self.captura.isOpened():
+            self.captura.release()
+            raise RuntimeError(f"No se pudo abrir el video de fondo: {ruta}")
+        fps = self.captura.get(cv2.CAP_PROP_FPS)
+        self.intervalo = 1.0 / fps if fps > 0 else 1.0 / 30
+        self.siguiente_frame = 0
+        self.superficie = None
+        self._leer_frame()
 
     # Lee el siguiente fotograma; al llegar al final, reinicia el vídeo desde el comienzo.
-    def _leer_frame(self):  # Define la funcion _leer_frame: agrupa instrucciones relacionadas.
-        correcto, frame = self.captura.read()  # Asigna un valor a correcto.
-        if not correcto:  # Comprueba una condicion que controla el bloque siguiente.
-            self.captura.set(self.cv2.CAP_PROP_POS_FRAMES, 0)  # Ejecuta la operacion del objeto o biblioteca indicada.
-            correcto, frame = self.captura.read()  # Asigna un valor a correcto.
-        if not correcto:  # Comprueba una condicion que controla el bloque siguiente.
-            raise RuntimeError("No se pudo leer un fotograma de fondo.mp4")  # Informa del error y detiene esta operacion.
-        frame = self.cv2.resize(frame, (width, height), interpolation=self.cv2.INTER_AREA)  # Asigna un valor a frame.
-        frame = self.cv2.cvtColor(frame, self.cv2.COLOR_BGR2RGB)  # Asigna un valor a frame.
-        self.superficie = pygame.image.frombuffer(frame.tobytes(), (width, height), "RGB").copy()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.siguiente_frame = pygame.time.get_ticks() + self.intervalo * 1000  # Ejecuta la operacion del objeto o biblioteca indicada.
+    def _leer_frame(self):
+        correcto, frame = self.captura.read()
+        if not correcto:
+            self.captura.set(self.cv2.CAP_PROP_POS_FRAMES, 0)
+            correcto, frame = self.captura.read()
+        if not correcto:
+            raise RuntimeError("No se pudo leer un fotograma de fondo.mp4")
+        frame = self.cv2.resize(frame, (width, height), interpolation=self.cv2.INTER_AREA)
+        frame = self.cv2.cvtColor(frame, self.cv2.COLOR_BGR2RGB)
+        self.superficie = pygame.image.frombuffer(frame.tobytes(), (width, height), "RGB").copy()
+        self.siguiente_frame = pygame.time.get_ticks() + self.intervalo * 1000
 
     # Actualiza el fotograma cuando vence su intervalo y lo dibuja en la superficie.
-    def dibujar(self, superficie):  # Define la funcion dibujar: dibuja el elemento en pantalla.
-        if pygame.time.get_ticks() >= self.siguiente_frame:  # Comprueba una condicion que controla el bloque siguiente.
-            self._leer_frame()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        superficie.blit(self.superficie, (0, 0))  # Completa los argumentos o datos usados por esta parte del juego.
+    def dibujar(self, superficie):
+        if pygame.time.get_ticks() >= self.siguiente_frame:
+            self._leer_frame()
+        superficie.blit(self.superficie, (0, 0))
 
-    def cerrar(self):  # Define la funcion cerrar: agrupa instrucciones relacionadas.
-        self.captura.release()  # Ejecuta la operacion del objeto o biblioteca indicada.
+    # Libera el archivo de video abierto.
+    def cerrar(self):
+        self.captura.release()
 
 
-fondo_menu = cargar_fondo()  # Asigna un valor a fondo_menu.
-video_fondo = None  # Asigna un valor a video_fondo.
-ruta_video_fondo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fondo.mp4")  # Asigna un valor a ruta_video_fondo.
-if os.path.isfile(ruta_video_fondo):  # Comprueba una condicion que controla el bloque siguiente.
-    try:  # Inicia el bloque de instrucciones de esta estructura.
-        video_fondo = FondoVideo(ruta_video_fondo)  # Asigna un valor a video_fondo.
-    except (ImportError, OSError, RuntimeError) as error:  # Inicia el bloque de instrucciones de esta estructura.
-        print(f"Aviso: se usara el fondo estatico; {error}")  # Muestra un encabezado en la consola durante el arranque.
-velo = pygame.Surface((width, height), pygame.SRCALPHA)  # Asigna un valor a velo.
-velo.fill((0, 0, 0, 120))  # Completa los argumentos o datos usados por esta parte del juego.
+fondo_menu = cargar_fondo()
+video_fondo = None
+ruta_video_fondo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fondo.mp4")
+if os.path.isfile(ruta_video_fondo):
+    try:
+        video_fondo = FondoVideo(ruta_video_fondo)
+    except (ImportError, OSError, RuntimeError) as error:
+        print(f"Aviso: se usara el fondo estatico; {error}")
+velo = pygame.Surface((width, height), pygame.SRCALPHA)
+velo.fill((0, 0, 0, 120))
 
-opciones = []  # Asigna un valor a opciones.
-for texto, y, valor in [  # Inicia un ciclo que procesa cada elemento indicado.
-    ("jugar", 390, "jugar"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("controles", 465, "controles"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("ajustes", 540, "ajustes"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("salir", 615, "salir"),  # Continua la lista de datos de esta configuracion o llamada.
-]:  # Inicia el bloque de instrucciones de esta estructura.
-    rect = pygame.Rect(0, 0, 340, 62)  # Asigna un valor a rect.
-    rect.center = (width // 2, y)  # Asigna un valor a rect.center.
-    opciones.append({"texto": texto, "rect": rect, "modo": valor})  # Completa los argumentos o datos usados por esta parte del juego.
+opciones = []
+for texto, y, valor in [
+    ("jugar", 390, "jugar"),
+    ("controles", 465, "controles"),
+    ("ajustes", 540, "ajustes"),
+    ("salir", 615, "salir"),
+]:
+    rect = pygame.Rect(0, 0, 340, 62)
+    rect.center = (width // 2, y)
+    opciones.append({"texto": texto, "rect": rect, "modo": valor})
 
-boton_canciones = pygame.Rect(0, 0, 380, 56)  # Asigna un valor a boton_canciones.
-boton_canciones.center = (width // 2, 600)  # Asigna un valor a boton_canciones.center.
-boton_anterior = pygame.Rect(0, 0, 260, 56)  # Asigna un valor a boton_anterior.
-boton_anterior.center = (width // 2 - 200, 690)  # Asigna un valor a boton_anterior.center.
-boton_siguiente = pygame.Rect(0, 0, 260, 56)  # Asigna un valor a boton_siguiente.
-boton_siguiente.center = (width // 2 + 200, 690)  # Asigna un valor a boton_siguiente.center.
-boton_volver_musica = pygame.Rect(0, 0, 260, 56)  # Asigna un valor a boton_volver_musica.
-boton_volver_musica.center = (width // 2, 840)  # Asigna un valor a boton_volver_musica.center.
-boton_volver_controles = pygame.Rect(0, 0, 260, 56)  # Asigna un valor a boton_volver_controles.
-boton_volver_controles.center = (width // 2, 840)  # Asigna un valor a boton_volver_controles.center.
+boton_canciones = pygame.Rect(0, 0, 380, 56)
+boton_canciones.center = (width // 2, 600)
+boton_anterior = pygame.Rect(0, 0, 260, 56)
+boton_anterior.center = (width // 2 - 200, 690)
+boton_siguiente = pygame.Rect(0, 0, 260, 56)
+boton_siguiente.center = (width // 2 + 200, 690)
+boton_volver_musica = pygame.Rect(0, 0, 260, 56)
+boton_volver_musica.center = (width // 2, 840)
+boton_volver_controles = pygame.Rect(0, 0, 260, 56)
+boton_volver_controles.center = (width // 2, 840)
 
-opciones_pausa = []  # Asigna un valor a opciones_pausa.
-for texto, y, valor in [  # Inicia un ciclo que procesa cada elemento indicado.
-    ("reanudar", 400, "reanudar"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("controles", 470, "controles"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("ajustes", 540, "ajustes"),  # Continua la lista de datos de esta configuracion o llamada.
-    ("menu principal", 610, "menu"),  # Continua la lista de datos de esta configuracion o llamada.
-]:  # Inicia el bloque de instrucciones de esta estructura.
-    rect = pygame.Rect(0, 0, 400, 62)  # Asigna un valor a rect.
-    rect.center = (width // 2, y)  # Asigna un valor a rect.center.
-    opciones_pausa.append({"texto": texto, "rect": rect, "modo": valor})  # Completa los argumentos o datos usados por esta parte del juego.
+opciones_pausa = []
+for texto, y, valor in [
+    ("reanudar", 400, "reanudar"),
+    ("controles", 470, "controles"),
+    ("ajustes", 540, "ajustes"),
+    ("menu principal", 610, "menu"),
+]:
+    rect = pygame.Rect(0, 0, 400, 62)
+    rect.center = (width // 2, y)
+    opciones_pausa.append({"texto": texto, "rect": rect, "modo": valor})
 
-print("------------CLASES U OBJETOS------------")  # Muestra un encabezado en la consola durante el arranque.
+# A partir de aqui se definen las clases del juego.
+print("------------CLASES U OBJETOS------------")
 
-print("---------- CLASES DEL MAPA ----------")  # Muestra un encabezado en la consola durante el arranque.
-class Prop:  # Define la clase Prop: representa un objeto del escenario con colision opcional.
+# Objetos del escenario (props, cofres, pociones) y el mapa con sus colisiones y dibujo.
+print("---------- CLASES DEL MAPA ----------")
+class Prop:
     # Elemento visual del mapa, anclado por los pies y opcionalmente animado/ sólido.
-    def __init__(self, frames, pie, colision=None, fps=0, desfase=0.0):  # Define la funcion __init__: agrupa instrucciones relacionadas.
-        self.frames = frames  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.fps = fps  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.desfase = desfase  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.pie = pie  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.solido = colision is not None  # Ejecuta la operacion del objeto o biblioteca indicada.
-        ancho, alto = colision if colision else (1, 1)  # Asigna un valor a ancho.
-        self.rect = pygame.Rect(0, 0, int(ancho), int(alto))  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.rect.midbottom = pie  # Ejecuta la operacion del objeto o biblioteca indicada.
+    def __init__(self, frames, pie, colision=None, fps=0, desfase=0.0):
+        self.frames = frames
+        self.fps = fps
+        self.desfase = desfase
+        self.pie = pie
+        self.solido = colision is not None
+        ancho, alto = colision if colision else (1, 1)
+        self.rect = pygame.Rect(0, 0, int(ancho), int(alto))
+        self.rect.midbottom = pie
 
-    def dibujar(self, superficie, cam=(0, 0)):  # Define la funcion dibujar: dibuja el elemento en pantalla.
-        if self.fps and len(self.frames) > 1:  # Comprueba una condicion que controla el bloque siguiente.
-            imagen = self.frames[int(pygame.time.get_ticks() / 1000 * self.fps + self.desfase) % len(self.frames)]  # Asigna un valor a imagen.
-        else:  # Inicia la alternativa si las condiciones anteriores son falsas.
-            imagen = self.frames[0]  # Asigna un valor a imagen.
-        superficie.blit(imagen, imagen.get_rect(midbottom=(self.pie[0] - cam[0], self.pie[1] - cam[1])))  # Asigna un valor a superficie.blit(imagen.
+    # Dibuja el fotograma actual del objeto (animado o fijo), anclado por los pies.
+    def dibujar(self, superficie, cam=(0, 0)):
+        if self.fps and len(self.frames) > 1:
+            imagen = self.frames[int(pygame.time.get_ticks() / 1000 * self.fps + self.desfase) % len(self.frames)]
+        else:
+            imagen = self.frames[0]
+        superficie.blit(imagen, imagen.get_rect(midbottom=(self.pie[0] - cam[0], self.pie[1] - cam[1])))
 
 
-class Cofre(Prop):  # Define la clase Cofre: representa un cofre con estado abierto/cerrado.
+# Prop con dos estados visuales (cerrado/abierto); abrirlo solo cambia el estado una vez.
+class Cofre(Prop):
     # Prop con dos estados visuales; abrirlo solo cambia el estado una vez.
-    def __init__(self, imagen, imagen_abierta, pie, colision):  # Define la funcion __init__: agrupa instrucciones relacionadas.
-        super().__init__([imagen], pie, colision)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.abierto = False  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.imagen_abierta = pygame.transform.scale(imagen_abierta, imagen.get_size())  # Ejecuta la operacion del objeto o biblioteca indicada.
+    def __init__(self, imagen, imagen_abierta, pie, colision):
+        super().__init__([imagen], pie, colision)
+        self.abierto = False
+        self.imagen_abierta = pygame.transform.scale(imagen_abierta, imagen.get_size())
 
-    def abrir(self):  # Define la funcion abrir: marca el cofre como abierto una sola vez.
-        if self.abierto:  # Comprueba una condicion que controla el bloque siguiente.
-            return False  # Devuelve el resultado y termina la funcion.
-        self.abierto = True  # Ejecuta la operacion del objeto o biblioteca indicada.
-        return True  # Devuelve el resultado y termina la funcion.
+    # Marca el cofre como abierto y devuelve False si ya lo estaba.
+    def abrir(self):
+        if self.abierto:
+            return False
+        self.abierto = True
+        return True
 
-    def dibujar(self, superficie, cam=(0, 0)):  # Define la funcion dibujar: dibuja el elemento en pantalla.
-        imagen = self.imagen_abierta if self.abierto else self.frames[0]  # Asigna un valor a imagen.
-        superficie.blit(imagen, imagen.get_rect(midbottom=(self.pie[0] - cam[0], self.pie[1] - cam[1])))  # Asigna un valor a superficie.blit(imagen.
+    # Dibuja la imagen del cofre segun su estado, anclada por los pies.
+    def dibujar(self, superficie, cam=(0, 0)):
+        imagen = self.imagen_abierta if self.abierto else self.frames[0]
+        superficie.blit(imagen, imagen.get_rect(midbottom=(self.pie[0] - cam[0], self.pie[1] - cam[1])))
 
 
-class Pocion:  # Define la clase Pocion: representa una pocion recogible.
+# Objeto recogible del mundo, con un rectangulo para detectar el contacto del jugador.
+class Pocion:
     # Objeto recogible situado en el mundo, con rectángulo para detectar contacto.
-    def __init__(self, pos):  # Define la funcion __init__: agrupa instrucciones relacionadas.
-        self.pos = pygame.Vector2(pos)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.rect = pygame.Rect(0, 0, 16 * ESCALA_TILES, 16 * ESCALA_TILES)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.rect.center = self.pos  # Ejecuta la operacion del objeto o biblioteca indicada.
+    def __init__(self, pos):
+        self.pos = pygame.Vector2(pos)
+        self.rect = pygame.Rect(0, 0, 16 * ESCALA_TILES, 16 * ESCALA_TILES)
+        self.rect.center = self.pos
 
-    def dibujar(self, superficie, cam=(0, 0)):  # Define la funcion dibujar: dibuja el elemento en pantalla.
-        tamano = 18 * ESCALA_TILES  # Asigna un valor a tamano.
-        imagen = cargar_imagen_pocion((tamano, tamano))  # Asigna un valor a imagen.
-        centro = (self.rect.centerx - cam[0], self.rect.centery - cam[1])  # Asigna un valor a centro.
-        pygame.draw.circle(superficie, (245, 70, 90), centro, self.rect.width // 2 + 6 * ESCALA_TILES, 3)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        superficie.blit(imagen, imagen.get_rect(center=centro))  # Asigna un valor a superficie.blit(imagen.
+    # Dibuja la pocion con un aro rojo a su alrededor.
+    def dibujar(self, superficie, cam=(0, 0)):
+        tamano = 18 * ESCALA_TILES
+        imagen = cargar_imagen_pocion((tamano, tamano))
+        centro = (self.rect.centerx - cam[0], self.rect.centery - cam[1])
+        pygame.draw.circle(superficie, (245, 70, 90), centro, self.rect.width // 2 + 6 * ESCALA_TILES, 3)
+        superficie.blit(imagen, imagen.get_rect(center=centro))
 
 
-class Mapa:  # Define la clase Mapa: interpreta el plano como elementos del mundo.
+# Interpreta el plano de texto como suelos, muros, objetos, liquidos, rejas y colisiones, y lo dibuja.
+class Mapa:
     # Interpreta el plano en tiles, colisiones, decoraciones, cofres, líquidos y puertas.
-    SUELOS = {  # Asigna un valor a SUELOS.
-        "bosque": ([(14, 1), (15, 2), (15, 3), (15, 4), (14, 2), (14, 3)], [60, 10, 10, 10, 5, 5]),  # Define el dato asociado a la clave bosque.
-        "camino": ([(9, 2), (9, 3), (9, 4)], [1, 1, 1]),  # Define el dato asociado a la clave camino.
-        "losa": ([(10, 2), (10, 3), (10, 4)], [1, 1, 1]),  # Define el dato asociado a la clave losa.
-        "losa_roja": ([(12, 2), (12, 3), (12, 4)], [1, 1, 1]),  # Define el dato asociado a la clave losa_roja.
-        "pradera": ([(14, 1), (15, 2), (15, 3), (15, 4)], [30, 25, 25, 20]),  # Define el dato asociado a la clave pradera.
-        "barro": ([(14, 1), (14, 2), (14, 3), (14, 4)], [45, 20, 20, 15]),  # Define el dato asociado a la clave barro.
-        "hueso": ([(16, 1), (16, 2), (16, 3), (16, 4)], [6, 2, 2, 2]),  # Define el dato asociado a la clave hueso.
-        "mazmorra": ([(7, 1), (7, 2), (7, 3), (7, 4)], [8, 2, 2, 2]),  # Define el dato asociado a la clave mazmorra.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    TERRENOS = {  # Asigna un valor a TERRENOS.
-        ".": "bosque", ":": "camino", "_": "losa", "r": "losa_roja",  # Define el dato asociado a la clave ..
-        ";": "pradera", ",": "barro", "o": "hueso", "g": "mazmorra",  # Define el dato asociado a la clave ;.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    MUROS = {  # Asigna un valor a MUROS.
-        "#": ((3, 1), ([(3, 2), (3, 3)], [3, 1])),  # Asocia el caracter # con las piezas graficas del muro de piedra.
-        "d": ((1, 1), ([(1, 2)], [1])),  # Define el dato asociado a la clave d.
-        "k": ((2, 1), ([(2, 2)], [1])),  # Define el dato asociado a la clave k.
-        "i": ((4, 1), ([(4, 2)], [1])),  # Define el dato asociado a la clave i.
-        "l": ((5, 1), ([(5, 2)], [1])),  # Define el dato asociado a la clave l.
-        "c": ((6, 1), ([(6, 2)], [1])),  # Define el dato asociado a la clave c.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    REJAS = {"G": (17, 7)}  # Asigna un valor a REJAS.
-    LIQUIDOS = {"~": ("_agua", 11), "v": ("_veneno", 12)}  # Asigna un valor a LIQUIDOS.
-    OBJETOS = {  # Asigna un valor a OBJETOS.
-        "T": ([(25, 4)], 2, (12, 11)),  # Define el dato asociado a la clave T.
-        "t": ([(26, 3)], 1, (9, 9)),  # Define el dato asociado a la clave t.
-        "y": ([(26, 1), (26, 2)], 1, (6, 6)),  # Define el dato asociado a la clave y.
-        "R": ([(19, 1), (19, 2)], 1, (20, 11)),  # Define el dato asociado a la clave R.
-        "M": ([(21, 2)], 1, (10, 7)),  # Define el dato asociado a la clave M.
-        "L": ([(18, 7)], 1, (20, 11)),  # Define el dato asociado a la clave L.
-        "C": ([(18, 1)], 1, (20, 11)),  # Define el dato asociado a la clave C.
-        "A": ([(18, 2)], 1, (20, 11)),  # Define el dato asociado a la clave A.
-        "B": ([(18, 5)], 1, (16, 11)),  # Define el dato asociado a la clave B.
-        "J": ([(18, 3)], 1, (16, 11)),  # Define el dato asociado a la clave J.
-        "X": ([(18, 6)], 1, (14, 10)),  # Define el dato asociado a la clave X.
-        "K": ([(24, 1), (24, 2)], 1, (14, 10)),  # Define el dato asociado a la clave K.
-        "N": ([(24, 3)], 1, (14, 10)),  # Define el dato asociado a la clave N.
-        "S": ([(24, 4), (24, 5)], 1, (20, 12)),  # Define el dato asociado a la clave S.
-        "Z": ([(24, 6)], 1, (20, 12)),  # Define el dato asociado a la clave Z.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    DECORADOS = {  # Asigna un valor a DECORADOS.
-        "m": [(21, 1)],  # Define el dato asociado a la clave m.
-        "b": [(22, 1), (22, 2)],  # Define el dato asociado a la clave b.
-        "p": [(17, 15)],  # Define el dato asociado a la clave p.
-        "D": [(17, 4)],  # Define el dato asociado a la clave D.
-        "Q": [(17, 8)],  # Define el dato asociado a la clave Q.
-        "U": [(17, 13)],  # Define el dato asociado a la clave U.
-        "e": [(17, 16)],  # Define el dato asociado a la clave e.
-        "f": [(20, 1), (20, 2), (20, 7), (20, 10), (20, 12), (20, 14), (20, 15), (20, 16)],  # Define el dato asociado a la clave f.
-        "h": [(20, 3), (20, 4), (20, 5)],  # Define el dato asociado a la clave h.
-        "j": [(20, 6)],  # Define el dato asociado a la clave j.
-        "w": [(20, 8)],  # Define el dato asociado a la clave w.
-        "z": [(20, 9), (20, 7)],  # Define el dato asociado a la clave z.
-        "x": [(23, 1), (23, 2)],  # Define el dato asociado a la clave x.
-        "s": [(23, 3), (23, 4)],  # Define el dato asociado a la clave s.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
-    ANIMADOS = {  # Asigna un valor a ANIMADOS.
-        "F": (2, (14, 9), 8),  # Define el dato asociado a la clave F.
-        "O": (4, (16, 10), 8),  # Define el dato asociado a la clave O.
-        "q": (8, (8, 8), 5),  # Define el dato asociado a la clave q.
-    }  # Cierra la coleccion o llamada abierta en las lineas anteriores.
+    SUELOS = {
+        "bosque": ([(14, 1), (15, 2), (15, 3), (15, 4), (14, 2), (14, 3)], [60, 10, 10, 10, 5, 5]),
+        "camino": ([(9, 2), (9, 3), (9, 4)], [1, 1, 1]),
+        "losa": ([(10, 2), (10, 3), (10, 4)], [1, 1, 1]),
+        "losa_roja": ([(12, 2), (12, 3), (12, 4)], [1, 1, 1]),
+        "pradera": ([(14, 1), (15, 2), (15, 3), (15, 4)], [30, 25, 25, 20]),
+        "barro": ([(14, 1), (14, 2), (14, 3), (14, 4)], [45, 20, 20, 15]),
+        "hueso": ([(16, 1), (16, 2), (16, 3), (16, 4)], [6, 2, 2, 2]),
+        "mazmorra": ([(7, 1), (7, 2), (7, 3), (7, 4)], [8, 2, 2, 2]),
+    }
+    TERRENOS = {
+        ".": "bosque", ":": "camino", "_": "losa", "r": "losa_roja",
+        ";": "pradera", ",": "barro", "o": "hueso", "g": "mazmorra",
+    }
+    MUROS = {
+        "#": ((3, 1), ([(3, 2), (3, 3)], [3, 1])),
+        "d": ((1, 1), ([(1, 2)], [1])),
+        "k": ((2, 1), ([(2, 2)], [1])),
+        "i": ((4, 1), ([(4, 2)], [1])),
+        "l": ((5, 1), ([(5, 2)], [1])),
+        "c": ((6, 1), ([(6, 2)], [1])),
+    }
+    REJAS = {"G": (17, 7)}
+    LIQUIDOS = {"~": ("_agua", 11), "v": ("_veneno", 12)}
+    OBJETOS = {
+        "T": ([(25, 4)], 2, (12, 11)),
+        "t": ([(26, 3)], 1, (9, 9)),
+        "y": ([(26, 1), (26, 2)], 1, (6, 6)),
+        "R": ([(19, 1), (19, 2)], 1, (20, 11)),
+        "M": ([(21, 2)], 1, (10, 7)),
+        "L": ([(18, 7)], 1, (20, 11)),
+        "C": ([(18, 1)], 1, (20, 11)),
+        "A": ([(18, 2)], 1, (20, 11)),
+        "B": ([(18, 5)], 1, (16, 11)),
+        "J": ([(18, 3)], 1, (16, 11)),
+        "X": ([(18, 6)], 1, (14, 10)),
+        "K": ([(24, 1), (24, 2)], 1, (14, 10)),
+        "N": ([(24, 3)], 1, (14, 10)),
+        "S": ([(24, 4), (24, 5)], 1, (20, 12)),
+        "Z": ([(24, 6)], 1, (20, 12)),
+    }
+    DECORADOS = {
+        "m": [(21, 1)],
+        "b": [(22, 1), (22, 2)],
+        "p": [(17, 15)],
+        "D": [(17, 4)],
+        "Q": [(17, 8)],
+        "U": [(17, 13)],
+        "e": [(17, 16)],
+        "f": [(20, 1), (20, 2), (20, 7), (20, 10), (20, 12), (20, 14), (20, 15), (20, 16)],
+        "h": [(20, 3), (20, 4), (20, 5)],
+        "j": [(20, 6)],
+        "w": [(20, 8)],
+        "z": [(20, 9), (20, 7)],
+        "x": [(23, 1), (23, 2)],
+        "s": [(23, 3), (23, 4)],
+    }
+    ANIMADOS = {
+        "F": (2, (14, 9), 8),
+        "O": (4, (16, 10), 8),
+        "q": (8, (8, 8), 5),
+    }
 
     # Carga los tilesets y crea las estructuras que usan dibujo, navegación y colisiones.
-    def __init__(self, plano):  # Define la funcion __init__: agrupa instrucciones relacionadas.
-        self.plano = plano  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.filas = len(plano)  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.cols = len(plano[0])  # Ejecuta la operacion del objeto o biblioteca indicada.
-        assert all(len(f) == self.cols for f in plano), "todas las filas del plano deben tener el mismo largo"  # Completa los argumentos o datos usados por esta parte del juego.
-        for base in (os.getcwd(), os.path.dirname(os.path.abspath(__file__))):  # Inicia un ciclo que procesa cada elemento indicado.
-            carpeta = os.path.join(base, "mapa")  # Asigna un valor a carpeta.
-            if os.path.isdir(carpeta):  # Comprueba una condicion que controla el bloque siguiente.
-                break  # Termina anticipadamente el ciclo.
-        else:  # Inicia la alternativa si las condiciones anteriores son falsas.
-            print("No encuentro la carpeta 'mapa' junto a este archivo (descomprime mapa.zip).")  # Muestra un encabezado en la consola durante el arranque.
-            if video_fondo is not None:  # Comprueba una condicion que controla el bloque siguiente.
-               video_fondo.cerrar()  # Completa los argumentos o datos usados por esta parte del juego.
-            pygame.quit()  # Ejecuta la operacion del objeto o biblioteca indicada.
-            sys.exit()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.hoja_tiles = pygame.image.load(os.path.join(carpeta, "tiles.png")).convert_alpha()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.hoja_auto = pygame.image.load(os.path.join(carpeta, "autotiles.png")).convert_alpha()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.hoja_anim = pygame.image.load(os.path.join(carpeta, "animated-tiles.png")).convert_alpha()  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.imagen_cofre_abierto = pygame.image.load(  # Ejecuta la operacion del objeto o biblioteca indicada.
-            os.path.join(carpeta, "cofre_abierto.png")  # Ejecuta la operacion del objeto o biblioteca indicada.
-        ).convert_alpha()  # Completa los argumentos o datos usados por esta parte del juego.
-        self._cache = {}  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.suelo = [[[] for _ in range(self.cols)] for _ in range(self.filas)]  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.terreno_solido = [[False] * self.cols for _ in range(self.filas)]  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.bloqueada = [[False] * self.cols for _ in range(self.filas)]  # Ejecuta la operacion del objeto o biblioteca indicada.
-        self.bloquea_vista = [[False] * self.cols for _ in range(self.filas)]  # Ejecuta la operacion del objeto o biblioteca indicada.
+    def __init__(self, plano):
+        self.plano = plano
+        self.filas = len(plano)
+        self.cols = len(plano[0])
+        assert all(len(f) == self.cols for f in plano), "todas las filas del plano deben tener el mismo largo"
+        for base in (os.getcwd(), os.path.dirname(os.path.abspath(__file__))):
+            carpeta = os.path.join(base, "mapa")
+            if os.path.isdir(carpeta):
+                break
+        else:
+            print("No encuentro la carpeta 'mapa' junto a este archivo (descomprime mapa.zip).")
+            if video_fondo is not None:
+               video_fondo.cerrar()
+            pygame.quit()
+            sys.exit()
+        self.hoja_tiles = pygame.image.load(os.path.join(carpeta, "tiles.png")).convert_alpha()
+        self.hoja_auto = pygame.image.load(os.path.join(carpeta, "autotiles.png")).convert_alpha()
+        self.hoja_anim = pygame.image.load(os.path.join(carpeta, "animated-tiles.png")).convert_alpha()
+        self.imagen_cofre_abierto = pygame.image.load(
+            os.path.join(carpeta, "cofre_abierto.png")
+        ).convert_alpha()
+        self._cache = {}
+        self.suelo = [[[] for _ in range(self.cols)] for _ in range(self.filas)]
+        self.terreno_solido = [[False] * self.cols for _ in range(self.filas)]
+        self.bloqueada = [[False] * self.cols for _ in range(self.filas)]
+        self.bloquea_vista = [[False] * self.cols for _ in range(self.filas)]
         self.props = []
-        self.cofres = []  # Guarda en el objeto cofres cuyo estado puede reiniciarse.
-        self.solidos_en = {}  # Guarda en el objeto objetos solidos indexados por casilla.
-        self.animados = []  # Guarda en el objeto elementos graficos animados del mapa.
-        self.puertas_abiertas = set()  # Guarda en el objeto coordenadas de puertas ya desbloqueadas.
-        self.suelo_puerta = {}  # Guarda en el objeto suelo que queda visible al abrir cada puerta.
+        self.cofres = []
+        self.solidos_en = {}
+        self.animados = []
+        self.puertas_abiertas = set()
+        self.suelo_puerta = {}
         self.reja_temporal = None
-        self.puerta_img = escalar_imagen(  # Guarda en el objeto sprite de una reja cerrada.
-            self.hoja_tiles.subsurface(((17 - 1) * 32, (7 - 1) * 32, 32, 32)).copy(),  # Consulta o modifica el estado del objeto actual.
-            ESCALA_TILES,  # Continua la lista de argumentos o valores de esta instruccion.
-        )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        self.inicio = (self.cols * TAM_TILE // 2, self.filas * TAM_TILE // 2)  # Guarda en el objeto posicion inicial del jugador.
-        self._agua = self._autotiles(1)  # Carga tiles de borde para el tipo de liquido indicado.
-        self._veneno = self._autotiles(5)  # Carga tiles de borde para el tipo de liquido indicado.
-        self._construir()  # Construye las capas y colisiones de todas las casillas.
+        self.puerta_img = escalar_imagen(
+            self.hoja_tiles.subsurface(((17 - 1) * 32, (7 - 1) * 32, 32, 32)).copy(),
+            ESCALA_TILES,
+        )
+        self.inicio = (self.cols * TAM_TILE // 2, self.filas * TAM_TILE // 2)
+        self._agua = self._autotiles(1)
+        self._veneno = self._autotiles(5)
+        self._construir()
 
     # Extrae del tileset una imagen escalada y la conserva en caché.
-    def pieza(self, fila, col, alto=1):  # Define la metodo pieza: extrae, escala y cachea una pieza grafica del tileset.
-        clave = (fila, col, alto)  # Calcula o guarda clave para el resto del metodo.
-        if clave not in self._cache:  # Evalua la condicion que decide el comportamiento siguiente.
-            img = self.hoja_tiles.subsurface(((col - 1) * 32, (fila - 1) * 32, 32, 32 * alto)).copy()  # Calcula o guarda img para el resto del metodo.
-            self._cache[clave] = escalar_imagen(img, ESCALA_TILES)  # Guarda en el objeto _cache[clave].
-        return self._cache[clave]  # Devuelve el dato calculado por este metodo.
+    def pieza(self, fila, col, alto=1):
+        clave = (fila, col, alto)
+        if clave not in self._cache:
+            img = self.hoja_tiles.subsurface(((col - 1) * 32, (fila - 1) * 32, 32, 32 * alto)).copy()
+            self._cache[clave] = escalar_imagen(img, ESCALA_TILES)
+        return self._cache[clave]
 
-    @staticmethod  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def _firma(tile):  # Define la metodo _firma: describe los bordes opacos de un autotile.
-        def opaco(x, y):  # Define la metodo opaco: consulta la transparencia de un pixel.
-            return tile.get_at((x, y)).a > 0  # Devuelve el dato calculado por este metodo.
-        n, e, s, w = opaco(16, 0), opaco(31, 16), opaco(16, 31), opaco(0, 16)  # Calcula o guarda n para el resto del metodo.
-        def esquina(x0, y0, lados):  # Define la metodo esquina: comprueba si una esquina del autotile esta cubierta.
-            if not all(lados):  # Evalua la condicion que decide el comportamiento siguiente.
-                return False  # Devuelve False para comunicar el resultado de la comprobacion.
-            return all(tile.get_at((x, y)).a > 0 for y in range(y0, y0 + 6) for x in range(x0, x0 + 6))  # Devuelve el dato calculado por este metodo.
-        return (n, e, s, w, esquina(0, 0, (n, w)), esquina(26, 0, (n, e)), esquina(0, 26, (s, w)), esquina(26, 26, (s, e)))  # Devuelve el dato calculado por este metodo.
+    # Describe los bordes opacos y esquinas de un autotile para poder emparejarlo con sus vecinos.
+    @staticmethod
+    def _firma(tile):
+        # Indica si un pixel del tile no es transparente.
+        def opaco(x, y):
+            return tile.get_at((x, y)).a > 0
+        n, e, s, w = opaco(16, 0), opaco(31, 16), opaco(16, 31), opaco(0, 16)
+        # Comprueba si una esquina del autotile esta cubierta de pixeles opacos.
+        def esquina(x0, y0, lados):
+            if not all(lados):
+                return False
+            return all(tile.get_at((x, y)).a > 0 for y in range(y0, y0 + 6) for x in range(x0, x0 + 6))
+        return (n, e, s, w, esquina(0, 0, (n, w)), esquina(26, 0, (n, e)), esquina(0, 26, (s, w)), esquina(26, 26, (s, e)))
 
     # Indexa las piezas de agua o veneno por la forma de sus bordes transparentes.
-    def _autotiles(self, fila0):  # Define la metodo _autotiles: carga y clasifica las piezas graficas del liquido.
-        piezas = {}  # Calcula o guarda piezas para el resto del metodo.
-        for f in range(4):  # Repite la operacion por cada indice o paso de este rango.
-            for c in range(12):  # Repite la operacion por cada indice o paso de este rango.
-                tile = self.hoja_auto.subsurface((c * 32, (fila0 - 1 + f) * 32, 32, 32)).copy()  # Calcula o guarda tile para el resto del metodo.
-                if pygame.mask.from_surface(tile).count() == 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                    continue  # Salta al siguiente elemento del ciclo.
-                piezas.setdefault(self._firma(tile), escalar_imagen(tile, ESCALA_TILES))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        return piezas  # Devuelve el dato calculado por este metodo.
+    def _autotiles(self, fila0):
+        piezas = {}
+        for f in range(4):
+            for c in range(12):
+                tile = self.hoja_auto.subsurface((c * 32, (fila0 - 1 + f) * 32, 32, 32)).copy()
+                if pygame.mask.from_surface(tile).count() == 0:
+                    continue
+                piezas.setdefault(self._firma(tile), escalar_imagen(tile, ESCALA_TILES))
+        return piezas
 
-    def _dentro(self, x, y):  # Define la metodo _dentro: comprueba si una casilla esta dentro del mapa.
-        return 0 <= x < self.cols and 0 <= y < self.filas  # Devuelve el dato calculado por este metodo.
+    # Comprueba si una casilla esta dentro del mapa.
+    def _dentro(self, x, y):
+        return 0 <= x < self.cols and 0 <= y < self.filas
 
-    def _terreno_de(self, x, y):  # Define la metodo _terreno_de: elige el terreno que corresponde a una casilla.
-        ch = self.plano[y][x]  # Calcula o guarda ch para el resto del metodo.
-        if ch in self.TERRENOS:  # Evalua la condicion que decide el comportamiento siguiente.
-            return self.TERRENOS[ch]  # Devuelve el dato calculado por este metodo.
-        if ch == "D":  # Evalua la condicion que decide el comportamiento siguiente.
-            return "losa"  # Devuelve el dato calculado por este metodo.
-        votos = {}  # Calcula o guarda votos para el resto del metodo.
-        for dy in (-1, 0, 1):  # Inicia un ciclo para procesar cada elemento indicado.
-            for dx in (-1, 0, 1):  # Inicia un ciclo para procesar cada elemento indicado.
-                if self._dentro(x + dx, y + dy) and self.plano[y + dy][x + dx] in self.TERRENOS:  # Evalua la condicion que decide el comportamiento siguiente.
-                    t = self.TERRENOS[self.plano[y + dy][x + dx]]  # Calcula o guarda reloj interno utilizado para animaciones y calculos de tiempo para el resto del metodo.
-                    votos[t] = votos.get(t, 0) + 1  # Calcula o guarda votos[t] para el resto del metodo.
-        return max(votos, key=votos.get) if votos else "bosque"  # Devuelve el dato calculado por este metodo.
+    # Elige el terreno de una casilla; si no tiene uno propio, toma el mas frecuente entre sus vecinas.
+    def _terreno_de(self, x, y):
+        ch = self.plano[y][x]
+        if ch in self.TERRENOS:
+            return self.TERRENOS[ch]
+        if ch == "D":
+            return "losa"
+        votos = {}
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                if self._dentro(x + dx, y + dy) and self.plano[y + dy][x + dx] in self.TERRENOS:
+                    t = self.TERRENOS[self.plano[y + dy][x + dx]]
+                    votos[t] = votos.get(t, 0) + 1
+        return max(votos, key=votos.get) if votos else "bosque"
 
-    def _frames_anim(self, fila):  # Define la metodo _frames_anim: carga y conserva los fotogramas de una animacion.
-        clave = ("anim", fila)  # Calcula o guarda clave para el resto del metodo.
-        if clave not in self._cache:  # Evalua la condicion que decide el comportamiento siguiente.
-            frames = []  # Calcula o guarda frames para el resto del metodo.
-            for c in range(self.hoja_anim.get_width() // 32):  # Repite la operacion por cada indice o paso de este rango.
-                img = self.hoja_anim.subsurface((c * 32, (fila - 1) * 32, 32, 32)).copy()  # Calcula o guarda img para el resto del metodo.
-                if pygame.mask.from_surface(img).count() > 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                    frames.append(escalar_imagen(img, ESCALA_TILES))  # Aporta un dato o una instruccion para el comportamiento indicado.
-            self._cache[clave] = frames  # Guarda en el objeto _cache[clave].
-        return self._cache[clave]  # Devuelve el dato calculado por este metodo.
+    # Carga y guarda en cache los fotogramas de una fila de tiles animados.
+    def _frames_anim(self, fila):
+        clave = ("anim", fila)
+        if clave not in self._cache:
+            frames = []
+            for c in range(self.hoja_anim.get_width() // 32):
+                img = self.hoja_anim.subsurface((c * 32, (fila - 1) * 32, 32, 32)).copy()
+                if pygame.mask.from_surface(img).count() > 0:
+                    frames.append(escalar_imagen(img, ESCALA_TILES))
+            self._cache[clave] = frames
+        return self._cache[clave]
 
-    def _mismo(self, x, y, ch):  # Define la metodo _mismo: comprueba si una casilla vecina comparte el mismo liquido.
-        return not self._dentro(x, y) or self.plano[y][x] == ch  # Devuelve el dato calculado por este metodo.
+    # Indica si la casilla vecina es del mismo liquido (o queda fuera del mapa).
+    def _mismo(self, x, y, ch):
+        return not self._dentro(x, y) or self.plano[y][x] == ch
 
     # Recorre el plano y materializa terrenos, líquidos, muros, decoraciones y objetos.
-    def _construir(self):  # Define la metodo _construir: crea las capas graficas y colisiones del mapa.
-        rng = random.Random(7)  # Calcula o guarda rng para el resto del metodo.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        for y in range(self.filas):  # Repite la operacion por cada indice o paso de este rango.
-            for x in range(self.cols):  # Repite la operacion por cada indice o paso de este rango.
-                ch = self.plano[y][x]  # Calcula o guarda ch para el resto del metodo.
-                capas = self.suelo[y][x]  # Calcula o guarda capas para el resto del metodo.
-                centro = ((x + 0.5) * T, (y + 0.5) * T)  # Calcula o guarda centro para el resto del metodo.
-                pie = ((x + 0.5) * T, (y + 1) * T - 2 * ESCALA_TILES)  # Calcula o guarda pie para el resto del metodo.
-                if ch in self.MUROS:  # si la casilla es muro, crea su grafico y la marca solida
-                    superior, (opciones, pesos) = self.MUROS[ch]  # Calcula o guarda superior para el resto del metodo.
-                    abajo = self.plano[y + 1][x] if self._dentro(x, y + 1) else "."  # Calcula o guarda abajo para el resto del metodo.
-                    if abajo in self.MUROS:  # Evalua la condicion que decide el comportamiento siguiente.
-                        capas.append(self.pieza(*superior))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                        capas.append(self.pieza(*rng.choices(opciones, pesos)[0]))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    self.terreno_solido[y][x] = self.bloqueada[y][x] = self.bloquea_vista[y][x] = True  # Guarda en el objeto terreno_solido[y][x].
-                    continue  # Salta al siguiente elemento del ciclo.
-                opciones, pesos = self.SUELOS[self._terreno_de(x, y)]  # Calcula o guarda opciones para el resto del metodo.
-                capas.append(self.pieza(*rng.choices(opciones, pesos)[0]))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                if ch in self.LIQUIDOS:  # si la casilla es agua o veneno, crea su borde y la bloquea
-                    atributo, fila_anim = self.LIQUIDOS[ch]  # Calcula o guarda atributo para el resto del metodo.
-                    n, e, s, w = self._mismo(x, y - 1, ch), self._mismo(x + 1, y, ch), self._mismo(x, y + 1, ch), self._mismo(x - 1, y, ch)  # Calcula o guarda n para el resto del metodo.
-                    firma = (n, e, s, w, n and w and self._mismo(x - 1, y - 1, ch), n and e and self._mismo(x + 1, y - 1, ch),  # Calcula o guarda firma para el resto del metodo.
-                             s and w and self._mismo(x - 1, y + 1, ch), s and e and self._mismo(x + 1, y + 1, ch))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    piezas = getattr(self, atributo)  # Calcula o guarda piezas para el resto del metodo.
-                    capas.append(piezas.get(firma) or piezas[(True,) * 8])  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    self.terreno_solido[y][x] = self.bloqueada[y][x] = True  # Guarda en el objeto terreno_solido[y][x].
-                    if rng.random() < 0.4:  # Evalua la condicion que decide el comportamiento siguiente.
-                        frames = self._frames_anim(fila_anim)  # Obtiene los fotogramas para la animacion del terreno.
-                        self.animados.append(Prop(frames, ((x + 0.5) * T, (y + 1) * T), fps=5, desfase=rng.random() * len(frames)))  # Guarda en el objeto elementos graficos animados del mapa.
-                elif ch in self.REJAS:  # si es una reja, guarda el suelo y bloquea el paso
-                    self.suelo_puerta[(x, y)] = capas[0]  # Guarda en el objeto suelo_puerta[(x, y)].
-                    capas.append(self.pieza(*self.REJAS[ch]))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    self.terreno_solido[y][x] = self.bloqueada[y][x] = True  # Guarda en el objeto terreno_solido[y][x].
-                elif ch in self.DECORADOS:  # si es decoracion, agrega su tile visual
-                    capas.append(self.pieza(*rng.choice(self.DECORADOS[ch])))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                elif ch in self.OBJETOS:  # si es un objeto, crea su sprite y colision solida
-                    piezas, alto, (cw, chh) = self.OBJETOS[ch]  # Calcula o guarda piezas para el resto del metodo.
-                    fila, col = rng.choice(piezas)  # Calcula o guarda fila para el resto del metodo.
-                    imagen = self.pieza(fila, col, alto)  # Calcula o guarda sprite que se dibuja en el fotograma actual para el resto del metodo.
-                    if ch == "C":  # Evalua la condicion que decide el comportamiento siguiente.
-                        prop = Cofre(  # Calcula o guarda prop para el resto del metodo.
-                            imagen,  # Continua la lista de argumentos o valores de esta instruccion.
-                            self.imagen_cofre_abierto,  # Consulta o modifica el estado del objeto actual.
-                            pie,  # Continua la lista de argumentos o valores de esta instruccion.
-                            (cw * ESCALA_TILES, chh * ESCALA_TILES),  # Continua la lista de argumentos o valores de esta instruccion.
-                        )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-                        self.cofres.append(prop)  # Consulta o modifica el estado del objeto actual.
-                    else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                        prop = Prop([imagen], pie, (cw * ESCALA_TILES, chh * ESCALA_TILES))  # Calcula o guarda prop para el resto del metodo.
-                    self.props.append(prop)  # Consulta o modifica el estado del objeto actual.
-                    self.solidos_en.setdefault((y, x), []).append(prop)  # Consulta o modifica el estado del objeto actual.
-                    self.bloqueada[y][x] = True  # Guarda en el objeto bloqueada[y][x].
-                elif ch in self.ANIMADOS:  # si es animado, crea y registra sus fotogramas
-                    fila_anim, (cw, chh), fps = self.ANIMADOS[ch]  # Calcula o guarda fila_anim para el resto del metodo.
-                    prop = Prop(self._frames_anim(fila_anim), pie, (cw * ESCALA_TILES, chh * ESCALA_TILES),  # Obtiene los fotogramas para la animacion del terreno.
-                                fps=fps, desfase=rng.random() * 6)  # Calcula o guarda fps para el resto del metodo.
-                    self.props.append(prop)  # Consulta o modifica el estado del objeto actual.
-                    self.solidos_en.setdefault((y, x), []).append(prop)  # Consulta o modifica el estado del objeto actual.
-                    self.bloqueada[y][x] = True  # Guarda en el objeto bloqueada[y][x].
-                elif ch == "P":  # si es el marcador P, establece el inicio del jugador
-                    self.inicio = (centro[0], centro[1] + 10)  # Guarda en el objeto posicion inicial del jugador.
+    def _construir(self):
+        rng = random.Random(7)
+        T = TAM_TILE
+        for y in range(self.filas):
+            for x in range(self.cols):
+                ch = self.plano[y][x]
+                capas = self.suelo[y][x]
+                centro = ((x + 0.5) * T, (y + 0.5) * T)
+                pie = ((x + 0.5) * T, (y + 1) * T - 2 * ESCALA_TILES)
+                if ch in self.MUROS:
+                    superior, (opciones, pesos) = self.MUROS[ch]
+                    abajo = self.plano[y + 1][x] if self._dentro(x, y + 1) else "."
+                    if abajo in self.MUROS:
+                        capas.append(self.pieza(*superior))
+                    else:
+                        capas.append(self.pieza(*rng.choices(opciones, pesos)[0]))
+                    self.terreno_solido[y][x] = self.bloqueada[y][x] = self.bloquea_vista[y][x] = True
+                    continue
+                opciones, pesos = self.SUELOS[self._terreno_de(x, y)]
+                capas.append(self.pieza(*rng.choices(opciones, pesos)[0]))
+                if ch in self.LIQUIDOS:
+                    atributo, fila_anim = self.LIQUIDOS[ch]
+                    n, e, s, w = self._mismo(x, y - 1, ch), self._mismo(x + 1, y, ch), self._mismo(x, y + 1, ch), self._mismo(x - 1, y, ch)
+                    firma = (n, e, s, w, n and w and self._mismo(x - 1, y - 1, ch), n and e and self._mismo(x + 1, y - 1, ch),
+                             s and w and self._mismo(x - 1, y + 1, ch), s and e and self._mismo(x + 1, y + 1, ch))
+                    piezas = getattr(self, atributo)
+                    capas.append(piezas.get(firma) or piezas[(True,) * 8])
+                    self.terreno_solido[y][x] = self.bloqueada[y][x] = True
+                    if rng.random() < 0.4:
+                        frames = self._frames_anim(fila_anim)
+                        self.animados.append(Prop(frames, ((x + 0.5) * T, (y + 1) * T), fps=5, desfase=rng.random() * len(frames)))
+                elif ch in self.REJAS:
+                    self.suelo_puerta[(x, y)] = capas[0]
+                    capas.append(self.pieza(*self.REJAS[ch]))
+                    self.terreno_solido[y][x] = self.bloqueada[y][x] = True
+                elif ch in self.DECORADOS:
+                    capas.append(self.pieza(*rng.choice(self.DECORADOS[ch])))
+                elif ch in self.OBJETOS:
+                    piezas, alto, (cw, chh) = self.OBJETOS[ch]
+                    fila, col = rng.choice(piezas)
+                    imagen = self.pieza(fila, col, alto)
+                    if ch == "C":
+                        prop = Cofre(
+                            imagen,
+                            self.imagen_cofre_abierto,
+                            pie,
+                            (cw * ESCALA_TILES, chh * ESCALA_TILES),
+                        )
+                        self.cofres.append(prop)
+                    else:
+                        prop = Prop([imagen], pie, (cw * ESCALA_TILES, chh * ESCALA_TILES))
+                    self.props.append(prop)
+                    self.solidos_en.setdefault((y, x), []).append(prop)
+                    self.bloqueada[y][x] = True
+                elif ch in self.ANIMADOS:
+                    fila_anim, (cw, chh), fps = self.ANIMADOS[ch]
+                    prop = Prop(self._frames_anim(fila_anim), pie, (cw * ESCALA_TILES, chh * ESCALA_TILES),
+                                fps=fps, desfase=rng.random() * 6)
+                    self.props.append(prop)
+                    self.solidos_en.setdefault((y, x), []).append(prop)
+                    self.bloqueada[y][x] = True
+                elif ch == "P":
+                    self.inicio = (centro[0], centro[1] + 10)
 
     # Convierte las puertas seleccionadas en casillas transitables y devuelve las abiertas.
-    def abrir_puertas(self, puertas):  # Define la metodo abrir_puertas: abre las puertas indicadas y actualiza sus colisiones.
-        abiertas = []  # Calcula o guarda abiertas para el resto del metodo.
-        for x, y in puertas:  # Inicia un ciclo para procesar cada elemento indicado.
-            posicion = (x, y)  # Calcula o guarda posicion para el resto del metodo.
-            if posicion not in self.suelo_puerta or posicion in self.puertas_abiertas:  # Evalua la condicion que decide el comportamiento siguiente.
-                continue  # Salta al siguiente elemento del ciclo.
-            self.suelo[y][x] = [self.suelo_puerta[posicion]]  # Guarda en el objeto suelo[y][x].
-            self.terreno_solido[y][x] = False  # Guarda en el objeto terreno_solido[y][x].
-            self.bloqueada[y][x] = False  # Guarda en el objeto bloqueada[y][x].
-            self.bloquea_vista[y][x] = False  # Guarda en el objeto bloquea_vista[y][x].
-            self.puertas_abiertas.add(posicion)  # Consulta o modifica el estado del objeto actual.
-            abiertas.append(posicion)  # Aporta un dato o una instruccion para el comportamiento indicado.
-        return abiertas  # Devuelve el dato calculado por este metodo.
+    def abrir_puertas(self, puertas):
+        abiertas = []
+        for x, y in puertas:
+            posicion = (x, y)
+            if posicion not in self.suelo_puerta or posicion in self.puertas_abiertas:
+                continue
+            self.suelo[y][x] = [self.suelo_puerta[posicion]]
+            self.terreno_solido[y][x] = False
+            self.bloqueada[y][x] = False
+            self.bloquea_vista[y][x] = False
+            self.puertas_abiertas.add(posicion)
+            abiertas.append(posicion)
+        return abiertas
 
     # Restaura cofres y puertas a su estado inicial para una partida nueva.
-    def reiniciar_progreso(self):  # Define la metodo reiniciar_progreso: restaura cofres y puertas al estado inicial.
-        for cofre in self.cofres:  # Recorre los cofres para restaurar su estado.
-            cofre.abierto = False  # Calcula o guarda cofre.abierto para el resto del metodo.
-        for x, y in self.puertas_abiertas:  # Recorre las puertas que se deben volver a cerrar.
-            self.suelo[y][x] = [self.suelo_puerta[(x, y)], self.puerta_img]  # Guarda en el objeto suelo[y][x].
-            self.terreno_solido[y][x] = True  # Guarda en el objeto terreno_solido[y][x].
-            self.bloqueada[y][x] = True  # Guarda en el objeto bloqueada[y][x].
-            self.bloquea_vista[y][x] = False  # Guarda en el objeto bloquea_vista[y][x].
-        self.puertas_abiertas.clear()  # Consulta o modifica el estado del objeto actual.
+    def reiniciar_progreso(self):
+        for cofre in self.cofres:
+            cofre.abierto = False
+        for x, y in self.puertas_abiertas:
+            self.suelo[y][x] = [self.suelo_puerta[(x, y)], self.puerta_img]
+            self.terreno_solido[y][x] = True
+            self.bloqueada[y][x] = True
+            self.bloquea_vista[y][x] = False
+        self.puertas_abiertas.clear()
         self.reja_temporal = None
 
-    def dibujar_suelo(self, superficie, cam):  # Define la metodo dibujar_suelo: dibuja las casillas visibles y las animaciones del suelo.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        superficie.fill((14, 18, 18))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        c0, c1 = max(0, cam[0] // T), min(self.cols - 1, (cam[0] + width) // T)  # Calcula o guarda c0 para el resto del metodo.
-        f0, f1 = max(0, cam[1] // T), min(self.filas - 1, (cam[1] + height) // T)  # Calcula o guarda f0 para el resto del metodo.
-        for f in range(f0, f1 + 1):  # Repite la operacion por cada indice o paso de este rango.
-            for c in range(c0, c1 + 1):  # Repite la operacion por cada indice o paso de este rango.
-                x, y = c * T - cam[0], f * T - cam[1]  # Calcula o guarda x para el resto del metodo.
-                for capa in self.suelo[f][c]:  # Inicia un ciclo para procesar cada elemento indicado.
-                    superficie.blit(capa, (x, y))  # Pinta el sprite o capa sobre la superficie de juego.
+    # Dibuja las casillas visibles, la reja temporal y los elementos animados del suelo.
+    def dibujar_suelo(self, superficie, cam):
+        T = TAM_TILE
+        superficie.fill((14, 18, 18))
+        c0, c1 = max(0, cam[0] // T), min(self.cols - 1, (cam[0] + width) // T)
+        f0, f1 = max(0, cam[1] // T), min(self.filas - 1, (cam[1] + height) // T)
+        for f in range(f0, f1 + 1):
+            for c in range(c0, c1 + 1):
+                x, y = c * T - cam[0], f * T - cam[1]
+                for capa in self.suelo[f][c]:
+                    superficie.blit(capa, (x, y))
         if self.reja_temporal is not None:
             x, y, ancho = self.reja_temporal
             for columna in range(ancho):
@@ -1188,842 +1214,874 @@ class Mapa:  # Define la clase Mapa: interpreta el plano como elementos del mund
                     self.puerta_img,
                     (int((x + columna) * T - cam[0]), int(y * T - cam[1])),
                 )
-        x0, x1 = cam[0] - T, cam[0] + width + T  # Calcula o guarda x0 para el resto del metodo.
-        y0, y1 = cam[1], cam[1] + height + T  # Calcula o guarda y0 para el resto del metodo.
-        for animado in self.animados:  # Inicia un ciclo para procesar cada elemento indicado.
-            if x0 <= animado.pie[0] <= x1 and y0 <= animado.pie[1] <= y1:  # Evalua la condicion que decide el comportamiento siguiente.
-                animado.dibujar(superficie, cam)  # Aporta un dato o una instruccion para el comportamiento indicado.
+        x0, x1 = cam[0] - T, cam[0] + width + T
+        y0, y1 = cam[1], cam[1] + height + T
+        for animado in self.animados:
+            if x0 <= animado.pie[0] <= x1 and y0 <= animado.pie[1] <= y1:
+                animado.dibujar(superficie, cam)
 
-    def props_visibles(self, cam):  # Define la metodo props_visibles: filtra los objetos que aparecen dentro de la camara.
-        x0, x1 = cam[0] - TAM_TILE, cam[0] + width + TAM_TILE  # Calcula o guarda x0 para el resto del metodo.
-        y0, y1 = cam[1], cam[1] + height + 2 * TAM_TILE  # Calcula o guarda y0 para el resto del metodo.
-        return [p for p in self.props if x0 <= p.pie[0] <= x1 and y0 <= p.pie[1] <= y1]  # Devuelve el dato calculado por este metodo.
+    # Devuelve los objetos del mapa que caen dentro de la camara.
+    def props_visibles(self, cam):
+        x0, x1 = cam[0] - TAM_TILE, cam[0] + width + TAM_TILE
+        y0, y1 = cam[1], cam[1] + height + 2 * TAM_TILE
+        return [p for p in self.props if x0 <= p.pie[0] <= x1 and y0 <= p.pie[1] <= y1]
 
-    def dibujar_colisiones(self, superficie, cam):  # Define la metodo dibujar_colisiones: muestra las cajas de colision para depuracion.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        for f in range(max(0, cam[1] // T), min(self.filas, (cam[1] + height) // T + 1)):  # Repite la operacion por cada indice o paso de este rango.
-            for c in range(max(0, cam[0] // T), min(self.cols, (cam[0] + width) // T + 1)):  # Repite la operacion por cada indice o paso de este rango.
-                if self.terreno_solido[f][c]:  # Evalua la condicion que decide el comportamiento siguiente.
-                    pygame.draw.rect(superficie, (255, 40, 40), (c * T - cam[0], f * T - cam[1], T, T), 1)  # Dibuja el elemento de interfaz o efecto visual indicado.
-        for p in self.props_visibles(cam):  # Inicia un ciclo para procesar cada elemento indicado.
-            if p.solido:  # Evalua la condicion que decide el comportamiento siguiente.
-                pygame.draw.rect(superficie, (255, 160, 0), p.rect.move(-cam[0], -cam[1]), 2)  # Dibuja el elemento de interfaz o efecto visual indicado.
+    # Dibuja las cajas de colision del terreno y los objetos (modo depuracion).
+    def dibujar_colisiones(self, superficie, cam):
+        T = TAM_TILE
+        for f in range(max(0, cam[1] // T), min(self.filas, (cam[1] + height) // T + 1)):
+            for c in range(max(0, cam[0] // T), min(self.cols, (cam[0] + width) // T + 1)):
+                if self.terreno_solido[f][c]:
+                    pygame.draw.rect(superficie, (255, 40, 40), (c * T - cam[0], f * T - cam[1], T, T), 1)
+        for p in self.props_visibles(cam):
+            if p.solido:
+                pygame.draw.rect(superficie, (255, 160, 0), p.rect.move(-cam[0], -cam[1]), 2)
 
     # Calcula por búsqueda en anchura qué casillas libres se conectan con el destino.
-    def celdas_alcanzables(self, inicio, limite):  # Define la metodo celdas_alcanzables: busca las casillas libres conectadas con el inicio.
-        c0, f0, c1, f1 = limite  # Calcula o guarda c0 para el resto del metodo.
-        vistas = {inicio}  # Calcula o guarda vistas para el resto del metodo.
-        cola = [inicio]  # Calcula o guarda cola para el resto del metodo.
-        for c, f in cola:  # Inicia un ciclo para procesar cada elemento indicado.
-            for dc, df in ((1, 0), (-1, 0), (0, 1), (0, -1)):  # Inicia un ciclo para procesar cada elemento indicado.
-                nc, nf = c + dc, f + df  # Calcula o guarda nc para el resto del metodo.
-                if c0 <= nc <= c1 and f0 <= nf <= f1 and (nc, nf) not in vistas and not self.bloqueada[nf][nc]:  # Evalua la condicion que decide el comportamiento siguiente.
-                    vistas.add((nc, nf))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    cola.append((nc, nf))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        return vistas  # Devuelve el dato calculado por este metodo.
+    def celdas_alcanzables(self, inicio, limite):
+        c0, f0, c1, f1 = limite
+        vistas = {inicio}
+        cola = [inicio]
+        for c, f in cola:
+            for dc, df in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nc, nf = c + dc, f + df
+                if c0 <= nc <= c1 and f0 <= nf <= f1 and (nc, nf) not in vistas and not self.bloqueada[nf][nc]:
+                    vistas.add((nc, nf))
+                    cola.append((nc, nf))
+        return vistas
 
     # Detecta solapamiento con límites, terreno sólido y rectángulos de objetos.
-    def choca(self, rect):  # Define la metodo choca: comprueba colisiones con limites, suelo y objetos.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        if rect.left < 0 or rect.top < 0 or rect.right > self.cols * T or rect.bottom > self.filas * T:  # Evalua la condicion que decide el comportamiento siguiente.
-            return True  # Devuelve True para comunicar el resultado de la comprobacion.
+    def choca(self, rect):
+        T = TAM_TILE
+        if rect.left < 0 or rect.top < 0 or rect.right > self.cols * T or rect.bottom > self.filas * T:
+            return True
         if self.reja_temporal is not None:
             x, y, ancho = self.reja_temporal
             barrera = pygame.Rect(x * T, y * T, ancho * T, T)
             if rect.colliderect(barrera):
                 return True
-        for f in range(rect.top // T, (rect.bottom - 1) // T + 1):  # Repite la operacion por cada indice o paso de este rango.
-            for c in range(rect.left // T, (rect.right - 1) // T + 1):  # Repite la operacion por cada indice o paso de este rango.
-                if self.terreno_solido[f][c]:  # Evalua la condicion que decide el comportamiento siguiente.
-                    return True  # Devuelve True para comunicar el resultado de la comprobacion.
-                for p in self.solidos_en.get((f, c), ()):  # Inicia un ciclo para procesar cada elemento indicado.
-                    if rect.colliderect(p.rect):  # Evalua la condicion que decide el comportamiento siguiente.
-                        return True  # Devuelve True para comunicar el resultado de la comprobacion.
-        return False  # Devuelve False para comunicar el resultado de la comprobacion.
+        for f in range(rect.top // T, (rect.bottom - 1) // T + 1):
+            for c in range(rect.left // T, (rect.right - 1) // T + 1):
+                if self.terreno_solido[f][c]:
+                    return True
+                for p in self.solidos_en.get((f, c), ()):
+                    if rect.colliderect(p.rect):
+                        return True
+        return False
 
-    def hay_vista(self, a, b):  # Define la metodo hay_vista: comprueba si un muro bloquea la vision entre dos puntos.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        pasos = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) // 32))  # Calcula o guarda pasos para el resto del metodo.
-        for i in range(1, pasos):  # Repite la operacion por cada indice o paso de este rango.
-            x = a[0] + (b[0] - a[0]) * i / pasos  # Calcula o guarda x para el resto del metodo.
-            y = a[1] + (b[1] - a[1]) * i / pasos  # Calcula o guarda y para el resto del metodo.
-            c, f = int(x // T), int(y // T)  # Calcula o guarda c para el resto del metodo.
-            if self._dentro(c, f) and self.bloquea_vista[f][c]:  # Evalua la condicion que decide el comportamiento siguiente.
-                return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        return True  # Devuelve True para comunicar el resultado de la comprobacion.
+    # Comprueba si algun muro bloquea la linea de vision entre dos puntos.
+    def hay_vista(self, a, b):
+        T = TAM_TILE
+        pasos = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) // 32))
+        for i in range(1, pasos):
+            x = a[0] + (b[0] - a[0]) * i / pasos
+            y = a[1] + (b[1] - a[1]) * i / pasos
+            c, f = int(x // T), int(y // T)
+            if self._dentro(c, f) and self.bloquea_vista[f][c]:
+                return False
+        return True
 
-    def paso_libre(self, a, b, ancho, alto):  # Define la metodo paso_libre: verifica si un rectangulo puede recorrer una linea sin chocar.
-        pasos = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) // 16))  # Calcula o guarda pasos para el resto del metodo.
-        caja = pygame.Rect(0, 0, int(ancho), int(alto))  # Crea un rectangulo usado como posicion o hitbox.
-        for i in range(pasos + 1):  # Repite la operacion por cada indice o paso de este rango.
-            caja.center = (a[0] + (b[0] - a[0]) * i / pasos, a[1] + (b[1] - a[1]) * i / pasos)  # Calcula o guarda caja.center para el resto del metodo.
-            if self.choca(caja):  # Evalua la condicion que decide el comportamiento siguiente.
-                return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        return True  # Devuelve True para comunicar el resultado de la comprobacion.
+    # Verifica si un rectangulo puede recorrer una linea recta sin chocar.
+    def paso_libre(self, a, b, ancho, alto):
+        pasos = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) // 16))
+        caja = pygame.Rect(0, 0, int(ancho), int(alto))
+        for i in range(pasos + 1):
+            caja.center = (a[0] + (b[0] - a[0]) * i / pasos, a[1] + (b[1] - a[1]) * i / pasos)
+            if self.choca(caja):
+                return False
+        return True
 
     # Devuelve una ruta de casillas transitables entre dos puntos del mapa.
-    def camino(self, a, b):  # Define la metodo camino: busca y reconstruye una ruta transitable entre dos puntos.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        ini = (min(self.filas - 1, max(0, int(a[1] // T))), min(self.cols - 1, max(0, int(a[0] // T))))  # Calcula o guarda ini para el resto del metodo.
-        fin = (min(self.filas - 1, max(0, int(b[1] // T))), min(self.cols - 1, max(0, int(b[0] // T))))  # Calcula o guarda fin para el resto del metodo.
-        if ini == fin:  # Evalua la condicion que decide el comportamiento siguiente.
-            return [b]  # Devuelve el dato calculado por este metodo.
-        previo = {ini: None}  # Calcula o guarda previo para el resto del metodo.
-        cola = [ini]  # Calcula o guarda cola para el resto del metodo.
-        for f, c in cola:  # Inicia un ciclo para procesar cada elemento indicado.
-            if (f, c) == fin:  # Evalua la condicion que decide el comportamiento siguiente.
-                break  # Termina el ciclo porque ya se encontro el resultado.
-            for df, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):  # Inicia un ciclo para procesar cada elemento indicado.
-                nf, nc = f + df, c + dc  # Calcula o guarda nf para el resto del metodo.
-                if self._dentro(nc, nf) and (nf, nc) not in previo and (not self.bloqueada[nf][nc] or (nf, nc) == fin):  # Evalua la condicion que decide el comportamiento siguiente.
-                    previo[(nf, nc)] = (f, c)  # Calcula o guarda previo[(nf para el resto del metodo.
-                    cola.append((nf, nc))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        if fin not in previo:  # Evalua la condicion que decide el comportamiento siguiente.
-            return []  # Devuelve el dato calculado por este metodo.
-        ruta, nodo = [], fin  # Calcula o guarda ruta para el resto del metodo.
-        while nodo != ini:  # Repite el bloque hasta completar la condicion del ciclo.
-            ruta.append(((nodo[1] + 0.5) * T, (nodo[0] + 0.5) * T))  # Aporta un dato o una instruccion para el comportamiento indicado.
-            nodo = previo[nodo]  # Calcula o guarda nodo para el resto del metodo.
-        ruta.reverse()  # Aporta un dato o una instruccion para el comportamiento indicado.
-        ruta[-1] = tuple(b)  # Calcula o guarda ruta[-1] para el resto del metodo.
-        return ruta  # Devuelve el dato calculado por este metodo.
+    def camino(self, a, b):
+        T = TAM_TILE
+        ini = (min(self.filas - 1, max(0, int(a[1] // T))), min(self.cols - 1, max(0, int(a[0] // T))))
+        fin = (min(self.filas - 1, max(0, int(b[1] // T))), min(self.cols - 1, max(0, int(b[0] // T))))
+        if ini == fin:
+            return [b]
+        previo = {ini: None}
+        cola = [ini]
+        for f, c in cola:
+            if (f, c) == fin:
+                break
+            for df, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nf, nc = f + df, c + dc
+                if self._dentro(nc, nf) and (nf, nc) not in previo and (not self.bloqueada[nf][nc] or (nf, nc) == fin):
+                    previo[(nf, nc)] = (f, c)
+                    cola.append((nf, nc))
+        if fin not in previo:
+            return []
+        ruta, nodo = [], fin
+        while nodo != ini:
+            ruta.append(((nodo[1] + 0.5) * T, (nodo[0] + 0.5) * T))
+            nodo = previo[nodo]
+        ruta.reverse()
+        ruta[-1] = tuple(b)
+        return ruta
 
 
-print("---------- CLASE DE OLEADAS Y PROGRESO ----------")  # Aporta un dato o una instruccion para el comportamiento indicado.
-class Oleadas:  # Define la clase Oleadas: agrupa instrucciones relacionadas.
+# Controla las oleadas por zona: progreso, avisos, apariciones, barreras y puntuacion.
+print("---------- CLASE DE OLEADAS Y PROGRESO ----------")
+class Oleadas:
     # Valida las zonas y dirige el progreso, los avisos, las apariciones y la puntuación.
-    def __init__(self, zonas):  # Define la metodo __init__: inicializa los datos y el estado inicial del objeto.
-        T = TAM_TILE  # Calcula o guarda T para el resto del metodo.
-        self.zonas = []  # Guarda en el objeto datos preparados de todas las oleadas.
-        self.puntuacion = 0  # Guarda en el objeto puntos acumulados por derrotar enemigos.
-        for nivel, z in enumerate(zonas, 1):  # Inicia un ciclo para procesar cada elemento indicado.
-            c0, f0, c1, f1 = z["casillas"]  # Calcula o guarda c0 para el resto del metodo.
-            dc, df = z["destino"]  # Calcula o guarda dc para el resto del metodo.
-            if not mapa._dentro(dc, df) or mapa.bloqueada[df][dc]:  # Evalua la condicion que decide el comportamiento siguiente.
-                raise ValueError(f"El destino de la zona {z['nombre']} no es transitable: {(dc, df)}")  # Informa que la configuracion no permite continuar.
-            libres = mapa.celdas_alcanzables((dc, df), (c0, f0, c1, f1))  # Calcula o guarda libres para el resto del metodo.
-            if not libres:  # Evalua la condicion que decide el comportamiento siguiente.
-                raise ValueError(f"La zona {z['nombre']} no tiene puntos de aparicion alcanzables")  # Informa que la configuracion no permite continuar.
-            tipos_enemigos = tuple(z.get("tipos_enemigos", ("goblin",)))  # Calcula o guarda tipos_enemigos para el resto del metodo.
-            if not z.get("jefe") and not tipos_enemigos:  # Evalua la condicion que decide el comportamiento siguiente.
-                raise ValueError(f"La zona {z['nombre']} necesita al menos un tipo de enemigo")  # Informa que la configuracion no permite continuar.
-            for tipo in tipos_enemigos:  # Revisa los enemigos para contar bajas o actualizar el encuentro.
-                if tipo not in ARQUETIPOS_ENEMIGO:  # Evalua la condicion que decide el comportamiento siguiente.
-                    raise ValueError(  # Informa que la configuracion no permite continuar.
-                        f"Arquetipo de enemigo desconocido: {tipo} en la zona {z['nombre']}"  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-            tipos_apoyo = tuple(z.get("tipos_apoyo", ()))  # Calcula o guarda tipos_apoyo para el resto del metodo.
-            for tipo in tipos_apoyo:  # Inicia un ciclo para procesar cada elemento indicado.
-                if tipo not in ARQUETIPOS_ENEMIGO:  # Evalua la condicion que decide el comportamiento siguiente.
-                    raise ValueError(  # Informa que la configuracion no permite continuar.
-                        f"Arquetipo de apoyo desconocido: {tipo} en la zona {z['nombre']}"  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-            sprite_jefe = z.get("sprite_jefe", "goblin")  # Calcula o guarda sprite_jefe para el resto del metodo.
-            if z.get("jefe") and not os.path.isfile(ruta_sprite_enemigo(sprite_jefe)):  # Evalua la condicion que decide el comportamiento siguiente.
-                raise ValueError(  # Informa que la configuracion no permite continuar.
-                    f"No existe el sprite enemigos/{sprite_jefe}.png configurado para el jefe de {z['nombre']}"  # Aporta un dato o una instruccion para el comportamiento indicado.
-                )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-            self.zonas.append({  # Consulta o modifica el estado del objeto actual.
-                "nivel": nivel, "nombre": z["nombre"], "color": z["color"], "cerrada": z.get("cerrada", True),  # Define los datos de configuracion asociados a nivel.
-                "rect": pygame.Rect(c0 * T, f0 * T, (c1 - c0 + 1) * T, (f1 - f0 + 1) * T),  # Crea un rectangulo usado como posicion o hitbox.
-                "destino": ((dc + 0.5) * T, (df + 0.5) * T),  # Define los datos de configuracion asociados a destino.
-                "dist": z.get("distancia_aparicion", 600),  # Define los datos de configuracion asociados a dist.
-                "total": 1 if z.get("jefe") else z.get(  # Define los datos de configuracion asociados a total.
-                    "enemigos_derrotar", z.get("enemigos", OLEADA_ENEMIGOS_BASE + OLEADA_ENEMIGOS_MAS * (nivel - 1))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                ),  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-                "jefe": z.get("jefe", False),  # Define los datos de configuracion asociados a jefe.
-                "sprite_jefe": sprite_jefe,  # Define los datos de configuracion asociados a sprite_jefe.
-                "tipo_jefe": z.get("tipo_jefe", "dragon" if sprite_jefe == "dragon" else "goblin"),  # Define los datos de configuracion asociados a tipo_jefe.
+    def __init__(self, zonas):
+        T = TAM_TILE
+        self.zonas = []
+        self.puntuacion = 0
+        for nivel, z in enumerate(zonas, 1):
+            c0, f0, c1, f1 = z["casillas"]
+            dc, df = z["destino"]
+            if not mapa._dentro(dc, df) or mapa.bloqueada[df][dc]:
+                raise ValueError(f"El destino de la zona {z['nombre']} no es transitable: {(dc, df)}")
+            libres = mapa.celdas_alcanzables((dc, df), (c0, f0, c1, f1))
+            if not libres:
+                raise ValueError(f"La zona {z['nombre']} no tiene puntos de aparicion alcanzables")
+            tipos_enemigos = tuple(z.get("tipos_enemigos", ("goblin",)))
+            if not z.get("jefe") and not tipos_enemigos:
+                raise ValueError(f"La zona {z['nombre']} necesita al menos un tipo de enemigo")
+            for tipo in tipos_enemigos:
+                if tipo not in ARQUETIPOS_ENEMIGO:
+                    raise ValueError(
+                        f"Arquetipo de enemigo desconocido: {tipo} en la zona {z['nombre']}"
+                    )
+            tipos_apoyo = tuple(z.get("tipos_apoyo", ()))
+            for tipo in tipos_apoyo:
+                if tipo not in ARQUETIPOS_ENEMIGO:
+                    raise ValueError(
+                        f"Arquetipo de apoyo desconocido: {tipo} en la zona {z['nombre']}"
+                    )
+            sprite_jefe = z.get("sprite_jefe", "goblin")
+            if z.get("jefe") and not os.path.isfile(ruta_sprite_enemigo(sprite_jefe)):
+                raise ValueError(
+                    f"No existe el sprite enemigos/{sprite_jefe}.png configurado para el jefe de {z['nombre']}"
+                )
+            self.zonas.append({
+                "nivel": nivel, "nombre": z["nombre"], "color": z["color"], "cerrada": z.get("cerrada", True),
+                "rect": pygame.Rect(c0 * T, f0 * T, (c1 - c0 + 1) * T, (f1 - f0 + 1) * T),
+                "destino": ((dc + 0.5) * T, (df + 0.5) * T),
+                "dist": z.get("distancia_aparicion", 600),
+                "total": 1 if z.get("jefe") else z.get(
+                    "enemigos_derrotar", z.get("enemigos", OLEADA_ENEMIGOS_BASE + OLEADA_ENEMIGOS_MAS * (nivel - 1))
+                ),
+                "jefe": z.get("jefe", False),
+                "sprite_jefe": sprite_jefe,
+                "tipo_jefe": z.get("tipo_jefe", "dragon" if sprite_jefe == "dragon" else "goblin"),
                 "puertas": tuple(z.get("puertas", ())),
                 "reja_temporal": z.get("reja_temporal"),
-                "tipos_apoyo": tipos_apoyo,  # Define los datos de configuracion asociados a tipos_apoyo.
-                "max_apoyos": z.get("max_apoyos", 0),  # Define los datos de configuracion asociados a max_apoyos.
-                "max_vivos": z.get("max_vivos", OLEADA_MAX_VIVOS_BASE + OLEADA_MAX_VIVOS_MAS * (nivel - 1)),  # Define los datos de configuracion asociados a max_vivos.
-                "intervalo": z.get(  # Define los datos de configuracion asociados a intervalo.
-                    "intervalo_aparicion",  # Continua la lista de argumentos o valores de esta instruccion.
-                    z.get("intervalo", max(OLEADA_INTERVALO_MIN, OLEADA_INTERVALO_BASE - OLEADA_INTERVALO_MENOS * (nivel - 1)))  # Aporta un dato o una instruccion para el comportamiento indicado.
-                ),  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-                "tipos_enemigos": tipos_enemigos,  # Define los datos de configuracion asociados a tipos_enemigos.
-                "puntos": [((c + 0.5) * T, (f + 1) * T - 3 * ESCALA_TILES) for c, f in sorted(libres)],  # Define los datos de configuracion asociados a puntos.
-                "estado": "pendiente",  # Define los datos de configuracion asociados a estado.
-                "generados": 0, "matados": 0, "t_prep": 0.0, "t_spawn": 0.0,  # Define los datos de configuracion asociados a generados.
-                "tiempo_oleada": 0.0, "puntos_ganados": 0,  # Define los datos de configuracion asociados a tiempo_oleada.
-            })  # Aporta un dato o una instruccion para el comportamiento indicado.
-        self.t = 0.0  # Guarda en el objeto reloj interno utilizado para animaciones y calculos de tiempo.
-        self.aviso, self.t_aviso = [], 0.0  # Guarda en el objeto aviso, self.
-        self.t_barrera = 0.0  # Guarda en el objeto tiempo restante del aviso de barrera.
-        self.objetivo_flecha, self.t_ruta = None, -1.0  # Guarda en el objeto objetivo_flecha, self.
-        self._vinetas = {}  # Guarda en el objeto cache de efectos de color por zona.
+                "tipos_apoyo": tipos_apoyo,
+                "max_apoyos": z.get("max_apoyos", 0),
+                "max_vivos": z.get("max_vivos", OLEADA_MAX_VIVOS_BASE + OLEADA_MAX_VIVOS_MAS * (nivel - 1)),
+                "intervalo": z.get(
+                    "intervalo_aparicion",
+                    z.get("intervalo", max(OLEADA_INTERVALO_MIN, OLEADA_INTERVALO_BASE - OLEADA_INTERVALO_MENOS * (nivel - 1)))
+                ),
+                "tipos_enemigos": tipos_enemigos,
+                "puntos": [((c + 0.5) * T, (f + 1) * T - 3 * ESCALA_TILES) for c, f in sorted(libres)],
+                "estado": "pendiente",
+                "generados": 0, "matados": 0, "t_prep": 0.0, "t_spawn": 0.0,
+                "tiempo_oleada": 0.0, "puntos_ganados": 0,
+            })
+        self.t = 0.0
+        self.aviso, self.t_aviso = [], 0.0
+        self.t_barrera = 0.0
+        self.objetivo_flecha, self.t_ruta = None, -1.0
+        self._vinetas = {}
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def actual(self):  # Define la metodo actual: devuelve la primera zona que no se ha completado.
-        for z in self.zonas:  # Recorre las zonas para buscar la activa o dibujar sus limites.
-            if z["estado"] != "completada":  # Evalua la condicion que decide el comportamiento siguiente.
-                return z  # Devuelve el dato calculado por este metodo.
-        return None  # Devuelve el dato calculado por este metodo.
+    # Devuelve la primera zona que aun no se ha completado, o None si todas lo estan.
+    @property
+    def actual(self):
+        for z in self.zonas:
+            if z["estado"] != "completada":
+                return z
+        return None
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def victoria(self):  # Define la metodo victoria: indica si todas las zonas ya se completaron.
-        return self.actual is None  # Devuelve el dato calculado por este metodo.
+    # Indica si todas las zonas ya se completaron.
+    @property
+    def victoria(self):
+        return self.actual is None
 
-    def _aviso(self, lineas, segundos=3.0):  # Define la metodo _aviso: guarda el mensaje de interfaz y cuanto tiempo se muestra.
-        self.aviso, self.t_aviso = lineas, segundos  # Guarda en el objeto aviso, self.
+    # Guarda las lineas del mensaje en pantalla y cuantos segundos se muestra.
+    def _aviso(self, lineas, segundos=3.0):
+        self.aviso, self.t_aviso = lineas, segundos
 
-    def bloquea(self, rect):  # Define la metodo bloquea: determina si la barrera impide salir de la zona activa.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        if z is None or not z["cerrada"] or z["estado"] not in ("preparando", "activa"):  # Evalua la condicion que decide el comportamiento siguiente.
-            return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        return not z["rect"].contains(rect)  # Devuelve el dato calculado por este metodo.
+    # Determina si la barrera de la zona activa impide que el rectangulo salga de ella.
+    def bloquea(self, rect):
+        z = self.actual
+        if z is None or not z["cerrada"] or z["estado"] not in ("preparando", "activa"):
+            return False
+        return not z["rect"].contains(rect)
 
     # Avanza el estado de la zona activa, contabiliza bajas y gestiona sus recompensas.
-    def actualizar(self, dt, jugador, enemigos):  # Define la metodo actualizar: actualiza movimiento, combate, vida y animacion del jugador.
-        self.t += dt  # Guarda en el objeto t +.
-        self.t_aviso -= dt  # Guarda en el objeto t_aviso -.
-        self.t_barrera -= dt  # Guarda en el objeto t_barrera -.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        if z is None or jugador.muerto:  # Evalua la condicion que decide el comportamiento siguiente.
-            return  # Aporta un dato o una instruccion para el comportamiento indicado.
-        for e in enemigos:  # Revisa los enemigos para contar bajas o actualizar el encuentro.
-            if e.de_oleada and not e.vivo() and not e.contado:  # Evalua la condicion que decide el comportamiento siguiente.
-                e.contado = True  # Calcula o guarda e.contado para el resto del metodo.
-                z["matados"] += 1  # Guarda el resultado de esta operacion en la estructura indicada.
-                base = e.puntos_base  # Calcula o guarda base para el resto del metodo.
-                multiplicador = max(  # Calcula o guarda multiplicador para el resto del metodo.
-                    0.3,  # Continua la lista de argumentos o valores de esta instruccion.
-                    1.0 - 0.7 * z["tiempo_oleada"] / PUNTUACION_TIEMPO_MAX_REDUCCION,  # Continua la lista de argumentos o valores de esta instruccion.
-                )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-                puntos = round(base * multiplicador)  # Calcula o guarda puntos para el resto del metodo.
-                self.puntuacion += puntos  # Guarda en el objeto puntuacion +.
-                z["puntos_ganados"] += puntos  # Guarda el resultado de esta operacion en la estructura indicada.
-        dentro = z["rect"].collidepoint(jugador.rect.center)  # Calcula o guarda dentro para el resto del metodo.
-        if z["estado"] == "pendiente":  # si la oleada espera, comprueba la entrada del jugador
-            if z["rect"].inflate(-2 * OLEADA_MARGEN_ENTRADA, -2 * OLEADA_MARGEN_ENTRADA).contains(jugador.rect):  # Evalua la condicion que decide el comportamiento siguiente.
-                z.update(estado="preparando", generados=0, matados=0, t_prep=OLEADA_ESPERA, t_spawn=0.0)  # Calcula o guarda z.update(estado para el resto del metodo.
+    def actualizar(self, dt, jugador, enemigos):
+        self.t += dt
+        self.t_aviso -= dt
+        self.t_barrera -= dt
+        z = self.actual
+        if z is None or jugador.muerto:
+            return
+        for e in enemigos:
+            if e.de_oleada and not e.vivo() and not e.contado:
+                e.contado = True
+                z["matados"] += 1
+                base = e.puntos_base
+                multiplicador = max(
+                    0.3,
+                    1.0 - 0.7 * z["tiempo_oleada"] / PUNTUACION_TIEMPO_MAX_REDUCCION,
+                )
+                puntos = round(base * multiplicador)
+                self.puntuacion += puntos
+                z["puntos_ganados"] += puntos
+        dentro = z["rect"].collidepoint(jugador.rect.center)
+        if z["estado"] == "pendiente":
+            if z["rect"].inflate(-2 * OLEADA_MARGEN_ENTRADA, -2 * OLEADA_MARGEN_ENTRADA).contains(jugador.rect):
+                z.update(estado="preparando", generados=0, matados=0, t_prep=OLEADA_ESPERA, t_spawn=0.0)
                 if z["reja_temporal"] is not None:
                     mapa.reja_temporal = z["reja_temporal"]
-                reproducir_sonido("inicio_oleada")  # Reproduce el efecto de sonido de esta accion.
-                self._aviso([f"OLEADA {z['nivel']} - {z['nombre']}"] + (["Zona cerrada: elimina a todos para poder salir"] if z["cerrada"] else []), 3.0)  # Programa el aviso que se mostrara en pantalla.
-        elif not dentro and z["cerrada"]:  # Evalua la condicion que decide el comportamiento siguiente.
-            self._cancelar(z, enemigos)  # Cancela la oleada y elimina los enemigos activos de ella.
-        elif z["estado"] == "preparando" and dentro:  # si el jugador sigue dentro, cuenta la preparacion
-            z["t_prep"] -= dt  # Guarda el resultado de esta operacion en la estructura indicada.
-            if z["t_prep"] <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                z.update(estado="activa", tiempo_oleada=0.0, puntos_ganados=0)  # Calcula o guarda z.update(estado para el resto del metodo.
-                self._aviso([f"OLEADA {z['nivel']}!"], 2.0)  # Programa el aviso que se mostrara en pantalla.
-        if z["jefe"] and z["tipo_jefe"] == "orco":  # Evalua la condicion que decide el comportamiento siguiente.
-            jefe_orco = next(  # Calcula o guarda jefe_orco para el resto del metodo.
-                (e for e in enemigos if getattr(e, "tipo_jefe", None) == "orco" and not e.vivo()),  # Continua la lista de argumentos o valores de esta instruccion.
-                None,  # Continua la lista de argumentos o valores de esta instruccion.
-            )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-            if jefe_orco is not None:  # Evalua la condicion que decide el comportamiento siguiente.
-                enemigos.lista[:] = [e for e in enemigos if e is jefe_orco]  # Calcula o guarda enemigos.lista[:] para el resto del metodo.
-                enemigos.proyectiles.clear()  # Aporta un dato o una instruccion para el comportamiento indicado.
-        if z["estado"] == "activa":  # si la oleada esta activa, avanza su cronometro
-            z["tiempo_oleada"] += dt  # Guarda el resultado de esta operacion en la estructura indicada.
-        if z["estado"] == "activa" and dentro:  # si la oleada activa tiene al jugador dentro, gestiona apariciones
-            vivos = sum(1 for e in enemigos if e.de_oleada and e.vivo())  # Calcula o guarda vivos para el resto del metodo.
-            z["t_spawn"] = max(0.0, z["t_spawn"] - dt)  # Guarda el resultado de esta operacion en la estructura indicada.
-            if z["generados"] < z["total"]:  # Evalua la condicion que decide el comportamiento siguiente.
-                if vivos < z["max_vivos"] and z["t_spawn"] <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self._generar(z, jugador, enemigos)  # Crea el siguiente enemigo de la oleada.
-                    z["t_spawn"] = z["intervalo"]  # Guarda el resultado de esta operacion en la estructura indicada.
-            elif vivos == 0:  # si ya no quedan enemigos vivos, completa la oleada
-                z["estado"] = "completada"  # Guarda el resultado de esta operacion en la estructura indicada.
-                reproducir_sonido("completar_oleada")  # Reproduce el efecto de sonido de esta accion.
+                reproducir_sonido("inicio_oleada")
+                self._aviso([f"OLEADA {z['nivel']} - {z['nombre']}"] + (["Zona cerrada: elimina a todos para poder salir"] if z["cerrada"] else []), 3.0)
+        elif not dentro and z["cerrada"]:
+            self._cancelar(z, enemigos)
+        elif z["estado"] == "preparando" and dentro:
+            z["t_prep"] -= dt
+            if z["t_prep"] <= 0:
+                z.update(estado="activa", tiempo_oleada=0.0, puntos_ganados=0)
+                self._aviso([f"OLEADA {z['nivel']}!"], 2.0)
+        if z["jefe"] and z["tipo_jefe"] == "orco":
+            jefe_orco = next(
+                (e for e in enemigos if getattr(e, "tipo_jefe", None) == "orco" and not e.vivo()),
+                None,
+            )
+            if jefe_orco is not None:
+                enemigos.lista[:] = [e for e in enemigos if e is jefe_orco]
+                enemigos.proyectiles.clear()
+        if z["estado"] == "activa":
+            z["tiempo_oleada"] += dt
+        if z["estado"] == "activa" and dentro:
+            vivos = sum(1 for e in enemigos if e.de_oleada and e.vivo())
+            z["t_spawn"] = max(0.0, z["t_spawn"] - dt)
+            if z["generados"] < z["total"]:
+                if vivos < z["max_vivos"] and z["t_spawn"] <= 0:
+                    self._generar(z, jugador, enemigos)
+                    z["t_spawn"] = z["intervalo"]
+            elif vivos == 0:
+                z["estado"] = "completada"
+                reproducir_sonido("completar_oleada")
                 if z["reja_temporal"] is not None:
                     mapa.reja_temporal = None
-                puertas_abiertas = mapa.abrir_puertas(z["puertas"])  # Abre solo las puertas de la zona que acaba de completarse.
-                if self.victoria:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self._aviso(["TODAS LAS OLEADAS COMPLETADAS!"], 5.0)  # Programa el aviso que se mostrara en pantalla.
-                else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                    lineas = [f"OLEADA {z['nivel']} COMPLETADA!"]  # Calcula o guarda lineas para el resto del metodo.
-                    if z["cerrada"]:  # Evalua la condicion que decide el comportamiento siguiente.
-                        lineas.append("La zona se ha abierto: puedes salir")  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    if puertas_abiertas:  # Evalua la condicion que decide el comportamiento siguiente.
-                        lineas.append("Las puertas de la siguiente zona se han abierto")  # Aporta un dato o una instruccion para el comportamiento indicado.
-                    self._aviso(lineas, 4.0)  # Programa el aviso que se mostrara en pantalla.
-        if self.bloquea(jugador.rect.inflate(16, 16)) and not self.bloquea(jugador.rect):  # Evalua la condicion que decide el comportamiento siguiente.
-            self.t_barrera = 1.2  # Guarda en el objeto tiempo restante del aviso de barrera.
+                puertas_abiertas = mapa.abrir_puertas(z["puertas"])
+                if self.victoria:
+                    self._aviso(["TODAS LAS OLEADAS COMPLETADAS!"], 5.0)
+                else:
+                    lineas = [f"OLEADA {z['nivel']} COMPLETADA!"]
+                    if z["cerrada"]:
+                        lineas.append("La zona se ha abierto: puedes salir")
+                    if puertas_abiertas:
+                        lineas.append("Las puertas de la siguiente zona se han abierto")
+                    self._aviso(lineas, 4.0)
+        if self.bloquea(jugador.rect.inflate(16, 16)) and not self.bloquea(jugador.rect):
+            self.t_barrera = 1.2
 
     # Reinicia una oleada cerrada cuando el jugador abandona su zona.
-    def _cancelar(self, z, enemigos):  # Define la metodo _cancelar: reinicia la oleada si el jugador abandona una zona cerrada.
-        z.update(  # Aporta un dato o una instruccion para el comportamiento indicado.
-            estado="pendiente", generados=0, matados=0,  # Calcula o guarda estado para el resto del metodo.
-            tiempo_oleada=0.0, puntos_ganados=0,  # Calcula o guarda tiempo_oleada para el resto del metodo.
-        )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        for e in enemigos:  # Revisa los enemigos para contar bajas o actualizar el encuentro.
-            if e.de_oleada and e.vivo():  # Evalua la condicion que decide el comportamiento siguiente.
-                e.vida = 0  # Calcula o guarda e.vida para el resto del metodo.
-                e.t_muerte = 0.0  # Calcula o guarda e.t_muerte para el resto del metodo.
-                e.contado = True  # Calcula o guarda e.contado para el resto del metodo.
-        self._aviso(["Has salido de la zona: la oleada se detuvo", "Vuelve a entrar para empezarla de nuevo"], 4.0)  # Programa el aviso que se mostrara en pantalla.
+    def _cancelar(self, z, enemigos):
+        z.update(
+            estado="pendiente", generados=0, matados=0,
+            tiempo_oleada=0.0, puntos_ganados=0,
+        )
+        for e in enemigos:
+            if e.de_oleada and e.vivo():
+                e.vida = 0
+                e.t_muerte = 0.0
+                e.contado = True
+        self._aviso(["Has salido de la zona: la oleada se detuvo", "Vuelve a entrar para empezarla de nuevo"], 4.0)
 
     # Crea un enemigo o jefe en una casilla válida, lejos del jugador si es posible.
-    def _generar(self, z, jugador, enemigos):  # Define la metodo _generar: crea un enemigo o jefe en un punto de aparicion valido.
-        jx, jy = jugador.rect.center  # Calcula o guarda jx para el resto del metodo.
-        lejos = [p for p in z["puntos"] if math.hypot(p[0] - jx, p[1] - jy) >= z["dist"]]  # Aporta un dato o una instruccion para el comportamiento indicado.
-        punto = random.choice(lejos) if lejos else max(z["puntos"], key=lambda p: math.hypot(p[0] - jx, p[1] - jy))  # Elige una opcion aleatoria de la lista.
-        if z["jefe"]:  # Evalua la condicion que decide el comportamiento siguiente.
-            e = Jefe(  # Calcula o guarda e para el resto del metodo.
-                punto[0], punto[1], aparicion=ENEMIGO_TIEMPO_APARICION,  # Calcula o guarda punto[0] para el resto del metodo.
-                tipo=z["tipo_jefe"], sprite=z["sprite_jefe"],  # Calcula o guarda tipo para el resto del metodo.
-                tipos_apoyo=z["tipos_apoyo"], puntos_apoyo=z["puntos"],  # Calcula o guarda tipos_apoyo para el resto del metodo.
-                max_apoyos=z["max_apoyos"],  # Calcula o guarda max_apoyos para el resto del metodo.
-            )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            tipo = random.choice(z["tipos_enemigos"])  # Elige una opcion aleatoria de la lista.
-            e = Enemigo(  # Calcula o guarda e para el resto del metodo.
-                punto[0], punto[1], agresivo=ENEMIGOS_OLEADA_AGRESIVOS,  # Calcula o guarda punto[0] para el resto del metodo.
-                aparicion=ENEMIGO_TIEMPO_APARICION, tipo=tipo,  # Calcula o guarda aparicion para el resto del metodo.
-            )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        e.de_oleada = True  # Calcula o guarda e.de_oleada para el resto del metodo.
-        enemigos.agregar(e)  # Aporta un dato o una instruccion para el comportamiento indicado.
-        z["generados"] += 1  # Guarda el resultado de esta operacion en la estructura indicada.
+    def _generar(self, z, jugador, enemigos):
+        jx, jy = jugador.rect.center
+        lejos = [p for p in z["puntos"] if math.hypot(p[0] - jx, p[1] - jy) >= z["dist"]]
+        punto = random.choice(lejos) if lejos else max(z["puntos"], key=lambda p: math.hypot(p[0] - jx, p[1] - jy))
+        if z["jefe"]:
+            e = Jefe(
+                punto[0], punto[1], aparicion=ENEMIGO_TIEMPO_APARICION,
+                tipo=z["tipo_jefe"], sprite=z["sprite_jefe"],
+                tipos_apoyo=z["tipos_apoyo"], puntos_apoyo=z["puntos"],
+                max_apoyos=z["max_apoyos"],
+            )
+        else:
+            tipo = random.choice(z["tipos_enemigos"])
+            e = Enemigo(
+                punto[0], punto[1], agresivo=ENEMIGOS_OLEADA_AGRESIVOS,
+                aparicion=ENEMIGO_TIEMPO_APARICION, tipo=tipo,
+            )
+        e.de_oleada = True
+        enemigos.agregar(e)
+        z["generados"] += 1
 
-    def dibujar_perimetro(self, superficie, cam):  # Define la metodo dibujar_perimetro: dibuja el limite visual de las zonas cerradas.
-        pantalla = superficie.get_rect()  # Calcula o guarda pantalla para el resto del metodo.
-        G = 44  # Calcula o guarda G para el resto del metodo.
-        for z in self.zonas:  # Recorre las zonas para buscar la activa o dibujar sus limites.
-            if z["estado"] == "completada" or not z["cerrada"]:  # Evalua la condicion que decide el comportamiento siguiente.
-                continue  # Salta al siguiente elemento del ciclo.
-            r = z["rect"].move(-cam[0], -cam[1])  # Calcula o guarda r para el resto del metodo.
-            if not r.colliderect(pantalla):  # Evalua la condicion que decide el comportamiento siguiente.
-                continue  # Salta al siguiente elemento del ciclo.
-            activa = z["estado"] in ("preparando", "activa")  # Calcula o guarda activa para el resto del metodo.
-            fuerza = 0.65 + 0.35 * math.sin(self.t * 4) if activa else 0.30  # Calcula o guarda fuerza para el resto del metodo.
-            r0, g0, b0 = z["color"]  # Calcula o guarda r0 para el resto del metodo.
-            for lado in ("arriba", "abajo", "izq", "der"):  # Inicia un ciclo para procesar cada elemento indicado.
-                horizontal = lado in ("arriba", "abajo")  # Calcula o guarda horizontal para el resto del metodo.
+    # Dibuja las bandas luminosas y el borde de las zonas cerradas.
+    def dibujar_perimetro(self, superficie, cam):
+        pantalla = superficie.get_rect()
+        G = 44
+        for z in self.zonas:
+            if z["estado"] == "completada" or not z["cerrada"]:
+                continue
+            r = z["rect"].move(-cam[0], -cam[1])
+            if not r.colliderect(pantalla):
+                continue
+            activa = z["estado"] in ("preparando", "activa")
+            fuerza = 0.65 + 0.35 * math.sin(self.t * 4) if activa else 0.30
+            r0, g0, b0 = z["color"]
+            for lado in ("arriba", "abajo", "izq", "der"):
+                horizontal = lado in ("arriba", "abajo")
                 # Calcula donde dibujar la banda luminosa en el borde seleccionado de la zona.
                 pos = (r.x, r.y if lado in ("arriba", "izq") else r.bottom - G) if horizontal else \
-                      (r.x if lado == "izq" else r.right - G, r.y)  # Completa la posicion horizontal o vertical de la banda.
-                tam = (r.w, G) if horizontal else (G, r.h)  # Calcula o guarda tam para el resto del metodo.
-                vis = pygame.Rect(pos, tam).clip(pantalla)  # Crea un rectangulo usado como posicion o hitbox.
-                if vis.w <= 0 or vis.h <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                    continue  # Salta al siguiente elemento del ciclo.
-                banda = pygame.Surface(vis.size, pygame.SRCALPHA)  # Crea una superficie grafica para dibujar un efecto.
-                for k in range(G):  # Repite la operacion por cada indice o paso de este rango.
-                    d = k if lado in ("arriba", "izq") else G - 1 - k  # Calcula o guarda d para el resto del metodo.
-                    a = int(150 * fuerza * (1 - d / G) ** 1.6)  # Calcula o guarda a para el resto del metodo.
-                    if horizontal:  # Evalua la condicion que decide el comportamiento siguiente.
-                        fila = pos[1] + k - vis.y  # Calcula o guarda fila para el resto del metodo.
-                        if 0 <= fila < vis.h:  # Evalua la condicion que decide el comportamiento siguiente.
-                            pygame.draw.line(banda, (r0, g0, b0, a), (0, fila), (vis.w, fila))  # Dibuja el elemento de interfaz o efecto visual indicado.
-                    else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                        col = pos[0] + k - vis.x  # Calcula o guarda col para el resto del metodo.
-                        if 0 <= col < vis.w:  # Evalua la condicion que decide el comportamiento siguiente.
-                            pygame.draw.line(banda, (r0, g0, b0, a), (col, 0), (col, vis.h))  # Dibuja el elemento de interfaz o efecto visual indicado.
-                superficie.blit(banda, vis.topleft)  # Pinta el sprite o capa sobre la superficie de juego.
-            brillo = 0.45 + 0.55 * fuerza  # Calcula o guarda brillo para el resto del metodo.
-            pygame.draw.rect(superficie, (int(r0 * brillo), int(g0 * brillo), int(b0 * brillo)), r, 4)  # Dibuja el elemento de interfaz o efecto visual indicado.
+                      (r.x if lado == "izq" else r.right - G, r.y)
+                tam = (r.w, G) if horizontal else (G, r.h)
+                vis = pygame.Rect(pos, tam).clip(pantalla)
+                if vis.w <= 0 or vis.h <= 0:
+                    continue
+                banda = pygame.Surface(vis.size, pygame.SRCALPHA)
+                for k in range(G):
+                    d = k if lado in ("arriba", "izq") else G - 1 - k
+                    a = int(150 * fuerza * (1 - d / G) ** 1.6)
+                    if horizontal:
+                        fila = pos[1] + k - vis.y
+                        if 0 <= fila < vis.h:
+                            pygame.draw.line(banda, (r0, g0, b0, a), (0, fila), (vis.w, fila))
+                    else:
+                        col = pos[0] + k - vis.x
+                        if 0 <= col < vis.w:
+                            pygame.draw.line(banda, (r0, g0, b0, a), (col, 0), (col, vis.h))
+                superficie.blit(banda, vis.topleft)
+            brillo = 0.45 + 0.55 * fuerza
+            pygame.draw.rect(superficie, (int(r0 * brillo), int(g0 * brillo), int(b0 * brillo)), r, 4)
 
-    def _vineta(self, color):  # Define la metodo _vineta: genera y cachea el efecto de color de una zona.
-        if color not in self._vinetas:  # Evalua la condicion que decide el comportamiento siguiente.
-            pequena = pygame.Surface((48, 27), pygame.SRCALPHA)  # Crea una superficie grafica para dibujar un efecto.
-            for y in range(27):  # Repite la operacion por cada indice o paso de este rango.
-                for x in range(48):  # Repite la operacion por cada indice o paso de este rango.
-                    d = math.hypot((x - 23.5) / 23.5, (y - 13) / 13) / 1.414  # Calcula o guarda d para el resto del metodo.
-                    pequena.set_at((x, y), (*color, int(95 * min(1.0, max(0.0, (d - 0.45) / 0.55)) ** 2)))  # Aporta un dato o una instruccion para el comportamiento indicado.
-            self._vinetas[color] = pygame.transform.smoothscale(pequena, (width, height))  # Guarda en el objeto _vinetas[color].
-        return self._vinetas[color]  # Devuelve el dato calculado por este metodo.
+    # Genera y guarda en cache el efecto de color de borde de una zona.
+    def _vineta(self, color):
+        if color not in self._vinetas:
+            pequena = pygame.Surface((48, 27), pygame.SRCALPHA)
+            for y in range(27):
+                for x in range(48):
+                    d = math.hypot((x - 23.5) / 23.5, (y - 13) / 13) / 1.414
+                    pequena.set_at((x, y), (*color, int(95 * min(1.0, max(0.0, (d - 0.45) / 0.55)) ** 2)))
+            self._vinetas[color] = pygame.transform.smoothscale(pequena, (width, height))
+        return self._vinetas[color]
 
-    def dibujar_vineta(self, superficie, jugador):  # Define la metodo dibujar_vineta: aplica el color ambiental de la zona activa.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        if z is not None and z["estado"] in ("preparando", "activa") and z["rect"].collidepoint(jugador.rect.center):  # Evalua la condicion que decide el comportamiento siguiente.
-            superficie.blit(self._vineta(z["color"]), (0, 0))  # Pinta el sprite o capa sobre la superficie de juego.
+    # Aplica el color ambiental de la zona activa mientras el jugador esta dentro.
+    def dibujar_vineta(self, superficie, jugador):
+        z = self.actual
+        if z is not None and z["estado"] in ("preparando", "activa") and z["rect"].collidepoint(jugador.rect.center):
+            superficie.blit(self._vineta(z["color"]), (0, 0))
 
-    def direccion_flecha(self, jugador):  # Define la metodo direccion_flecha: calcula la direccion y ruta hasta el siguiente objetivo.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        if z is None or jugador.muerto or z["rect"].collidepoint(jugador.rect.center):  # Evalua la condicion que decide el comportamiento siguiente.
-            return None  # Devuelve el dato calculado por este metodo.
-        origen = pygame.Vector2(jugador.rect.center)  # Crea un vector para posicion, direccion o movimiento.
-        destino = pygame.Vector2(z["destino"])  # Crea un vector para posicion, direccion o movimiento.
-        objetivo = destino  # Calcula o guarda objetivo para el resto del metodo.
-        if not mapa.paso_libre(origen, destino, jugador.rect.w, jugador.rect.h):  # Evalua la condicion que decide el comportamiento siguiente.
-            if self.t >= self.t_ruta:  # Evalua la condicion que decide el comportamiento siguiente.
-                self.t_ruta = self.t + 0.4  # Guarda en el objeto momento en que se vuelve a calcular la ruta guia.
-                self.objetivo_flecha = None  # Guarda en el objeto proximo punto transitable de la ruta guia.
-                for p in mapa.camino(origen, destino):  # Inicia un ciclo para procesar cada elemento indicado.
-                    if not mapa.paso_libre(origen, p, jugador.rect.w, jugador.rect.h):  # Evalua la condicion que decide el comportamiento siguiente.
-                        break  # Termina el ciclo porque ya se encontro el resultado.
-                    self.objetivo_flecha = pygame.Vector2(p)  # Crea un vector para posicion, direccion o movimiento.
-            if self.objetivo_flecha is not None:  # Evalua la condicion que decide el comportamiento siguiente.
-                objetivo = self.objetivo_flecha  # Calcula o guarda objetivo para el resto del metodo.
-        d = objetivo - origen  # Calcula o guarda d para el resto del metodo.
-        if d.length() < 1:  # Evalua la condicion que decide el comportamiento siguiente.
-            d = destino - origen if (destino - origen).length() >= 1 else pygame.Vector2(1, 0)  # Crea un vector para posicion, direccion o movimiento.
-        return d.normalize(), (destino - origen).length() / TAM_TILE  # Devuelve el dato calculado por este metodo.
+    # Calcula la direccion y la distancia hacia la siguiente zona, rodeando obstaculos.
+    def direccion_flecha(self, jugador):
+        z = self.actual
+        if z is None or jugador.muerto or z["rect"].collidepoint(jugador.rect.center):
+            return None
+        origen = pygame.Vector2(jugador.rect.center)
+        destino = pygame.Vector2(z["destino"])
+        objetivo = destino
+        if not mapa.paso_libre(origen, destino, jugador.rect.w, jugador.rect.h):
+            if self.t >= self.t_ruta:
+                self.t_ruta = self.t + 0.4
+                self.objetivo_flecha = None
+                for p in mapa.camino(origen, destino):
+                    if not mapa.paso_libre(origen, p, jugador.rect.w, jugador.rect.h):
+                        break
+                    self.objetivo_flecha = pygame.Vector2(p)
+            if self.objetivo_flecha is not None:
+                objetivo = self.objetivo_flecha
+        d = objetivo - origen
+        if d.length() < 1:
+            d = destino - origen if (destino - origen).length() >= 1 else pygame.Vector2(1, 0)
+        return d.normalize(), (destino - origen).length() / TAM_TILE
 
-    def dibujar_flecha(self, superficie, jugador, cam):  # Define la metodo dibujar_flecha: dibuja la guia hacia la zona de la siguiente oleada.
-        guia = self.direccion_flecha(jugador)  # Calcula o guarda guia para el resto del metodo.
-        if guia is None:  # Evalua la condicion que decide el comportamiento siguiente.
-            return  # Aporta un dato o una instruccion para el comportamiento indicado.
-        direccion, distancia = guia  # Calcula o guarda direccion para el resto del metodo.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        centro = pygame.Vector2(jugador.rect.centerx - cam[0], jugador.rect.bottom - 90 - cam[1])  # Crea un vector para posicion, direccion o movimiento.
-        pivote = centro + direccion * (170 + 6 * math.sin(self.t * 6))  # Calcula o guarda pivote para el resto del metodo.
-        pivote.x = max(220, min(width - 220, pivote.x))  # Calcula o guarda pivote.x para el resto del metodo.
-        pivote.y = max(290, min(height - 230, pivote.y))  # Calcula o guarda pivote.y para el resto del metodo.
-        perp = pygame.Vector2(-direccion.y, direccion.x)  # Crea un vector para posicion, direccion o movimiento.
-        puntos = [pivote + direccion * 34, pivote - direccion * 14 + perp * 24, pivote - direccion * 2, pivote - direccion * 14 - perp * 24]  # Calcula o guarda puntos para el resto del metodo.
-        pygame.draw.polygon(superficie, (0, 0, 0), puntos, 6)  # Dibuja el elemento de interfaz o efecto visual indicado.
-        pygame.draw.polygon(superficie, z["color"], puntos)  # Dibuja el elemento de interfaz o efecto visual indicado.
-        texto_borde(superficie, f"{z['nombre']} - {int(distancia)} casillas", fuente_peq, z["color"], (pivote.x, pivote.y + 44))  # Aporta un dato o una instruccion para el comportamiento indicado.
+    # Dibuja la flecha guia hacia la siguiente zona con su nombre y distancia.
+    def dibujar_flecha(self, superficie, jugador, cam):
+        guia = self.direccion_flecha(jugador)
+        if guia is None:
+            return
+        direccion, distancia = guia
+        z = self.actual
+        centro = pygame.Vector2(jugador.rect.centerx - cam[0], jugador.rect.bottom - 90 - cam[1])
+        pivote = centro + direccion * (170 + 6 * math.sin(self.t * 6))
+        pivote.x = max(220, min(width - 220, pivote.x))
+        pivote.y = max(290, min(height - 230, pivote.y))
+        perp = pygame.Vector2(-direccion.y, direccion.x)
+        puntos = [pivote + direccion * 34, pivote - direccion * 14 + perp * 24, pivote - direccion * 2, pivote - direccion * 14 - perp * 24]
+        pygame.draw.polygon(superficie, (0, 0, 0), puntos, 6)
+        pygame.draw.polygon(superficie, z["color"], puntos)
+        texto_borde(superficie, f"{z['nombre']} - {int(distancia)} casillas", fuente_peq, z["color"], (pivote.x, pivote.y + 44))
 
-    def dibujar_hud(self, superficie):  # Define la metodo dibujar_hud: muestra progreso, enemigos restantes y avisos de oleada.
-        z = self.actual  # Calcula o guarda altura visual del salto sobre el suelo para el resto del metodo.
-        if z is None:  # Evalua la condicion que decide el comportamiento siguiente.
-            lineas = ["Campana completada: el Carcelero ha sido derrotado"]  # Calcula o guarda lineas para el resto del metodo.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            lineas = [f"OLEADA {z['nivel']}/{len(self.zonas)} - {z['nombre']}"]  # Calcula o guarda lineas para el resto del metodo.
-            if z["estado"] == "pendiente":  # si la oleada espera, comprueba la entrada del jugador
-                lineas.append("Entra en la zona (sigue la flecha)")  # Aporta un dato o una instruccion para el comportamiento indicado.
-            elif z["estado"] == "preparando":  # Evalua la condicion que decide el comportamiento siguiente.
-                lineas.append(f"Comienza en {max(1, math.ceil(z['t_prep']))}...")  # Aporta un dato o una instruccion para el comportamiento indicado.
-            else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                restantes = z["total"] - z["matados"]  # Calcula o guarda restantes para el resto del metodo.
-                objetivo = "Jefe restante" if z["jefe"] else "Enemigos restantes"  # Calcula o guarda objetivo para el resto del metodo.
-                lineas.append(f"{objetivo}: {restantes}" + ("   (zona cerrada)" if z["cerrada"] else ""))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        for i, linea in enumerate(lineas):  # Inicia un ciclo para procesar cada elemento indicado.
-            texto_borde(superficie, linea, fuente_peq, blanco, (20, 108 + i * 28), centrado=False)  # Calcula o guarda texto_borde(superficie para el resto del metodo.
-        if self.t_aviso > 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            color = z["color"] if z is not None else amarillo  # Calcula o guarda color para el resto del metodo.
-            for i, linea in enumerate(self.aviso):  # Inicia un ciclo para procesar cada elemento indicado.
-                texto_borde(superficie, linea, menu_font if i == 0 else fuente_peq, color if i == 0 else blanco, (width // 2, 190 + i * 50))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        if self.t_barrera > 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            texto_borde(superficie, "No puedes salir hasta terminar la oleada", menu_font, (255, 120, 90), (width // 2, height - 190))  # Aporta un dato o una instruccion para el comportamiento indicado.
-
-
-print("---------- CONFIGURACION DE ANIMACIONES DEL JUGADOR ----------")  # Aporta un dato o una instruccion para el comportamiento indicado.
-CONFIG_ANIM = {  # Calcula o guarda CONFIG_ANIM para el resto del metodo.
-    "quieto": (6, True),  # Define los datos de configuracion asociados a quieto.
-    "quieto_espada": (6, True),  # Define los datos de configuracion asociados a quieto_espada.
-    "caminar": (12, True),  # Define los datos de configuracion asociados a caminar.
-    "correr": (16, True),  # Define los datos de configuracion asociados a correr.
-    "empujar": (6, True),  # Define los datos de configuracion asociados a empujar.
-    "pared": (6, True),  # Define los datos de configuracion asociados a pared.
-    "agacharse": (16, False),  # Define los datos de configuracion asociados a agacharse.
-    "agachado_quieto": (6, True),  # Define los datos de configuracion asociados a agachado_quieto.
-    "agachado_atacar": (18, False),  # Define los datos de configuracion asociados a agachado_atacar.
-    "atacar": (20, False),  # Define los datos de configuracion asociados a atacar.
-    "atacar2": (20, False),  # Define los datos de configuracion asociados a atacar2.
-    "atacar_dash": (20, False),  # Define los datos de configuracion asociados a atacar_dash.
-    "atacar_giro": (24, False),  # Define los datos de configuracion asociados a atacar_giro.
-    "atacar_abajo": (22, False),  # Define los datos de configuracion asociados a atacar_abajo.
-    "saltar": (10, False),  # Define los datos de configuracion asociados a saltar.
-    "caer": (10, False),  # Define los datos de configuracion asociados a caer.
-    "aterrizar": (16, False),  # Define los datos de configuracion asociados a aterrizar.
-    "rodar": (24, False),  # Define los datos de configuracion asociados a rodar.
-    "herido": (14, False),  # Define los datos de configuracion asociados a herido.
-    "morir": (10, False),  # Define los datos de configuracion asociados a morir.
-    "beber": (8, False),  # Define los datos de configuracion asociados a beber.
-    "victoria": (8, True),  # Define los datos de configuracion asociados a victoria.
-}  # Cierra la llamada o coleccion de datos iniciada anteriormente.
+    # Muestra el progreso de la oleada, los enemigos restantes y los avisos.
+    def dibujar_hud(self, superficie):
+        z = self.actual
+        if z is None:
+            lineas = ["Campana completada: el Carcelero ha sido derrotado"]
+        else:
+            lineas = [f"OLEADA {z['nivel']}/{len(self.zonas)} - {z['nombre']}"]
+            if z["estado"] == "pendiente":
+                lineas.append("Entra en la zona (sigue la flecha)")
+            elif z["estado"] == "preparando":
+                lineas.append(f"Comienza en {max(1, math.ceil(z['t_prep']))}...")
+            else:
+                restantes = z["total"] - z["matados"]
+                objetivo = "Jefe restante" if z["jefe"] else "Enemigos restantes"
+                lineas.append(f"{objetivo}: {restantes}" + ("   (zona cerrada)" if z["cerrada"] else ""))
+        for i, linea in enumerate(lineas):
+            texto_borde(superficie, linea, fuente_peq, blanco, (20, 108 + i * 28), centrado=False)
+        if self.t_aviso > 0:
+            color = z["color"] if z is not None else amarillo
+            for i, linea in enumerate(self.aviso):
+                texto_borde(superficie, linea, menu_font if i == 0 else fuente_peq, color if i == 0 else blanco, (width // 2, 190 + i * 50))
+        if self.t_barrera > 0:
+            texto_borde(superficie, "No puedes salir hasta terminar la oleada", menu_font, (255, 120, 90), (width // 2, height - 190))
 
 
-print("---------- CLASE DEL JUGADOR ----------")  # Aporta un dato o una instruccion para el comportamiento indicado.
-class Jugador:  # Define la clase Jugador: agrupa instrucciones relacionadas.
+# Velocidad (fps) y si se repite cada animacion del jugador.
+print("---------- CONFIGURACION DE ANIMACIONES DEL JUGADOR ----------")
+CONFIG_ANIM = {
+    "quieto": (6, True),
+    "quieto_espada": (6, True),
+    "caminar": (12, True),
+    "correr": (16, True),
+    "empujar": (6, True),
+    "pared": (6, True),
+    "agacharse": (16, False),
+    "agachado_quieto": (6, True),
+    "agachado_atacar": (18, False),
+    "atacar": (20, False),
+    "atacar2": (20, False),
+    "atacar_dash": (20, False),
+    "atacar_giro": (24, False),
+    "atacar_abajo": (22, False),
+    "saltar": (10, False),
+    "caer": (10, False),
+    "aterrizar": (16, False),
+    "rodar": (24, False),
+    "herido": (14, False),
+    "morir": (10, False),
+    "beber": (8, False),
+    "victoria": (8, True),
+}
+
+
+# Personaje controlado por el jugador: movimiento, combate, vida, mejoras y animacion.
+print("---------- CLASE DEL JUGADOR ----------")
+class Jugador:
     # Mantiene posición, hitboxes, animación, vida, inventario y poderes del personaje.
-    def __init__(self, x, y):  # Define la metodo __init__: inicializa los datos y el estado inicial del objeto.
-        self.pos = pygame.Vector2(x, y)  # Crea un vector para posicion, direccion o movimiento.
-        self.rect = pygame.Rect(0, 0, int(HITBOX_JUGADOR_PIES[0] * escala_jugador), int(HITBOX_JUGADOR_PIES[1] * escala_jugador))  # Crea un rectangulo usado como posicion o hitbox.
-        self.rect.center = self.pos  # Guarda en el objeto hitbox de pies o rectangulo que ocupa el personaje.
+    def __init__(self, x, y):
+        self.pos = pygame.Vector2(x, y)
+        self.rect = pygame.Rect(0, 0, int(HITBOX_JUGADOR_PIES[0] * escala_jugador), int(HITBOX_JUGADOR_PIES[1] * escala_jugador))
+        self.rect.center = self.pos
 
-        self.vel_caminar = VEL_JUGADOR_CAMINAR  # Guarda en el objeto velocidad al caminar.
-        self.vel_correr = VEL_JUGADOR_CORRER  # Guarda en el objeto velocidad al correr.
-        self.vel_agachado = VEL_JUGADOR_AGACHADO  # Guarda en el objeto velocidad mientras esta agachado.
-        self.vel_rodar = VEL_JUGADOR_RODAR  # Guarda en el objeto velocidad durante la rodada.
-        self.vel_aire = VEL_JUGADOR_CAMINAR  # Guarda en el objeto velocidad horizontal mientras esta en el aire.
+        self.vel_caminar = VEL_JUGADOR_CAMINAR
+        self.vel_correr = VEL_JUGADOR_CORRER
+        self.vel_agachado = VEL_JUGADOR_AGACHADO
+        self.vel_rodar = VEL_JUGADOR_RODAR
+        self.vel_aire = VEL_JUGADOR_CAMINAR
 
-        self.anim = "quieto"  # Guarda en el objeto nombre de la animacion actual.
-        self.indice_frame = 0.0  # Guarda en el objeto posicion actual dentro de los fotogramas.
-        self.reversa = False  # Guarda en el objeto si la animacion se reproduce al reves.
-        self.anim_terminada = False  # Guarda en el objeto si ya concluyo una animacion no repetida.
-        self.mirando = 1  # Guarda en el objeto orientacion horizontal del personaje.
-        self.imagen = ANIMACIONES["quieto"]["der"][0]  # Guarda en el objeto sprite que se dibuja en el fotograma actual.
-        self.alto_cuerpo = self.imagen.get_bounding_rect().height  # Guarda en el objeto altura de la imagen usada para ubicar la hitbox corporal.
+        self.anim = "quieto"
+        self.indice_frame = 0.0
+        self.reversa = False
+        self.anim_terminada = False
+        self.mirando = 1
+        self.imagen = ANIMACIONES["quieto"]["der"][0]
+        self.alto_cuerpo = self.imagen.get_bounding_rect().height
 
-        self.accion = None  # Guarda en el objeto accion especial o ataque que se esta ejecutando.
-        self.agachado = False  # Guarda en el objeto estado de postura del jugador.
-        self.muerto = False  # Guarda en el objeto estado de derrota del jugador.
-        self.z = 0.0  # Guarda en el objeto altura visual del salto sobre el suelo.
-        self.vz = 0.0  # Guarda en el objeto velocidad vertical del salto.
-        self.en_aire = False  # Guarda en el objeto indica si el jugador esta saltando o cayendo.
-        self.dir_accion = pygame.Vector2(1, 0)  # Crea un vector para posicion, direccion o movimiento.
-        self.empuje = pygame.Vector2(0, 0)  # Crea un vector para posicion, direccion o movimiento.
-        self.combo = 0  # Guarda en el objeto siguiente golpe de la secuencia alternada.
-        self.t_combo = 0.0  # Guarda en el objeto tiempo disponible para continuar el combo.
-        self.tiempo_espada = 0.0  # Guarda en el objeto tiempo restante de la animacion de espada.
-        self.cd_giro = 0.0  # Guarda en el objeto tiempo de enfriamiento del ataque giratorio.
-        self.vida_max = VIDA_JUGADOR  # Guarda en el objeto vida maxima.
-        self.vida = self.vida_max  # Guarda en el objeto vida actual.
-        self.vida_visible = float(self.vida_max)  # Guarda en el objeto valor suavizado que se muestra en la barra de vida.
-        self.pociones = 0  # Guarda en el objeto cantidad de pociones del inventario.
-        self.invulnerable = 0.0  # Guarda en el objeto tiempo restante sin recibir otro dano.
-        self.golpeados = set()  # Guarda en el objeto enemigos ya alcanzados por este ataque.
-        self.celebrar_pendiente = False  # Guarda en el objeto si queda por iniciar la celebracion de victoria.
-        self.victoria_hecha = False  # Guarda en el objeto si la celebracion ya fue activada.
-        self.prev = {}  # Guarda en el objeto estados de teclas del fotograma anterior.
-        self.enfriamiento = 0.3  # Guarda en el objeto tiempo restante hasta el siguiente ataque.
-        self.bonificaciones = {"viento": 0, "dano": 0, "berserker": 0}  # Guarda en el objeto niveles de mejoras permanentes del jugador.
-        self.ataques_lanzados = 0  # Guarda en el objeto contador para la mejora del tajo de viento.
-        self.ataque_id = 0  # Guarda en el objeto identificador del ataque actual.
-        self.tajo_viento_pendiente = False  # Guarda en el objeto si hay un proyectil de viento por generar.
-        self.berserker_tiempo = 0.0  # Guarda en el objeto duracion restante del modo berserker.
-        self.berserker_enfriamiento = 0.0  # Guarda en el objeto tiempo hasta poder activar berserker otra vez.
+        self.accion = None
+        self.agachado = False
+        self.muerto = False
+        self.z = 0.0
+        self.vz = 0.0
+        self.en_aire = False
+        self.dir_accion = pygame.Vector2(1, 0)
+        self.empuje = pygame.Vector2(0, 0)
+        self.combo = 0
+        self.t_combo = 0.0
+        self.tiempo_espada = 0.0
+        self.cd_giro = 0.0
+        self.vida_max = VIDA_JUGADOR
+        self.vida = self.vida_max
+        self.vida_visible = float(self.vida_max)
+        self.pociones = 0
+        self.invulnerable = 0.0
+        self.golpeados = set()
+        self.celebrar_pendiente = False
+        self.victoria_hecha = False
+        self.prev = {}
+        self.enfriamiento = 0.3
+        self.bonificaciones = {"viento": 0, "dano": 0, "berserker": 0}
+        self.ataques_lanzados = 0
+        self.ataque_id = 0
+        self.tajo_viento_pendiente = False
+        self.berserker_tiempo = 0.0
+        self.berserker_enfriamiento = 0.0
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def berserker_activo(self):  # Define la metodo berserker_activo: indica si el poder berserker esta activo.
-        return self.berserker_tiempo > 0  # Devuelve el dato calculado por este metodo.
+    # Indica si el poder berserker esta activo.
+    @property
+    def berserker_activo(self):
+        return self.berserker_tiempo > 0
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def multiplicador_dano(self):  # Define la metodo multiplicador_dano: calcula el aumento de dano de las mejoras activas.
-        return (1 + self.bonificaciones["dano"] * 0.15) * (1.0 + 0.2 * self.bonificaciones["berserker"] if self.berserker_activo else 1.0)  # Devuelve el dato calculado por este metodo.
+    # Multiplicador de dano por las mejoras de dano y berserker.
+    @property
+    def multiplicador_dano(self):
+        return (1 + self.bonificaciones["dano"] * 0.15) * (1.0 + 0.2 * self.bonificaciones["berserker"] if self.berserker_activo else 1.0)
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def multiplicador_velocidad(self):  # Define la metodo multiplicador_velocidad: calcula el aumento de velocidad berserker.
-        return 1.0 + 0.12 * self.bonificaciones["berserker"] if self.berserker_activo else 1.0  # Devuelve el dato calculado por este metodo.
+    # Multiplicador de velocidad mientras el berserker esta activo.
+    @property
+    def multiplicador_velocidad(self):
+        return 1.0 + 0.12 * self.bonificaciones["berserker"] if self.berserker_activo else 1.0
 
-    @property  # Aporta un dato o una instruccion para el comportamiento indicado.
-    def multiplicador_dano_recibido(self):  # Define la metodo multiplicador_dano_recibido: calcula la reduccion de dano berserker.
-        return max(0.55, 1.0 - 0.12 * self.bonificaciones["berserker"]) if self.berserker_activo else 1.0  # Devuelve el dato calculado por este metodo.
+    # Reduccion del dano recibido mientras el berserker esta activo.
+    @property
+    def multiplicador_dano_recibido(self):
+        return max(0.55, 1.0 - 0.12 * self.bonificaciones["berserker"]) if self.berserker_activo else 1.0
 
     # Cuenta golpes y activa el proyectil de viento con la frecuencia de la mejora.
-    def registrar_ataque(self):  # Define la metodo registrar_ataque: cuenta ataques y prepara el tajo de viento mejorado.
-        nivel = self.bonificaciones["viento"]  # Calcula o guarda nivel para el resto del metodo.
-        if nivel == 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        self.ataques_lanzados += 1  # Guarda en el objeto ataques_lanzados +.
-        cada_cuantos = max(1, 4 - nivel)  # Calcula o guarda cada_cuantos para el resto del metodo.
-        if self.ataques_lanzados >= cada_cuantos:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.ataques_lanzados = 0  # Guarda en el objeto contador para la mejora del tajo de viento.
-            self.tajo_viento_pendiente = True  # Guarda en el objeto si hay un proyectil de viento por generar.
-            return True  # Devuelve True para comunicar el resultado de la comprobacion.
-        return False  # Devuelve False para comunicar el resultado de la comprobacion.
+    def registrar_ataque(self):
+        nivel = self.bonificaciones["viento"]
+        if nivel == 0:
+            return False
+        self.ataques_lanzados += 1
+        cada_cuantos = max(1, 4 - nivel)
+        if self.ataques_lanzados >= cada_cuantos:
+            self.ataques_lanzados = 0
+            self.tajo_viento_pendiente = True
+            return True
+        return False
 
     # Activa temporalmente el poder berserker si está mejorado y no está en enfriamiento.
-    def activar_berserker(self):  # Define la metodo activar_berserker: activa el poder berserker si esta disponible.
-        nivel = self.bonificaciones["berserker"]  # Calcula o guarda nivel para el resto del metodo.
-        if nivel and self.berserker_enfriamiento <= 0 and not self.berserker_activo:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.berserker_tiempo = 5.0 + 2.0 * nivel  # Guarda en el objeto duracion restante del modo berserker.
-            self.berserker_enfriamiento = 20.0 - 2.0 * nivel  # Guarda en el objeto tiempo hasta poder activar berserker otra vez.
-            reproducir_sonido("activar_berserker")  # Reproduce el efecto de sonido de esta accion.
-            return True  # Devuelve True para comunicar el resultado de la comprobacion.
-        return False  # Devuelve False para comunicar el resultado de la comprobacion.
+    def activar_berserker(self):
+        nivel = self.bonificaciones["berserker"]
+        if nivel and self.berserker_enfriamiento <= 0 and not self.berserker_activo:
+            self.berserker_tiempo = 5.0 + 2.0 * nivel
+            self.berserker_enfriamiento = 20.0 - 2.0 * nivel
+            reproducir_sonido("activar_berserker")
+            return True
+        return False
 
     # Consume una poción y recupera hasta 30 puntos sin exceder la vida máxima.
-    def beber_pocion(self):  # Define la metodo beber_pocion: consume una pocion y recupera vida.
-        if self.pociones <= 0 or self.vida >= self.vida_max or self.muerto:  # Evalua la condicion que decide el comportamiento siguiente.
-            return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        self.pociones -= 1  # Guarda en el objeto pociones -.
-        self.vida = min(self.vida_max, self.vida + 30)  # Guarda en el objeto vida actual.
-        self.vida_visible = max(self.vida_visible, float(self.vida))  # Guarda en el objeto valor suavizado que se muestra en la barra de vida.
-        return True  # Devuelve True para comunicar el resultado de la comprobacion.
+    def beber_pocion(self):
+        if self.pociones <= 0 or self.vida >= self.vida_max or self.muerto:
+            return False
+        self.pociones -= 1
+        self.vida = min(self.vida_max, self.vida + 30)
+        self.vida_visible = max(self.vida_visible, float(self.vida))
+        return True
 
     # Cambia la animación y configura su dirección de reproducción y fotograma inicial.
-    def poner_anim(self, nombre, reversa=False, reiniciar=False):  # Define la metodo poner_anim: cambia la animacion y reinicia sus fotogramas si hace falta.
-        if reiniciar or nombre != self.anim or reversa != self.reversa:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.anim = nombre  # Guarda en el objeto nombre de la animacion actual.
-            self.reversa = reversa  # Guarda en el objeto si la animacion se reproduce al reves.
-            self.anim_terminada = False  # Guarda en el objeto si ya concluyo una animacion no repetida.
-            n = len(ANIMACIONES[nombre]["der"])  # Calcula o guarda n para el resto del metodo.
-            self.indice_frame = n - 0.001 if reversa else 0.0  # Guarda en el objeto posicion actual dentro de los fotogramas.
+    def poner_anim(self, nombre, reversa=False, reiniciar=False):
+        if reiniciar or nombre != self.anim or reversa != self.reversa:
+            self.anim = nombre
+            self.reversa = reversa
+            self.anim_terminada = False
+            n = len(ANIMACIONES[nombre]["der"])
+            self.indice_frame = n - 0.001 if reversa else 0.0
 
-    def avanzar_anim(self, dt):  # Define la metodo avanzar_anim: avanza la animacion segun el tiempo y su velocidad.
-        fps, repite = CONFIG_ANIM[self.anim]  # Calcula o guarda fps para el resto del metodo.
-        n = len(ANIMACIONES[self.anim]["der"])  # Calcula o guarda n para el resto del metodo.
-        if self.reversa:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.indice_frame -= fps * dt  # Guarda en el objeto indice_frame -.
-            if self.indice_frame < 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                if repite:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self.indice_frame += n  # Guarda en el objeto indice_frame +.
-                else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                    self.indice_frame = 0.0  # Guarda en el objeto posicion actual dentro de los fotogramas.
-                    self.anim_terminada = True  # Guarda en el objeto si ya concluyo una animacion no repetida.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            self.indice_frame += fps * dt  # Guarda en el objeto indice_frame +.
-            if self.indice_frame >= n:  # Evalua la condicion que decide el comportamiento siguiente.
-                if repite:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self.indice_frame %= n  # Guarda en el objeto indice_frame %.
-                else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                    self.indice_frame = n - 0.001  # Guarda en el objeto posicion actual dentro de los fotogramas.
-                    self.anim_terminada = True  # Guarda en el objeto si ya concluyo una animacion no repetida.
+    # Avanza el fotograma de la animacion segun el tiempo, repitiendo o terminando.
+    def avanzar_anim(self, dt):
+        fps, repite = CONFIG_ANIM[self.anim]
+        n = len(ANIMACIONES[self.anim]["der"])
+        if self.reversa:
+            self.indice_frame -= fps * dt
+            if self.indice_frame < 0:
+                if repite:
+                    self.indice_frame += n
+                else:
+                    self.indice_frame = 0.0
+                    self.anim_terminada = True
+        else:
+            self.indice_frame += fps * dt
+            if self.indice_frame >= n:
+                if repite:
+                    self.indice_frame %= n
+                else:
+                    self.indice_frame = n - 0.001
+                    self.anim_terminada = True
 
-    def progreso(self):  # Define la metodo progreso: calcula cuanto ha avanzado la animacion actual.
-        n = len(ANIMACIONES[self.anim]["der"])  # Calcula o guarda n para el resto del metodo.
-        p = self.indice_frame / n  # Calcula o guarda p para el resto del metodo.
-        return 1 - p if self.reversa else p  # Devuelve el dato calculado por este metodo.
+    # Devuelve cuanto ha avanzado la animacion actual (de 0 a 1).
+    def progreso(self):
+        n = len(ANIMACIONES[self.anim]["der"])
+        p = self.indice_frame / n
+        return 1 - p if self.reversa else p
 
-    def elegir_imagen(self):  # Define la metodo elegir_imagen: selecciona el fotograma y orientacion que se dibujan.
-        frames = ANIMACIONES[self.anim]["der" if self.mirando == 1 else "izq"]  # Aporta un dato o una instruccion para el comportamiento indicado.
-        self.imagen = frames[min(int(self.indice_frame), len(frames) - 1)]  # Guarda en el objeto sprite que se dibuja en el fotograma actual.
+    # Selecciona el fotograma y la orientacion que se dibujan.
+    def elegir_imagen(self):
+        frames = ANIMACIONES[self.anim]["der" if self.mirando == 1 else "izq"]
+        self.imagen = frames[min(int(self.indice_frame), len(frames) - 1)]
 
-    def empezar(self, nombre, lado=None):  # Define la metodo empezar: inicia una accion, anima al jugador y reproduce su sonido.
-        self.accion = nombre  # Guarda en el objeto accion especial o ataque que se esta ejecutando.
-        sonidos_accion = {  # Calcula o guarda sonidos_accion para el resto del metodo.
-            "rodar": "rodar",  # Define los datos de configuracion asociados a rodar.
-            "atacar": "ataque_espada",  # Define los datos de configuracion asociados a atacar.
-            "atacar2": "ataque_espada",  # Define los datos de configuracion asociados a atacar2.
-            "atacar_dash": "ataque_embestida",  # Define los datos de configuracion asociados a atacar_dash.
-            "atacar_abajo": "ataque_aereo",  # Define los datos de configuracion asociados a atacar_abajo.
-            "atacar_giro": "ataque_giro",  # Define los datos de configuracion asociados a atacar_giro.
-            "agachado_atacar": "ataque_espada",  # Define los datos de configuracion asociados a agachado_atacar.
-            "herido": "dano_jugador",  # Define los datos de configuracion asociados a herido.
-            "morir": "derrota_jugador",  # Define los datos de configuracion asociados a morir.
-            "victoria": "victoria",  # Define los datos de configuracion asociados a victoria.
-            "beber": "curacion_pocion",  # Define los datos de configuracion asociados a beber.
-        }  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        sonido = sonidos_accion.get(nombre)  # Calcula o guarda sonido para el resto del metodo.
-        if sonido:  # Evalua la condicion que decide el comportamiento siguiente.
-            reproducir_sonido(  # Reproduce el efecto de sonido de esta accion.
-                sonido,  # Continua la lista de argumentos o valores de esta instruccion.
-                reemplazar=SONIDOS_ATAQUE if nombre in HITBOX_ATAQUES else (),  # Calcula o guarda reemplazar para el resto del metodo.
-            )  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        if nombre in HITBOX_ATAQUES:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.ataque_id += 1  # Guarda en el objeto ataque_id +.
-            self.golpeados = set()  # Guarda en el objeto enemigos ya alcanzados por este ataque.
-            self.registrar_ataque()  # Consulta o modifica el estado del objeto actual.
-        if lado is not None:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.mirando = lado  # Guarda en el objeto orientacion horizontal del personaje.
-        if nombre == "levantarse":  # Evalua la condicion que decide el comportamiento siguiente.
-            self.poner_anim("agacharse", reversa=True, reiniciar=True)  # Cambia la animacion visual del jugador.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            self.poner_anim(nombre, reiniciar=True)  # Cambia la animacion visual del jugador.
+    # Inicia una accion: reproduce su sonido, prepara su ataque y arranca su animacion.
+    def empezar(self, nombre, lado=None):
+        self.accion = nombre
+        sonidos_accion = {
+            "rodar": "rodar",
+            "atacar": "ataque_espada",
+            "atacar2": "ataque_espada",
+            "atacar_dash": "ataque_embestida",
+            "atacar_abajo": "ataque_aereo",
+            "atacar_giro": "ataque_giro",
+            "agachado_atacar": "ataque_espada",
+            "herido": "dano_jugador",
+            "morir": "derrota_jugador",
+            "victoria": "victoria",
+            "beber": "curacion_pocion",
+        }
+        sonido = sonidos_accion.get(nombre)
+        if sonido:
+            reproducir_sonido(
+                sonido,
+                reemplazar=SONIDOS_ATAQUE if nombre in HITBOX_ATAQUES else (),
+            )
+        if nombre in HITBOX_ATAQUES:
+            self.ataque_id += 1
+            self.golpeados = set()
+            self.registrar_ataque()
+        if lado is not None:
+            self.mirando = lado
+        if nombre == "levantarse":
+            self.poner_anim("agacharse", reversa=True, reiniciar=True)
+        else:
+            self.poner_anim(nombre, reiniciar=True)
 
     # Aplica defensas, muestra el daño y decide si el jugador es herido o derrotado.
-    def recibir_dano(self, cantidad=10, origen=None):  # Define la metodo recibir_dano: aplica defensas, quita vida y decide si hiere o mata.
-        if self.muerto or self.accion == "rodar" or self.invulnerable > 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            return False  # Devuelve False para comunicar el resultado de la comprobacion.
-        dano_final = max(1, round(cantidad * self.multiplicador_dano_recibido))  # Calcula o guarda dano_final para el resto del metodo.
-        self.vida = max(0, self.vida - dano_final)  # Guarda en el objeto vida actual.
-        texto_dano(dano_final, self.rect.centerx, self.rect.bottom - self.alto_cuerpo - self.z, (255, 70, 70))  # Aporta un dato o una instruccion para el comportamiento indicado.
-        self.invulnerable = INVULNERABLE_TRAS_GOLPE  # Guarda en el objeto tiempo restante sin recibir otro dano.
-        if self.vida <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.morir()  # Consulta o modifica el estado del objeto actual.
-            return True  # Devuelve True para comunicar el resultado de la comprobacion.
-        self.agachado = False  # Guarda en el objeto estado de postura del jugador.
-        retroceso = pygame.Vector2(-self.mirando, 0)  # Crea un vector para posicion, direccion o movimiento.
-        if origen is not None:  # Evalua la condicion que decide el comportamiento siguiente.
-            alejar = pygame.Vector2(self.rect.center) - pygame.Vector2(origen)  # Crea un vector para posicion, direccion o movimiento.
-            if alejar.length() > 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                retroceso = alejar.normalize()  # Calcula o guarda retroceso para el resto del metodo.
-        self.empuje = retroceso * 320  # Guarda en el objeto velocidad de retroceso despues de recibir dano.
-        self.empezar("herido")  # Inicia la accion y su animacion correspondiente.
-        return True  # Devuelve True para comunicar el resultado de la comprobacion.
+    def recibir_dano(self, cantidad=10, origen=None):
+        if self.muerto or self.accion == "rodar" or self.invulnerable > 0:
+            return False
+        dano_final = max(1, round(cantidad * self.multiplicador_dano_recibido))
+        self.vida = max(0, self.vida - dano_final)
+        texto_dano(dano_final, self.rect.centerx, self.rect.bottom - self.alto_cuerpo - self.z, (255, 70, 70))
+        self.invulnerable = INVULNERABLE_TRAS_GOLPE
+        if self.vida <= 0:
+            self.morir()
+            return True
+        self.agachado = False
+        retroceso = pygame.Vector2(-self.mirando, 0)
+        if origen is not None:
+            alejar = pygame.Vector2(self.rect.center) - pygame.Vector2(origen)
+            if alejar.length() > 0:
+                retroceso = alejar.normalize()
+        self.empuje = retroceso * 320
+        self.empezar("herido")
+        return True
 
-    def morir(self):  # Define la metodo morir: marca la derrota y prepara la animacion final.
-        self.muerto = True  # Guarda en el objeto estado de derrota del jugador.
-        reproducir_sonido("derrota_jugador")  # Reproduce el efecto de sonido de esta accion.
-        reproducir_sonido("perder_partida")  # Reproduce el efecto de sonido de esta accion.
-        self.accion = None  # Guarda en el objeto accion especial o ataque que se esta ejecutando.
-        self.agachado = False  # Guarda en el objeto estado de postura del jugador.
-        self.z, self.vz, self.en_aire = 0.0, 0.0, False  # Guarda en el objeto z, self.
-        self.poner_anim("morir", reiniciar=True)  # Cambia la animacion visual del jugador.
+    # Marca la derrota, reproduce los sonidos y prepara la animacion final.
+    def morir(self):
+        self.muerto = True
+        reproducir_sonido("derrota_jugador")
+        reproducir_sonido("perder_partida")
+        self.accion = None
+        self.agachado = False
+        self.z, self.vz, self.en_aire = 0.0, 0.0, False
+        self.poner_anim("morir", reiniciar=True)
 
-    def celebrar(self):  # Define la metodo celebrar: programa la animacion de victoria una sola vez.
-        if not self.victoria_hecha and not self.muerto:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.victoria_hecha = True  # Guarda en el objeto si la celebracion ya fue activada.
-            self.celebrar_pendiente = True  # Guarda en el objeto si queda por iniciar la celebracion de victoria.
+    # Programa la animacion de victoria una sola vez.
+    def celebrar(self):
+        if not self.victoria_hecha and not self.muerto:
+            self.victoria_hecha = True
+            self.celebrar_pendiente = True
 
-    def cuerpo(self):  # Define la metodo cuerpo: calcula la hitbox corporal segun la postura del jugador.
-        ancho, alto = HITBOX_JUGADOR_CUERPO_AGACHADO if self.agachado else HITBOX_JUGADOR_CUERPO  # Calcula o guarda ancho para el resto del metodo.
-        zona = pygame.Rect(0, 0, int(ancho * escala_jugador), int(alto * escala_jugador))  # Crea un rectangulo usado como posicion o hitbox.
-        zona.midbottom = (self.rect.centerx, self.rect.bottom - self.z)  # Calcula o guarda zona.midbottom para el resto del metodo.
-        return zona  # Devuelve el dato calculado por este metodo.
+    # Calcula la hitbox corporal segun la postura (de pie o agachado).
+    def cuerpo(self):
+        ancho, alto = HITBOX_JUGADOR_CUERPO_AGACHADO if self.agachado else HITBOX_JUGADOR_CUERPO
+        zona = pygame.Rect(0, 0, int(ancho * escala_jugador), int(alto * escala_jugador))
+        zona.midbottom = (self.rect.centerx, self.rect.bottom - self.z)
+        return zona
 
-    def hitbox(self):  # Define la metodo hitbox: calcula la zona activa de impacto del ataque actual.
-        if self.accion not in HITBOX_ATAQUES:  # Evalua la condicion que decide el comportamiento siguiente.
-            return None  # Devuelve el dato calculado por este metodo.
-        n = len(ANIMACIONES[self.anim]["der"])  # Calcula o guarda n para el resto del metodo.
-        if not 1 <= int(self.indice_frame) <= n - 2:  # Evalua la condicion que decide el comportamiento siguiente.
-            return None  # Devuelve el dato calculado por este metodo.
-        ancho, alto = HITBOX_ATAQUES[self.accion]  # Calcula o guarda ancho para el resto del metodo.
-        zona = pygame.Rect(0, 0, int(ancho * escala_jugador), int(alto * escala_jugador))  # Crea un rectangulo usado como posicion o hitbox.
-        separacion, altura = HITBOX_ATAQUE_POS[self.accion]  # Calcula o guarda separacion para el resto del metodo.
-        y = self.rect.bottom - altura * escala_jugador - self.z  # Calcula o guarda y para el resto del metodo.
-        if self.accion == "atacar_giro":  # Evalua la condicion que decide el comportamiento siguiente.
-            zona.center = (self.rect.centerx, y)  # Calcula o guarda zona.center para el resto del metodo.
-        elif self.mirando == 1:  # Evalua la condicion que decide el comportamiento siguiente.
-            zona.midleft = (self.rect.centerx + separacion * escala_jugador, y)  # Calcula o guarda zona.midleft para el resto del metodo.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            zona.midright = (self.rect.centerx - separacion * escala_jugador, y)  # Calcula o guarda zona.midright para el resto del metodo.
-        return zona  # Devuelve el dato calculado por este metodo.
+    # Calcula la zona activa de impacto del ataque actual, solo en los fotogramas de golpe.
+    def hitbox(self):
+        if self.accion not in HITBOX_ATAQUES:
+            return None
+        n = len(ANIMACIONES[self.anim]["der"])
+        if not 1 <= int(self.indice_frame) <= n - 2:
+            return None
+        ancho, alto = HITBOX_ATAQUES[self.accion]
+        zona = pygame.Rect(0, 0, int(ancho * escala_jugador), int(alto * escala_jugador))
+        separacion, altura = HITBOX_ATAQUE_POS[self.accion]
+        y = self.rect.bottom - altura * escala_jugador - self.z
+        if self.accion == "atacar_giro":
+            zona.center = (self.rect.centerx, y)
+        elif self.mirando == 1:
+            zona.midleft = (self.rect.centerx + separacion * escala_jugador, y)
+        else:
+            zona.midright = (self.rect.centerx - separacion * escala_jugador, y)
+        return zona
 
-    def pulsaciones(self, teclas, raton):  # Define la metodo pulsaciones: detecta teclas y botones recien pulsados.
-        ahora = {  # Calcula o guarda ahora para el resto del metodo.
-            "saltar": teclas[pygame.K_SPACE],  # Define los datos de configuracion asociados a saltar.
-            "rodar": teclas[pygame.K_r] or raton[2],  # Define los datos de configuracion asociados a rodar.
-            "giro": teclas[pygame.K_e],  # Define los datos de configuracion asociados a giro.
-            "beber": teclas[pygame.K_q],  # Define los datos de configuracion asociados a beber.
-            "berserker": teclas[pygame.K_v],  # Define los datos de configuracion asociados a berserker.
-        }  # Cierra la llamada o coleccion de datos iniciada anteriormente.
-        nuevas = {k: bool(v) and not self.prev.get(k, False) for k, v in ahora.items()}  # Calcula o guarda nuevas para el resto del metodo.
-        self.prev = {k: bool(v) for k, v in ahora.items()}  # Guarda en el objeto estados de teclas del fotograma anterior.
-        return nuevas  # Devuelve el dato calculado por este metodo.
+    # Detecta las teclas y botones recien pulsados comparando con el fotograma anterior.
+    def pulsaciones(self, teclas, raton):
+        ahora = {
+            "saltar": teclas[pygame.K_SPACE],
+            "rodar": teclas[pygame.K_r] or raton[2],
+            "giro": teclas[pygame.K_e],
+            "beber": teclas[pygame.K_q],
+            "berserker": teclas[pygame.K_v],
+        }
+        nuevas = {k: bool(v) and not self.prev.get(k, False) for k, v in ahora.items()}
+        self.prev = {k: bool(v) for k, v in ahora.items()}
+        return nuevas
 
     # Traduce entradas recientes y estado físico en saltos, ataques, esquivas o poses.
-    def decidir_accion(self, nuevas, ataca, mueve, corre, direccion, lado_raton, quiere_agachar):  # Define la metodo decidir_accion: elige salto, ataque, rodada, pocion o postura.
-        if self.agachado:  # Evalua la condicion que decide el comportamiento siguiente.
-            if nuevas["rodar"]:  # Evalua la condicion que decide el comportamiento siguiente.
-                self.agachado = False  # Guarda en el objeto estado de postura del jugador.
-                self.iniciar_rodar(direccion)  # Consulta o modifica el estado del objeto actual.
-            elif ataca:  # si el ataque esta disponible, elige el golpe correspondiente
-                self.empezar("agachado_atacar", lado_raton)  # Inicia la accion y su animacion correspondiente.
-            elif not quiere_agachar:  # Evalua la condicion que decide el comportamiento siguiente.
-                self.empezar("levantarse")  # Inicia la accion y su animacion correspondiente.
-            return  # Aporta un dato o una instruccion para el comportamiento indicado.
+    def decidir_accion(self, nuevas, ataca, mueve, corre, direccion, lado_raton, quiere_agachar):
+        if self.agachado:
+            if nuevas["rodar"]:
+                self.agachado = False
+                self.iniciar_rodar(direccion)
+            elif ataca:
+                self.empezar("agachado_atacar", lado_raton)
+            elif not quiere_agachar:
+                self.empezar("levantarse")
+            return
 
-        if self.en_aire:  # si esta saltando, integra la gravedad y la altura
-            if ataca:  # Evalua la condicion que decide el comportamiento siguiente.
-                self.empezar("atacar_abajo", lado_raton)  # Inicia la accion y su animacion correspondiente.
-            return  # Aporta un dato o una instruccion para el comportamiento indicado.
+        if self.en_aire:
+            if ataca:
+                self.empezar("atacar_abajo", lado_raton)
+            return
 
-        if nuevas["saltar"]:  # si se acaba de pulsar salto, inicia el impulso vertical
-            self.en_aire = True  # Guarda en el objeto indica si el jugador esta saltando o cayendo.
-            self.vz = FUERZA_SALTO  # Guarda en el objeto velocidad vertical del salto.
-            self.z = 1.0  # Guarda en el objeto altura visual del salto sobre el suelo.
-            self.vel_aire = self.vel_correr if corre else self.vel_caminar  # Guarda en el objeto velocidad horizontal mientras esta en el aire.
-            reproducir_sonido("salto")  # Reproduce el efecto de sonido de esta accion.
-            self.poner_anim("saltar", reiniciar=True)  # Cambia la animacion visual del jugador.
-        elif nuevas["rodar"]:  # si se pulsa rodada, empieza la esquiva
-            self.iniciar_rodar(direccion)  # Consulta o modifica el estado del objeto actual.
-        elif nuevas["giro"] and self.cd_giro <= 0:  # si el giro esta disponible, inicia su ataque
-            self.cd_giro = ENFRIAMIENTO_GIRO  # Guarda en el objeto tiempo de enfriamiento del ataque giratorio.
-            self.empezar("atacar_giro", lado_raton)  # Inicia la accion y su animacion correspondiente.
-        elif nuevas["beber"]:  # si se pide beber, intenta consumir una pocion
-            if self.beber_pocion():  # Evalua la condicion que decide el comportamiento siguiente.
-                self.empezar("beber")  # Inicia la accion y su animacion correspondiente.
-        elif self.celebrar_pendiente and not mueve and not ataca:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.celebrar_pendiente = False  # Guarda en el objeto si queda por iniciar la celebracion de victoria.
-            self.empezar("victoria")  # Inicia la accion y su animacion correspondiente.
-        elif ataca:  # si el ataque esta disponible, elige el golpe correspondiente
-            if corre:  # Evalua la condicion que decide el comportamiento siguiente.
-                centro = pygame.Vector2(self.rect.centerx, self.rect.bottom - 40)  # Crea un vector para posicion, direccion o movimiento.
-                objetivo = pos_raton_mundo() - centro  # Calcula o guarda objetivo para el resto del metodo.
-                self.dir_accion = objetivo.normalize() if objetivo.length() > 0 else pygame.Vector2(lado_raton, 0)  # Crea un vector para posicion, direccion o movimiento.
-                self.empezar("atacar_dash", lado_raton)  # Inicia la accion y su animacion correspondiente.
-            else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                if self.t_combo <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self.combo = 0  # Guarda en el objeto siguiente golpe de la secuencia alternada.
-                self.empezar(("atacar", "atacar2")[self.combo], lado_raton)  # Inicia la accion y su animacion correspondiente.
-                self.combo = 1 - self.combo  # Guarda en el objeto siguiente golpe de la secuencia alternada.
-        elif quiere_agachar:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.empezar("agacharse")  # Inicia la accion y su animacion correspondiente.
+        if nuevas["saltar"]:
+            self.en_aire = True
+            self.vz = FUERZA_SALTO
+            self.z = 1.0
+            self.vel_aire = self.vel_correr if corre else self.vel_caminar
+            reproducir_sonido("salto")
+            self.poner_anim("saltar", reiniciar=True)
+        elif nuevas["rodar"]:
+            self.iniciar_rodar(direccion)
+        elif nuevas["giro"] and self.cd_giro <= 0:
+            self.cd_giro = ENFRIAMIENTO_GIRO
+            self.empezar("atacar_giro", lado_raton)
+        elif nuevas["beber"]:
+            if self.beber_pocion():
+                self.empezar("beber")
+        elif self.celebrar_pendiente and not mueve and not ataca:
+            self.celebrar_pendiente = False
+            self.empezar("victoria")
+        elif ataca:
+            if corre:
+                centro = pygame.Vector2(self.rect.centerx, self.rect.bottom - 40)
+                objetivo = pos_raton_mundo() - centro
+                self.dir_accion = objetivo.normalize() if objetivo.length() > 0 else pygame.Vector2(lado_raton, 0)
+                self.empezar("atacar_dash", lado_raton)
+            else:
+                if self.t_combo <= 0:
+                    self.combo = 0
+                self.empezar(("atacar", "atacar2")[self.combo], lado_raton)
+                self.combo = 1 - self.combo
+        elif quiere_agachar:
+            self.empezar("agacharse")
 
-    def iniciar_rodar(self, direccion):  # Define la metodo iniciar_rodar: prepara la direccion y animacion de la rodada.
-        self.dir_accion = pygame.Vector2(direccion) if direccion.length() > 0 else pygame.Vector2(self.mirando, 0)  # Crea un vector para posicion, direccion o movimiento.
-        lado = self.mirando  # Calcula o guarda lado para el resto del metodo.
-        if self.dir_accion.x != 0:  # Evalua la condicion que decide el comportamiento siguiente.
-            lado = 1 if self.dir_accion.x > 0 else -1  # Calcula o guarda lado para el resto del metodo.
-        self.empezar("rodar", lado)  # Inicia la accion y su animacion correspondiente.
+    # Prepara la direccion y la animacion de la rodada.
+    def iniciar_rodar(self, direccion):
+        self.dir_accion = pygame.Vector2(direccion) if direccion.length() > 0 else pygame.Vector2(self.mirando, 0)
+        lado = self.mirando
+        if self.dir_accion.x != 0:
+            lado = 1 if self.dir_accion.x > 0 else -1
+        self.empezar("rodar", lado)
 
-    def _mover_chocando(self, paso):  # Define la metodo _mover_chocando: mueve al jugador por ejes sin atravesar obstaculos.
-        atascado = mapa_choca(self.rect)  # Calcula o guarda atascado para el resto del metodo.
-        for eje in (0, 1):  # Inicia un ciclo para procesar cada elemento indicado.
-            d = paso[eje]  # Calcula o guarda d para el resto del metodo.
-            if d == 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                continue  # Salta al siguiente elemento del ciclo.
-            self.pos[eje] += d  # Guarda en el objeto pos[eje] +.
-            self.rect.center = self.pos  # Guarda en el objeto hitbox de pies o rectangulo que ocupa el personaje.
-            if not atascado and mapa_choca(self.rect):  # Evalua la condicion que decide el comportamiento siguiente.
-                self.pos[eje] -= d  # Guarda en el objeto pos[eje] -.
-                signo = 1 if d > 0 else -1  # Calcula o guarda signo para el resto del metodo.
-                for _ in range(int(abs(d))):  # Repite la operacion por cada indice o paso de este rango.
-                    self.pos[eje] += signo  # Guarda en el objeto pos[eje] +.
-                    self.rect.center = self.pos  # Guarda en el objeto hitbox de pies o rectangulo que ocupa el personaje.
-                    if mapa_choca(self.rect):  # Evalua la condicion que decide el comportamiento siguiente.
-                        self.pos[eje] -= signo  # Guarda en el objeto pos[eje] -.
-                        break  # Termina el ciclo porque ya se encontro el resultado.
-        self.rect.center = self.pos  # Guarda en el objeto hitbox de pies o rectangulo que ocupa el personaje.
+    # Mueve al jugador eje por eje sin atravesar obstaculos.
+    def _mover_chocando(self, paso):
+        atascado = mapa_choca(self.rect)
+        for eje in (0, 1):
+            d = paso[eje]
+            if d == 0:
+                continue
+            self.pos[eje] += d
+            self.rect.center = self.pos
+            if not atascado and mapa_choca(self.rect):
+                self.pos[eje] -= d
+                signo = 1 if d > 0 else -1
+                for _ in range(int(abs(d))):
+                    self.pos[eje] += signo
+                    self.rect.center = self.pos
+                    if mapa_choca(self.rect):
+                        self.pos[eje] -= signo
+                        break
+        self.rect.center = self.pos
 
     # Avanza lógica, desplazamiento, salto, invulnerabilidad, audio y animación del jugador.
-    def actualizar(self, teclas, dt):  # Define la metodo actualizar: actualiza movimiento, combate, vida y animacion del jugador.
-        self.enfriamiento -= dt  # Guarda en el objeto enfriamiento -.
-        self.cd_giro -= dt  # Guarda en el objeto cd_giro -.
-        self.t_combo -= dt  # Guarda en el objeto t_combo -.
-        self.tiempo_espada -= dt  # Guarda en el objeto tiempo_espada -.
-        self.invulnerable -= dt  # Guarda en el objeto invulnerable -.
-        self.berserker_tiempo = max(0.0, self.berserker_tiempo - dt)  # Guarda en el objeto duracion restante del modo berserker.
-        self.berserker_enfriamiento = max(0.0, self.berserker_enfriamiento - dt)  # Guarda en el objeto tiempo hasta poder activar berserker otra vez.
-        if self.vida_visible > self.vida:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.vida_visible = max(self.vida, self.vida_visible - 40 * dt)  # Guarda en el objeto valor suavizado que se muestra en la barra de vida.
-        else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-            self.vida_visible = self.vida  # Guarda en el objeto valor suavizado que se muestra en la barra de vida.
-        raton = pygame.mouse.get_pressed()  # Calcula o guarda raton para el resto del metodo.
-        nuevas = self.pulsaciones(teclas, raton)  # Calcula o guarda nuevas para el resto del metodo.
+    def actualizar(self, teclas, dt):
+        self.enfriamiento -= dt
+        self.cd_giro -= dt
+        self.t_combo -= dt
+        self.tiempo_espada -= dt
+        self.invulnerable -= dt
+        self.berserker_tiempo = max(0.0, self.berserker_tiempo - dt)
+        self.berserker_enfriamiento = max(0.0, self.berserker_enfriamiento - dt)
+        if self.vida_visible > self.vida:
+            self.vida_visible = max(self.vida, self.vida_visible - 40 * dt)
+        else:
+            self.vida_visible = self.vida
+        raton = pygame.mouse.get_pressed()
+        nuevas = self.pulsaciones(teclas, raton)
 
-        if self.muerto:  # si el jugador murio, solo conserva su animacion de derrota
-            audio_acciones.detener("pasos_caminar", "pasos_correr")  # Aporta un dato o una instruccion para el comportamiento indicado.
-            self.poner_anim("morir")  # Cambia la animacion visual del jugador.
-            self.avanzar_anim(dt)  # Avanza el fotograma de la animacion con el tiempo.
-            self.elegir_imagen()  # Elige la imagen que representa el fotograma actual.
-            return  # Aporta un dato o una instruccion para el comportamiento indicado.
+        if self.muerto:
+            audio_acciones.detener("pasos_caminar", "pasos_correr")
+            self.poner_anim("morir")
+            self.avanzar_anim(dt)
+            self.elegir_imagen()
+            return
 
-        dx = (teclas[pygame.K_d] or teclas[pygame.K_RIGHT]) - (teclas[pygame.K_a] or teclas[pygame.K_LEFT])  # Calcula o guarda dx para el resto del metodo.
-        dy = (teclas[pygame.K_s] or teclas[pygame.K_DOWN]) - (teclas[pygame.K_w] or teclas[pygame.K_UP])  # Calcula o guarda dy para el resto del metodo.
-        direccion = pygame.Vector2(dx, dy)  # Crea un vector para posicion, direccion o movimiento.
-        mueve = direccion.length() > 0  # Calcula o guarda mueve para el resto del metodo.
-        if mueve:  # Evalua la condicion que decide el comportamiento siguiente.
-            direccion = direccion.normalize()  # Calcula o guarda direccion para el resto del metodo.
-        corre = mueve and (teclas[pygame.K_LSHIFT] or teclas[pygame.K_RSHIFT])  # Calcula o guarda corre para el resto del metodo.
-        quiere_agachar = teclas[pygame.K_c] or teclas[pygame.K_LCTRL]  # Calcula o guarda quiere_agachar para el resto del metodo.
-        lado_raton = -1 if pos_raton_mundo().x < self.rect.centerx else 1  # Calcula o guarda lado_raton para el resto del metodo.
-        ataca = raton[0] and self.enfriamiento <= 0  # Aporta un dato o una instruccion para el comportamiento indicado.
+        dx = (teclas[pygame.K_d] or teclas[pygame.K_RIGHT]) - (teclas[pygame.K_a] or teclas[pygame.K_LEFT])
+        dy = (teclas[pygame.K_s] or teclas[pygame.K_DOWN]) - (teclas[pygame.K_w] or teclas[pygame.K_UP])
+        direccion = pygame.Vector2(dx, dy)
+        mueve = direccion.length() > 0
+        if mueve:
+            direccion = direccion.normalize()
+        corre = mueve and (teclas[pygame.K_LSHIFT] or teclas[pygame.K_RSHIFT])
+        quiere_agachar = teclas[pygame.K_c] or teclas[pygame.K_LCTRL]
+        lado_raton = -1 if pos_raton_mundo().x < self.rect.centerx else 1
+        ataca = raton[0] and self.enfriamiento <= 0
 
-        if self.accion == "victoria" and (mueve or ataca or any(nuevas.values())):  # Evalua la condicion que decide el comportamiento siguiente.
-            self.accion = None  # Guarda en el objeto accion especial o ataque que se esta ejecutando.
-        if nuevas["berserker"]:  # Evalua la condicion que decide el comportamiento siguiente.
-            self.activar_berserker()  # Consulta o modifica el estado del objeto actual.
-        if self.accion is None:  # si no hay accion bloqueando al jugador, decide una nueva
-            self.decidir_accion(nuevas, ataca, mueve, corre, direccion, lado_raton, quiere_agachar)  # Consulta o modifica el estado del objeto actual.
+        if self.accion == "victoria" and (mueve or ataca or any(nuevas.values())):
+            self.accion = None
+        if nuevas["berserker"]:
+            self.activar_berserker()
+        if self.accion is None:
+            self.decidir_accion(nuevas, ataca, mueve, corre, direccion, lado_raton, quiere_agachar)
 
-        a = self.accion  # Calcula o guarda a para el resto del metodo.
-        p = self.progreso()  # Calcula o guarda p para el resto del metodo.
-        mov = pygame.Vector2(0, 0)  # Crea un vector para posicion, direccion o movimiento.
-        if a == "rodar":  # Evalua la condicion que decide el comportamiento siguiente.
-            mov = self.dir_accion * self.vel_rodar * (1 - 0.5 * p)  # Calcula o guarda mov para el resto del metodo.
-        elif a == "atacar_dash":  # Evalua la condicion que decide el comportamiento siguiente.
-            mov = self.dir_accion * 520 * max(0.0, 1 - 1.4 * p)  # Calcula o guarda mov para el resto del metodo.
-        elif a == "atacar_giro":  # Evalua la condicion que decide el comportamiento siguiente.
-            mov = direccion * self.vel_caminar * 0.5  # Calcula o guarda mov para el resto del metodo.
-        elif a == "atacar_abajo":  # Evalua la condicion que decide el comportamiento siguiente.
-            mov = direccion * self.vel_aire * 0.5 if self.en_aire else mov  # Calcula o guarda mov para el resto del metodo.
-        elif a == "herido":  # Evalua la condicion que decide el comportamiento siguiente.
-            mov = self.empuje * (1 - p)  # Calcula o guarda mov para el resto del metodo.
-        elif a is None:  # Evalua la condicion que decide el comportamiento siguiente.
-            if self.en_aire:  # si esta saltando, integra la gravedad y la altura
-                mov = direccion * self.vel_aire  # Calcula o guarda mov para el resto del metodo.
-            elif self.agachado:  # si sigue agachado, conserva esa animacion y movimiento
-                mov = direccion * self.vel_agachado  # Calcula o guarda mov para el resto del metodo.
-            else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                mov = direccion * (self.vel_correr if corre else self.vel_caminar)  # Calcula o guarda mov para el resto del metodo.
-        self._mover_chocando(mov * self.multiplicador_velocidad * dt)  # Mueve al jugador respetando las colisiones del mapa.
-        area = pygame.Rect(0, self.alto_cuerpo - self.rect.h, MUNDO_ANCHO, MUNDO_ALTO - self.alto_cuerpo + self.rect.h)  # Crea un rectangulo usado como posicion o hitbox.
-        self.rect.clamp_ip(area)  # Consulta o modifica el estado del objeto actual.
-        self.pos.update(self.rect.center)  # Consulta o modifica el estado del objeto actual.
-        toca_izq = self.rect.left <= 0 and direccion.x < 0  # Aporta un dato o una instruccion para el comportamiento indicado.
-        toca_der = self.rect.right >= MUNDO_ANCHO and direccion.x > 0  # Aporta un dato o una instruccion para el comportamiento indicado.
-        contra_pared = toca_izq or toca_der  # Calcula o guarda contra_pared para el resto del metodo.
+        a = self.accion
+        p = self.progreso()
+        mov = pygame.Vector2(0, 0)
+        if a == "rodar":
+            mov = self.dir_accion * self.vel_rodar * (1 - 0.5 * p)
+        elif a == "atacar_dash":
+            mov = self.dir_accion * 520 * max(0.0, 1 - 1.4 * p)
+        elif a == "atacar_giro":
+            mov = direccion * self.vel_caminar * 0.5
+        elif a == "atacar_abajo":
+            mov = direccion * self.vel_aire * 0.5 if self.en_aire else mov
+        elif a == "herido":
+            mov = self.empuje * (1 - p)
+        elif a is None:
+            if self.en_aire:
+                mov = direccion * self.vel_aire
+            elif self.agachado:
+                mov = direccion * self.vel_agachado
+            else:
+                mov = direccion * (self.vel_correr if corre else self.vel_caminar)
+        self._mover_chocando(mov * self.multiplicador_velocidad * dt)
+        area = pygame.Rect(0, self.alto_cuerpo - self.rect.h, MUNDO_ANCHO, MUNDO_ALTO - self.alto_cuerpo + self.rect.h)
+        self.rect.clamp_ip(area)
+        self.pos.update(self.rect.center)
+        toca_izq = self.rect.left <= 0 and direccion.x < 0
+        toca_der = self.rect.right >= MUNDO_ANCHO and direccion.x > 0
+        contra_pared = toca_izq or toca_der
 
-        if self.en_aire:  # si esta saltando, integra la gravedad y la altura
-            g = GRAVEDAD_GOLPE_ABAJO if self.accion == "atacar_abajo" else GRAVEDAD  # Aporta un dato o una instruccion para el comportamiento indicado.
-            self.vz -= g * dt  # Guarda en el objeto vz -.
-            self.z += self.vz * dt  # Guarda en el objeto z +.
-            if self.z <= 0:  # Evalua la condicion que decide el comportamiento siguiente.
-                self.z, self.vz, self.en_aire = 0.0, 0.0, False  # Guarda en el objeto z, self.
-                if self.accion is None:  # si no hay accion bloqueando al jugador, decide una nueva
-                    reproducir_sonido("aterrizaje")  # Reproduce el efecto de sonido de esta accion.
-                    self.empezar("aterrizar")  # Inicia la accion y su animacion correspondiente.
+        if self.en_aire:
+            g = GRAVEDAD_GOLPE_ABAJO if self.accion == "atacar_abajo" else GRAVEDAD
+            self.vz -= g * dt
+            self.z += self.vz * dt
+            if self.z <= 0:
+                self.z, self.vz, self.en_aire = 0.0, 0.0, False
+                if self.accion is None:
+                    reproducir_sonido("aterrizaje")
+                    self.empezar("aterrizar")
 
-        if self.accion is None:  # si no hay accion bloqueando al jugador, decide una nueva
-            if self.en_aire:  # si esta saltando, integra la gravedad y la altura
-                if contra_pared:  # Evalua la condicion que decide el comportamiento siguiente.
-                    self.mirando = 1 if toca_der else -1  # Guarda en el objeto orientacion horizontal del personaje.
-                    self.poner_anim("pared")  # Cambia la animacion visual del jugador.
-                else:  # Inicia el caso alternativo cuando la condicion anterior no se cumple.
-                    self.mirando = lado_raton  # Guarda en el objeto orientacion horizontal del personaje.
-                    self.poner_anim("saltar" if self.vz > 0 else "caer")  # Cambia la animacion visual del jugador.
-            elif self.agachado:  # si sigue agachado, conserva esa animacion y movimiento
+        if self.accion is None:
+            if self.en_aire:
+                if contra_pared:
+                    self.mirando = 1 if toca_der else -1
+                    self.poner_anim("pared")
+                else:
+                    self.mirando = lado_raton
+                    self.poner_anim("saltar" if self.vz > 0 else "caer")
+            elif self.agachado:
                 self.mirando = lado_raton
                 self.poner_anim("agachado_quieto")
             elif contra_pared:
@@ -2066,6 +2124,7 @@ class Jugador:  # Define la clase Jugador: agrupa instrucciones relacionadas.
 
         self.elegir_imagen()
 
+    # Dibuja la sombra, el sprite (con parpadeo al ser golpeado) y el aura del berserker.
     def dibujar(self, superficie, cam=(0, 0)):
         factor = max(0.4, 1 - self.z / 400)
         sombra = pygame.Surface((max(1, int(30 * escala_jugador * factor)), max(1, int(9 * escala_jugador * factor))), pygame.SRCALPHA)
@@ -2202,6 +2261,7 @@ ARQUETIPOS_ENEMIGO = {
 }
 
 
+# Enemigos comunes con IA compartida y jefes con patrones de ataque propios.
 print("---------- CLASES DE ENEMIGOS Y JEFES ----------")
 class Enemigo:
     # Implementa perfiles de arquetipo con IA compartida, combate cuerpo a cuerpo o a distancia.
@@ -2259,14 +2319,17 @@ class Enemigo:
         self.de_oleada = False
         self.contado = False
 
+    # Indica si el enemigo conserva vida.
     def vivo(self):
         return self.vida > 0
 
+    # Calcula la hitbox corporal del enemigo.
     def cuerpo(self):
         zona = pygame.Rect(0, 0, int(HITBOX_ENEMIGO_CUERPO[0] * self.escala), int(HITBOX_ENEMIGO_CUERPO[1] * self.escala))
         zona.midbottom = self.rect.midbottom
         return zona
 
+    # Calcula la zona de ataque cuerpo a cuerpo segun el lado al que mira.
     def zona_ataque(self, lado):
         ancho, alto = HITBOX_ENEMIGO_ATAQUE
         separacion, altura = HITBOX_ENEMIGO_ATAQUE_POS
@@ -2298,9 +2361,11 @@ class Enemigo:
             reproducir_sonido("golpe_enemigo")
         return True
 
+    # Rectangulo del mundo dentro del que puede moverse el enemigo.
     def _area(self):
         return pygame.Rect(0, self.alto_img - self.rect.h, MUNDO_ANCHO, MUNDO_ALTO - self.alto_img + self.rect.h)
 
+    # Mueve al enemigo eje por eje respetando el mapa y los otros obstaculos.
     def _mover(self, direccion, vel, dt, obstaculos):
         antes = pygame.Vector2(self.pos)
         paso = direccion * vel * dt
@@ -2317,6 +2382,7 @@ class Enemigo:
             self.pos.update(self.rect.midbottom)
         return (self.pos - antes).length() > 0.01
 
+    # Aplica el retroceso tras recibir un golpe.
     def _retroceder(self, dt):
         paso = self.retroceso * (self.t_retroceso / TIEMPO_RETROCESO) * dt
         for eje in (0, 1):
@@ -2331,6 +2397,7 @@ class Enemigo:
             self.pos.update(self.rect.midbottom)
         self.t_retroceso -= dt
 
+    # Comportamiento de patrulla aleatoria cuando no persigue al jugador.
     def _vagar(self, dt, obstaculos):
         self.t_vagar -= dt
         if self.t_vagar <= 0:
@@ -2450,6 +2517,7 @@ class Enemigo:
         else:
             self._vagar(dt, obstaculos)
 
+    # Desplazamiento visual del sprite durante las fases del ataque.
     def _desplazamiento(self):
         a = self.ataque
         if a is None:
@@ -2460,6 +2528,7 @@ class Enemigo:
             return a["lado"] * 5 * self.escala
         return a["lado"] * 5 * self.escala * (1 - a["t"] / ENEMIGO_RECUPERAR)
 
+    # Dibuja sombra, sprite con sus efectos (alerta, destello, desvanecido), aviso de disparo y barra de vida.
     def dibujar(self, superficie, cam=(0, 0)):
         sombra = pygame.Surface((int(self.rect.w * 1.5), int(self.rect.h * 1.1)), pygame.SRCALPHA)
         pygame.draw.ellipse(sombra, (0, 0, 0, 90), sombra.get_rect())
@@ -2496,6 +2565,7 @@ class Enemigo:
 Enemigo._imagenes = None
 
 
+# Proyectiles disparados por los enemigos a distancia.
 print("---------- PROYECTILES DE ENEMIGOS ----------")
 class EnemigoProyectil:
     # Proyectil enemigo configurable que viaja, impacta al jugador o desaparece al agotarse.
@@ -2519,6 +2589,7 @@ class EnemigoProyectil:
         self.recorrido = 0.0
         self.eliminado = False
 
+    # Mueve el proyectil y lo elimina al golpear al jugador, chocar o agotar su alcance.
     def actualizar(self, dt, jugador):
         if self.eliminado:
             return
@@ -2532,6 +2603,7 @@ class EnemigoProyectil:
         elif self.recorrido >= self.alcance or mapa.choca(self.rect):
             self.eliminado = True
 
+    # Dibuja el proyectil con su sprite o con circulos de color.
     def dibujar(self, superficie, cam=(0, 0)):
         centro = (self.rect.centerx - cam[0], self.rect.centery - cam[1])
         if self.imagen is not None:
@@ -2542,6 +2614,7 @@ class EnemigoProyectil:
         pygame.draw.circle(superficie, (235, 250, 255), centro, self.radio_interior)
 
 
+# Enemigo jefe con patrones de ataque propios (meteoro, aliento, cuerpo a cuerpo, lluvia de armas) y apoyos.
 class Jefe(Enemigo):
     # Extiende al enemigo con patrones de jefe, áreas de impacto y efectos de combate propios.
     def __init__(
@@ -2609,12 +2682,14 @@ class Jefe(Enemigo):
             -1: self.imagen_jefe if not ENEMIGO_MIRA_A_LA_DERECHA else pygame.transform.flip(self.imagen_jefe, True, False),
         }
 
+    # Calcula el angulo desde el jefe hasta un objetivo.
     def _angulo_hacia(self, objetivo):
         diferencia = pygame.Vector2(objetivo) - pygame.Vector2(self.rect.center)
         if diferencia.length_squared() == 0:
             return self.angulo_mirada
         return math.atan2(diferencia.y, diferencia.x)
 
+    # Calcula el punto de la boca desde donde sale el aliento.
     def _origen_aliento(self, angulo=None, origen=None):
         angulo = self.angulo_mirada if angulo is None else angulo
         if origen is not None:
@@ -2649,6 +2724,7 @@ class Jefe(Enemigo):
             inicio + perpendicular * 24,
         )
 
+    # Rectangulo que envuelve el poligono del aliento.
     def _zona_aliento(self, origen=None, lado=None, angulo=None):
         if angulo is None:
             angulo = self.angulo_mirada if lado is None else (0 if lado == 1 else math.pi)
@@ -2693,6 +2769,7 @@ class Jefe(Enemigo):
             for i in range(len(vertices))
         )
 
+    # Zona de impacto del ataque cuerpo a cuerpo del jefe.
     def _zona_cuerpo_a_cuerpo(self, lado=None):
         lado = self.mirando if lado is None else lado
         zona = pygame.Rect(0, 0, 190, 150)
@@ -2703,6 +2780,7 @@ class Jefe(Enemigo):
             zona.midright = (self.rect.centerx - self.rect.w // 3, y)
         return zona
 
+    # Zona rectangular que cubre la lluvia de armas segun su orientacion.
     @staticmethod
     def _zona_lluvia_espadas(ataque):
         ancho, alto = (1280, 300) if ataque["orientacion"] == "horizontal" else (320, 1040)
@@ -2710,6 +2788,7 @@ class Jefe(Enemigo):
         zona.center = ataque["objetivo"]
         return zona
 
+    # Alterna hacha y espada para cada proyectil de la lluvia.
     @staticmethod
     def _arma_lluvia(indice):
         return "hacha" if indice % 2 == 0 else "espada"
@@ -2783,11 +2862,13 @@ class Jefe(Enemigo):
             jugador.recibir_dano(dano, self.rect.center)
         return acertado
 
+    # Hitbox corporal del jefe, mas grande que la del enemigo comun.
     def cuerpo(self):
         zona = pygame.Rect(0, 0, int(self.rect.w * 0.9), int(self.rect.h * 1.65))
         zona.midbottom = self.rect.midbottom
         return zona
 
+    # Reduce la vida del jefe y activa su muerte al llegar a cero.
     def recibir_dano(self, cantidad, origen):
         if not self.vivo() or self.t_aparicion > 0:
             return False
@@ -2875,6 +2956,7 @@ class Jefe(Enemigo):
             if diferencia.length() > 1:
                 self._mover(diferencia.normalize(), self.velocidad_jefe, dt, obstaculos)
 
+    # Dibuja el aliento como poligonos concentricos con particulas, en aviso o activo.
     def _dibujar_aliento(self, superficie, cam, ataque, pulso):
         vertices = self._vertices_aliento(ataque.get("angulo", self.angulo_mirada))
         xs = [p.x - cam[0] for p in vertices]
@@ -2932,6 +3014,7 @@ class Jefe(Enemigo):
                 centro_particula, radio,
             )
 
+    # Dibuja los avisos y efectos del ataque activo, la sombra y el sprite del jefe.
     def dibujar(self, superficie, cam=(0, 0)):
         ataque = self.ataque_jefe
         if ataque:
@@ -3010,6 +3093,7 @@ class Jefe(Enemigo):
         superficie.blit(imagen, destino)
 
 
+# Ataque especial de la mejora 'Tajo de viento'.
 print("---------- ATAQUES ESPECIALES DEL JUGADOR ----------")
 class TajoViento:
     # Ataque de bonificación que viaja en la dirección apuntada y puede golpear varios enemigos.
@@ -3037,6 +3121,7 @@ class TajoViento:
         self.enemigos_golpeados = set()
         self.eliminado = False
 
+    # Recalcula el rectangulo que envuelve el tajo segun su direccion.
     def _actualizar_rect(self):
         mitad_ancho = (
             abs(self.direccion.x) * self.hitbox_ancho
@@ -3071,6 +3156,7 @@ class TajoViento:
                 return False
         return True
 
+    # Avanza el tajo, danya a los enemigos que toca y lo elimina al agotar su alcance.
     def actualizar(self, dt, enemigos):
         paso = self.velocidad * dt
         self.pos += self.direccion * paso
@@ -3083,6 +3169,7 @@ class TajoViento:
         if self.recorrido >= self.alcance:
             self.eliminado = True
 
+    # Dibuja el tajo como tres lineas concentricas.
     def dibujar(self, superficie, cam=(0, 0)):
         cx, cy = int(self.rect.centerx - cam[0]), int(self.rect.centery - cam[1])
         centro = pygame.Vector2(cx, cy)
@@ -3100,6 +3187,7 @@ class TajoViento:
         pygame.draw.lines(superficie, (245, 255, 255), False, puntos, max(2, int(mitad_alto / 16)))
 
 
+# Agrupa los enemigos y proyectiles y gestiona su actualizacion, dano y separacion fisica.
 print("---------- ADMINISTRACION Y COLISIONES DE ENEMIGOS ----------")
 class Enemigos:
     # Agrupa enemigos y proyectiles y centraliza actualización, daño y separación física.
@@ -3107,15 +3195,19 @@ class Enemigos:
         self.lista = []
         self.proyectiles = []
 
+    # Permite recorrer directamente los enemigos de la lista.
     def __iter__(self):
         return iter(self.lista)
 
+    # Devuelve la cantidad de enemigos.
     def __len__(self):
         return len(self.lista)
 
+    # Anade un enemigo a la lista.
     def agregar(self, enemigo):
         self.lista.append(enemigo)
 
+    # Devuelve el jefe vivo, o None si no hay.
     def jefe_vivo(self):
         return next((e for e in self.lista if getattr(e, "es_jefe", False) and e.vivo()), None)
 
@@ -3136,6 +3228,7 @@ class Enemigos:
         self._chocar_con_jugador(jugador)
         self.lista = [e for e in self.lista if not e.eliminado]
 
+    # Aplica el dano de los ataques del jugador a los enemigos alcanzados.
     def _golpes_del_jugador(self, jugador):
         zona = jugador.hitbox()
         if zona is None:
@@ -3146,6 +3239,7 @@ class Enemigos:
                 if e.recibir_dano(dano, jugador.rect.center):
                     jugador.golpeados.add(e)
 
+    # Separa al jugador de los enemigos y aplica dano por contacto si esta activado.
     def _chocar_con_jugador(self, jugador):
         if jugador.muerto:
             return
@@ -3167,26 +3261,31 @@ class Enemigos:
                 jugador.pos.update(jugador.rect.center)
 
 
+# Numeros flotantes que muestran el dano causado y recibido.
 print("---------- INDICADORES DE DANO ----------")
 class NumerosDano:
     # Administra textos flotantes que ascienden y se desvanecen con el tiempo.
     DURACION = 0.9
     SUBIDA = 110
 
+    # Crea la lista de textos y la fuente usada para mostrarlos.
     def __init__(self):
         self.lista = []
         self.fuente = pygame.font.Font(None, 48)
 
+    # Anade un texto de dano con una pequena variacion horizontal.
     def agregar(self, cantidad, x, y, color):
         self.lista.append({"texto": str(int(cantidad)), "x": x + random.uniform(-16, 16),
                            "y": y, "t": 0.0, "color": color})
 
+    # Hace subir los textos y elimina los que ya terminaron.
     def actualizar(self, dt):
         for n in self.lista:
             n["t"] += dt
             n["y"] -= self.SUBIDA * (1 - n["t"] / self.DURACION) * dt
         self.lista = [n for n in self.lista if n["t"] < self.DURACION]
 
+    # Dibuja cada texto con contorno y desvanecido progresivo.
     def dibujar(self, superficie, cam=(0, 0)):
         for n in self.lista:
             p = n["t"] / self.DURACION
@@ -3205,10 +3304,12 @@ class NumerosDano:
 numeros_dano = NumerosDano()
 
 
+# Atajo para mostrar un numero de dano flotante.
 def texto_dano(cantidad, x, y, color):
     numeros_dano.agregar(cantidad, x, y, color)
 
 
+# Clase que coordina una partida completa: jugador, enemigos, oleadas, recompensas y dibujo.
 print("---------- CLASE PRINCIPAL DE LA PARTIDA ----------")
 class Partida:
     # Coordina estado global de una partida: jugador, oleadas, recompensas y renderizado.
@@ -3231,6 +3332,7 @@ class Partida:
         actualizar_camara(self.jugador, 0, True)
         numeros_dano.lista.clear()
 
+    # Indica si la partida acabo por muerte o por victoria.
     @property
     def terminada(self):
         return self.jugador.muerto or (
@@ -3279,6 +3381,7 @@ class Partida:
         numeros_dano.actualizar(dt)
         actualizar_camara(self.jugador, dt)
 
+    # Devuelve el cofre cerrado mas cercano al jugador, si hay alguno.
     def cofre_cercano(self):
         cercano = self.jugador.rect.inflate(110, 110)
         return next(
@@ -3286,6 +3389,7 @@ class Partida:
             None,
         )
 
+    # Un cofre solo se puede abrir cuando esta cerca y no quedan enemigos vivos.
     def puede_abrir_cofre(self):
         return self.cofre_cercano() is not None and not any(
             enemigo.vivo() for enemigo in self.enemigos
@@ -3377,6 +3481,7 @@ class Partida:
             elif self.bonificacion_pendiente:
                 self._dibujar_eleccion_bonificacion(superficie)
 
+    # Dibuja la pantalla de eleccion de mejora con sus tres tarjetas.
     def _dibujar_eleccion_bonificacion(self, superficie):
         velo_premio = pygame.Surface((width, height), pygame.SRCALPHA)
         velo_premio.fill((5, 8, 18, 220))
@@ -3410,6 +3515,7 @@ class Partida:
         texto_borde(superficie, "Las mejoras se acumulan hasta nivel 3 por poder", fuente_peq, blanco,
                     (width // 2, height - 72))
 
+    # Dibuja el nombre y la barra de vida del jefe.
     @staticmethod
     def _dibujar_barra_jefe(superficie, jefe):
         ancho, alto = 520, 24
@@ -3421,6 +3527,7 @@ class Partida:
                          (x, y, int(ancho * jefe.vida / jefe.vida_max), alto), border_radius=6)
         pygame.draw.rect(superficie, blanco, barra, 2, border_radius=6)
 
+    # Dibuja las hitboxes del jugador, enemigos y mapa (modo depuracion).
     def _dibujar_hitboxes(self, superficie, cam):
         mapa.dibujar_colisiones(superficie, cam)
         j = self.jugador
@@ -3457,6 +3564,7 @@ def pos_en_juego(pos):
     return (pos[0] * width / sx, pos[1] * height / sy)
 
 
+# Calcula el rectangulo de interaccion de un boton de texto.
 def zona_boton(texto, y):
     return menu_font.render(texto, True, blanco).get_rect(center=(width // 2, y)).inflate(60, 24)
 
@@ -3496,6 +3604,7 @@ def aplicar_volumen():
         pygame.mixer.music.set_volume(ajustes["musica"])
 
 
+# Devuelve el nombre de la cancion sin carpeta ni extension.
 def nombre_cancion(ruta):
     return os.path.splitext(os.path.basename(ruta))[0]
 
@@ -3512,6 +3621,7 @@ def renderizar_texto_ajustado(texto, fuente, color, ancho_maximo):
     return fuente.render(contenido, True, color)
 
 
+# Indica si queda alguna cancion activada.
 def hay_activas():
     return any(activas.values())
 
@@ -3592,6 +3702,7 @@ def dibujar_interruptor(texto, clave):
     game_surface.blit(estado, estado.get_rect(center=caja.center))
 
 
+# Texto que indica la cancion que suena actualmente.
 def texto_ahora_suena():
     if 0 <= actual < len(canciones):
         return "Ahora suena: " + nombre_cancion(canciones[actual])[:50]
@@ -3814,15 +3925,18 @@ def show_ranuras():
     dibujar_boton("volver", blanco, amarillo, 770)
 
 
+# Calcula las filas de la lista de canciones visibles segun el desplazamiento.
 def filas_visibles():
     fin = min(len(canciones), scroll + FILAS_VISIBLES)
     return [(i, pygame.Rect(350, 230 + v * 62, 850, 52)) for v, i in enumerate(range(scroll, fin))]
 
 
+# Rectangulo de la casilla de activar/desactivar una cancion.
 def rect_check(fila):
     return pygame.Rect(fila.x + 14, fila.centery - 16, 32, 32)
 
 
+# Rectangulo del boton 'sonar ahora' de una fila.
 def rect_sonar(fila):
     return pygame.Rect(fila.right - 170, fila.y + 6, 160, 40)
 
@@ -3932,6 +4046,7 @@ def actualizar_camara(jugador, dt, forzar=False):
         camara.update(camara + (objetivo - camara) * min(1.0, CAMARA_SUAVIDAD * dt))
 
 
+# Efectos visuales y carga/escalado de sprites con cache.
 print("---------- EFECTOS VISUALES Y SPRITES ----------")
 def dibujar_mira(superficie):
     x, y = (int(v) for v in pos_en_juego(pygame.mouse.get_pos()))
@@ -4353,6 +4468,7 @@ def actualizar_y_dibujar(dt):
             game_surface.blit(fps, fps.get_rect(topright=(width - 20, 12)))
 
 
+# Carga los recursos, crea la partida y ejecuta el ciclo principal: eventos, musica, actualizar, dibujar.
 print("---------- BUCLE PRINCIPAL ----------")
 dt = 0
 # Carga recursos gráficos y crea el estado inicial antes de aceptar eventos.
