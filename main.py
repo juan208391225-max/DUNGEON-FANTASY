@@ -1,5 +1,5 @@
-import math #calculos matematicos
-import os  #acceder al sistema
+import math 
+import os 
 import random   #aleatoriedad
 import sys  # nuevas funciones relacionadas al sistema
 import pygame  # Importa una biblioteca o clase auxiliar usada por el juego.
